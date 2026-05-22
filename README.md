@@ -4,53 +4,62 @@ Sistema Integrado de Gestão Empresarial baseado em Django
 
 Projeto independente open-source desenvolvido em Python 3 no Windows, testado no GNU/Linux e Windows.
 
-
 ## Dependências
 
-- [Python](https://www.python.org/downloads/) - Versão 3.5+
-- [django](http://www.djangoproject.com) == 3.1.7
+- [Python](https://www.python.org/downloads/) - Versão 3.10+
+- [django](http://www.djangoproject.com) == 3.1.14
 - [geraldo](https://github.com/thiagopena/geraldo) - Geração de PDF para pedidos de venda/compra
 - [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (Opcional) - Necessário para a geração de NF-e, NFC-e, comunicação com SEFAZ, geração do DANFE, etc.
 - [apache2](https://www.apache.org/) (Opcional)
 - [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (Opcional)
 
-## Instalação:
+## Instalação
 
 0. Instalar as bibliotecas/pacotes (no Linux):
 
 ```bash
-sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev python3-pip
+sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev python3-pip git
+sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
+sudo apt install -y python3.10 python3.10-venv python3.10-dev
 ```
 
-1. Instalar dependências:
+1. Clone o repositório e crie o ambiente virtual:
+
+```bash
+git clone https://github.com/jallisson/djangoSIGE.git
+cd djangoSIGE
+python3.10 -m venv venv
+source venv/bin/activate
+```
+
+2. Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Edite o conteúdo do arquivo **djangosige/configs/configs.py**
+3. Edite o conteúdo do arquivo **djangosige/configs/configs.py**
 
-3. Gere um `.env` local
+4. Gere um `.env` local:
 
 ```bash
 python contrib/env_gen.py
 ```
 
-
-4. Sincronize a base de dados:
+5. Sincronize a base de dados:
 
 ```bash
 python manage.py migrate
 ```
 
-5. Crie um usuário (Administrador do sistema):
+6. Crie um usuário (Administrador do sistema):
 
 ```bash
 python manage.py createsuperuser
 ```
 
-6. Teste a instalação carregando o servidor de desenvolvimento (http://localhost:8000 no navegador):
+7. Inicie o servidor de desenvolvimento (http://localhost:8000 no navegador):
 
 ```bash
 python manage.py runserver
@@ -82,6 +91,6 @@ python manage.py runserver
 
 ## Ajuda
 
-Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/thiagopena/djangoSIGE/issues) ou via email thiagopena01@gmail.com
+Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/jallisson/djangoSIGE/issues) ou via email thiagopena01@gmail.com
 
 Como este é um projeto em desenvolvimento, qualquer feedback será bem-vindo.
