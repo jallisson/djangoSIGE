@@ -15,55 +15,79 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 
 ## Instalação
 
-0. Instalar as bibliotecas/pacotes (no Linux):
+0. Instalar as bibliotecas/pacotes do sistema (no Linux):
 
 ```bash
-sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev python3-pip git
+sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install -y python3.10 python3.10-venv python3.10-dev
 ```
 
-1. Clone o repositório e crie o ambiente virtual:
+1. Clone o repositório:
 
 ```bash
-git clone https://github.com/jallisson/djangoSIGE.git
+git clone https://github.com/thiagopena/djangoSIGE.git
 cd djangoSIGE
-python3.10 -m venv venv
-source venv/bin/activate
 ```
 
-2. Instale as dependências:
+### Opção A — uv (recomendado)
+
+[uv](https://docs.astral.sh/uv/) cria o ambiente virtual e instala as
+dependências a partir do `pyproject.toml`/`uv.lock` em um único passo,
+fixando a versão do Python definida em `.python-version`.
 
 ```bash
+# Instale o uv (ver https://docs.astral.sh/uv/getting-started/installation/)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Sincronize as dependencias (cria .venv automaticamente)
+uv sync
+```
+
+A partir daqui, prefixe os comandos `manage.py` com `uv run`:
+
+```bash
+uv run python contrib/env_gen.py
+uv run python manage.py migrate
+uv run python manage.py createsuperuser
+uv run python manage.py runserver
+```
+
+### Opção B — pip + venv (alternativa)
+
+```bash
+python3.10 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Edite o conteúdo do arquivo **djangosige/configs/configs.py**
-
-4. Gere um `.env` local:
+Em seguida, com o `venv` ativado:
 
 ```bash
 python contrib/env_gen.py
-```
-
-5. Sincronize a base de dados:
-
-```bash
 python manage.py migrate
-```
-
-6. Crie um usuário (Administrador do sistema):
-
-```bash
 python manage.py createsuperuser
-```
-
-7. Inicie o servidor de desenvolvimento (http://localhost:8000 no navegador):
-
-```bash
 python manage.py runserver
 ```
+
+### Pós-instalação (ambas as opções)
+
+2. Edite o conteúdo do arquivo **djangosige/configs/configs.py**.
+
+3. Acesse `http://localhost:8000` no navegador.
+
+### Docker (opcional)
+
+Há também um `docker-compose.yml` com Postgres 18, Gunicorn e Nginx:
+
+```bash
+docker compose up -d
+docker compose exec gunicorn python manage.py migrate
+docker compose exec gunicorn python manage.py createsuperuser
+```
+
+A aplicação fica disponível em `http://localhost:8000`.
 
 ## Implementações
 
@@ -91,6 +115,6 @@ python manage.py runserver
 
 ## Ajuda
 
-Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/jallisson/djangoSIGE/issues) ou via email thiagopena01@gmail.com
+Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/thiagopena/djangoSIGE/issues) ou via email thiagopena01@gmail.com
 
 Como este é um projeto em desenvolvimento, qualquer feedback será bem-vindo.
