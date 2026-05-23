@@ -81,7 +81,7 @@ class EstoqueAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_entrada_estoque_view_post_request(self):
         url = reverse('estoque:addentradaestoqueview')
@@ -105,7 +105,7 @@ class EstoqueAdicionarViewsTestCase(BaseTestCase):
         data['tipo_movimento'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'tipo_movimento', 'Este campo é obrigatório.')
+            response.context['form'], 'tipo_movimento', 'Este campo é obrigatório.')
 
     def test_add_saida_estoque_view_post_request(self):
         url = reverse('estoque:addsaidaestoqueview')
@@ -129,7 +129,7 @@ class EstoqueAdicionarViewsTestCase(BaseTestCase):
         data['tipo_movimento'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'tipo_movimento', 'Este campo é obrigatório.')
+            response.context['form'], 'tipo_movimento', 'Este campo é obrigatório.')
 
         # Testar retirar produtos de um local sem produtos em estoque
         local = LocalEstoque.objects.create(descricao='Novo Local Estoque 1')
@@ -186,7 +186,7 @@ class EstoqueAdicionarViewsTestCase(BaseTestCase):
         data['quantidade_itens'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'quantidade_itens', 'Este campo é obrigatório.')
+            response.context['form'], 'quantidade_itens', 'Este campo é obrigatório.')
 
 
 class EstoqueListarViewsTestCase(BaseTestCase):

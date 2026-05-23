@@ -86,7 +86,7 @@ class VendasAdicionarViewsTestCase(BaseTestCase):
         data['cliente'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'cliente', 'Este campo é obrigatório.')
+            response.context['form'], 'cliente', 'Este campo é obrigatório.')
 
     def test_add_pedido_venda_view_post_request(self):
         url = reverse('vendas:addpedidovendaview')
@@ -119,7 +119,7 @@ class VendasAdicionarViewsTestCase(BaseTestCase):
         data['cliente'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'cliente', 'Este campo é obrigatório.')
+            response.context['form'], 'cliente', 'Este campo é obrigatório.')
 
     def test_add_condicao_pagamento_view_post_request(self):
         url = reverse('vendas:addcondicaopagamentoview')
@@ -141,7 +141,7 @@ class VendasAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
 
 class VendasListarViewsTestCase(BaseTestCase):

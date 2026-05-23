@@ -129,7 +129,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['grupo_form-descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_conta_pagar_view_post_request(self):
         url = reverse('financeiro:addcontapagarview')
@@ -161,7 +161,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_conta_receber_view_post_request(self):
         url = reverse('financeiro:addcontareceberview')
@@ -193,7 +193,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_recebimento_view_post_request(self):
         url = reverse('financeiro:addrecebimentoview')
@@ -225,7 +225,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_pagamento_view_post_request(self):
         url = reverse('financeiro:addpagamentoview')
@@ -257,7 +257,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
 
 class FinanceiroPlanoContasViewsTestCase(BaseTestCase):
@@ -414,7 +414,7 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_edit_conta_receber_get_post_request(self):
         # Buscar objeto qualquer
