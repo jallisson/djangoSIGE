@@ -31,6 +31,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Constraint do `Django` afrouxada para `>=5.2,<5.3` (linha LTS).
   Versão instalada continua `5.2.14`. Bump para 6.x fica para rodada
   separada após validação.
+- Python atualizado de 3.10 para 3.12 (`.python-version`, `pyproject`
+  e `Dockerfile`). Bump para 3.13 ficou bloqueado pelo conflito entre
+  `lxml<5` (exigido por `signxml==2.5.2`, parte do stack pinado de
+  NFe) e o fato de `lxml 4.x` não compilar com a API do CPython 3.13.
+- Substituído `locale.format()` (removido no Python 3.12) por
+  `locale.format_string()` em 68 ocorrências (apps de vendas, compras,
+  estoque, financeiro e testes). Assinatura idêntica, sem mudança de
+  comportamento.
 - Os 4 testes de geração de PDF
   (`test_gerar_pdf_orcamento_*`, `test_gerar_pdf_pedido_*` em
   `vendas` e `compras`) foram marcados como `@unittest.skip` com

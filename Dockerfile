@@ -1,9 +1,9 @@
-# Imagem da aplicacao djangoSIGE.
-# - base Python 3.10 (Debian slim) compativel com Django 5.2
+# Imagem da aplicação djangoSIGE.
+# - base Python 3.12 (Debian slim) compatível com Django 5.2 LTS
 # - usa uv para instalar deps a partir de pyproject.toml/uv.lock
-# - venv em /opt/venv para nao ser mascarado pelo bind mount do compose
+# - venv em /opt/venv para não ser mascarado pelo bind mount do compose
 
-FROM python:3.10-slim AS base
+FROM python:3.12-slim AS base
 
 LABEL maintainer="lukasgarcya@hotmail.com"
 

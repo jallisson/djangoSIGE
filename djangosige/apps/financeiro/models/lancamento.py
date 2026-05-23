@@ -44,7 +44,7 @@ class Lancamento(models.Model):
         verbose_name = "Lançamento"
 
     def format_valor_liquido(self):
-        return locale.format(u'%.2f', self.valor_liquido, 1)
+        return locale.format_string(u'%.2f', self.valor_liquido, 1)
 
     @property
     def format_data_vencimento(self):
