@@ -28,6 +28,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   `signxml==2.5.2` exige `lxml<5`) e `reportlab` (`>=4.5`). Sem efeito
   em versões instaladas no momento; permite patches futuros sem
   alteração no `pyproject`.
+- Constraint do `Django` afrouxada para `>=5.2,<5.3` (linha LTS).
+  Versão instalada continua `5.2.14`. Bump para 6.x fica para rodada
+  separada após validação.
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,

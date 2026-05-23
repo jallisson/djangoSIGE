@@ -160,7 +160,7 @@ requires-dist = [
     { name = "asgiref", specifier = ">=3.11" },
     { name = "cryptography", specifier = "==2.9.2" },
     { name = "dj-database-url", specifier = ">=2" },
-    { name = "django", specifier = "==5.2.14" },
+    { name = "django", specifier = ">=5.2,<5.3" },
     { name = "geraldo", url = "https://github.com/thiagopena/geraldo/archive/master.zip" },
     { name = "lxml", specifier = ">=4.9,<5" },
     { name = "pillow", specifier = ">=12" },
