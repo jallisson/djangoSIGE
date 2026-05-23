@@ -7,6 +7,30 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Unreleased]
 
+### Fixed
+
+- Login retornava `403 Forbidden (Origin checking failed)` sob proxy
+  reverso (`nginx` em `8000:80` → `gunicorn`). Adicionado
+  `CSRF_TRUSTED_ORIGINS` no `settings.py` (lido via `decouple`) e a env
+  `CSRF_TRUSTED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000` no
+  `docker-compose.yml`.
+- Rodapé do template `base/base.html`: ano `2017` → `2026` e versão
+  (antes era o placeholder `{{versao}}` que renderizava vazio por falta
+  de context processor) → `2.0`.
+
+### Changed
+
+- README ganhou seção "Comandos úteis" do Docker com exemplos de
+  `docker exec -it`, `docker compose logs -f --tail=N` e atalhos
+  (`ps`, `restart`, `down`). Inclui nota explícita sobre a ordem das
+  flags `-it` (precisam vir antes do nome do container).
+
+### Added
+
+- `database/` adicionado ao `.gitignore`. O volume do postgres é criado
+  como `root` pelo container e fazia `git status` emitir `Permissão
+  negada` em todo comando.
+
 ## [2.0.0] - 2026-05-23
 
 Modernização da infraestrutura de build e execução. A aplicação em si não
