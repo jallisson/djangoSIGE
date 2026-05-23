@@ -6,7 +6,7 @@ charset-normalizer==3.4.7
 cryptography==2.9.2
 defusedxml==0.7.1
 dj-database-url==0.5.0
-Django==4.2.30
+Django==5.2.14
 eight==0.4.2
 future==0.16.0
 Geraldo==0.4.16
