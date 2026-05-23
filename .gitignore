@@ -46,6 +46,9 @@ djangosige/media/imagens/usuarios/
 env/
 venv/
 
+# Volume do postgres no docker-compose (criado como root pelo container).
+database/
+
 # Configuracoes locais de ferramentas de desenvolvimento
 CLAUDE.md
 .claude/
