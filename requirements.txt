@@ -9,12 +9,12 @@ dj-database-url==0.5.0
 Django==5.2.14
 eight==0.4.2
 future==0.16.0
-Geraldo==0.4.16
+https://github.com/thiagopena/geraldo/archive/master.zip
 lxml==4.9.4
 pillow==12.2.0
 pycparser==3.0
 pyOpenSSL==17.5.0
-PySIGNFe==0.1.0
+https://github.com/thiagopena/PySIGNFe/archive/master.zip
 python-decouple==3.1
 pytz==2026.2
 reportlab==4.5.1
