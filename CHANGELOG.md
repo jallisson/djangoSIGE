@@ -31,6 +31,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Constraint do `Django` afrouxada para `>=5.2,<5.3` (linha LTS).
   Versão instalada continua `5.2.14`. Bump para 6.x fica para rodada
   separada após validação.
+- Os 4 testes de geração de PDF
+  (`test_gerar_pdf_orcamento_*`, `test_gerar_pdf_pedido_*` em
+  `vendas` e `compras`) foram marcados como `@unittest.skip` com
+  referência à issue #142. Falhavam com
+  `AttributeError: module 'collections' has no attribute 'Callable'`
+  (geraldo abandonado, quebrado a partir do Python 3.10).
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,
