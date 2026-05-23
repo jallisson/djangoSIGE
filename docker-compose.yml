@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: sige
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./database:/var/lib/postgresql
     networks:
       - sige_net
     healthcheck:
@@ -16,11 +16,12 @@ services:
       retries: 10
 
   gunicorn:
+    build: .
     image: djangosige
     command: gunicorn -b 0.0.0.0:8000 djangosige.wsgi:application
     environment:
       - SECRET_KEY=0#pny4oox9s#+#5dkde25dj79b-o^sdbz4kiumg#e1qx3ky
-      - ALLOWED_HOSTS=gunicorn
+      - ALLOWED_HOSTS=gunicorn,nginx,localhost,127.0.0.1
       - DATABASE_URL=postgres://sige:pass@postgres/sige
     volumes:
       - ./:/opt/djangoSIGE/
@@ -38,7 +39,7 @@ services:
       - ./djangosige/static/:/opt/djangoSIGE/static/
       - ./djangosige/media/:/opt/djangoSIGE/media/
     ports:
-      - "80:80"
+      - "8000:80"
     networks:
       - sige_net
     depends_on:
