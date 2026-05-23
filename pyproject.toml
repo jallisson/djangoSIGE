@@ -13,16 +13,14 @@ dependencies = [
     "pyOpenSSL==17.5.0",
     "PySIGNFe @ https://github.com/thiagopena/PySIGNFe/archive/master.zip",
     "signxml==2.5.2",
-
     # PDF (geraldo) — abandonado, ver issue #142.
     "geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip",
-    "reportlab==4.5.1",
-
+    "reportlab>=4.5",
     # Demais runtime deps.
     "asgiref>=3.11",
     "Django==5.2.14",
     "dj-database-url>=2",
-    "lxml==4.9.4",
+    "lxml>=4.9,<5",
     "pillow>=12",
     "python-decouple>=3.8",
     "sqlparse>=0.5",

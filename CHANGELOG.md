@@ -24,6 +24,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   removidos — continuam disponíveis como deps transitivas.
 - `mock` removido das deps de dev (não havia uso nos testes — Python 3
   traz `unittest.mock` builtin).
+- Afrouxa constraints de `lxml` (`>=4.9,<5` — teto necessário porque
+  `signxml==2.5.2` exige `lxml<5`) e `reportlab` (`>=4.5`). Sem efeito
+  em versões instaladas no momento; permite patches futuros sem
+  alteração no `pyproject`.
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,
