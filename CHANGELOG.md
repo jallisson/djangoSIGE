@@ -7,6 +7,20 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Unreleased]
 
+### Changed
+
+- **Bumps seguros (Fase 1 do upgrade de dependências):**
+  - `dj-database-url` 0.5.0 → 3.1.2 (cinco anos de bumps acumulados).
+  - `flake8` (dev) 3.6.0 → 7.3.0, com `pyflakes`, `pycodestyle` e
+    `mccabe` correspondentes.
+  - `asgiref`, `sqlparse`, `pillow` já estavam no patch mais recente
+    compatível — sem mudança efetiva.
+- `requirements.txt` passa a ser gerado via `uv export`, sincronizado
+  com `uv.lock`.
+- `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,
+  desalinhado com a release v2.0.0). Template `base.html` volta a usar
+  `{{versao}}` (context processor `sige_version` já existente).
+
 ### Fixed
 
 - Login retornava `403 Forbidden (Origin checking failed)` sob proxy
