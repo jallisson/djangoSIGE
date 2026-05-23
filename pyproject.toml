@@ -1,0 +1,42 @@
+[project]
+name = "djangosige"
+version = "1.0.0"
+description = "Sistema Integrado de Gestao Empresarial baseado em Django"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+license = { file = "LICENSE.md" }
+dependencies = [
+    "asgiref==3.11.1",
+    "asn1crypto==1.5.1",
+    "certifi==2026.5.20",
+    "cffi==2.0.0",
+    "charset-normalizer==3.4.7",
+    "cryptography==2.9.2",
+    "defusedxml==0.7.1",
+    "dj-database-url==0.5.0",
+    "Django==5.2.14",
+    "eight==0.4.2",
+    "future==0.16.0",
+    "geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip",
+    "lxml==4.9.4",
+    "pillow==12.2.0",
+    "pycparser==3.0",
+    "pyOpenSSL==17.5.0",
+    "PySIGNFe @ https://github.com/thiagopena/PySIGNFe/archive/master.zip",
+    "python-decouple==3.1",
+    "pytz==2026.2",
+    "reportlab==4.5.1",
+    "signxml==2.5.2",
+    "six==1.11.0",
+    "sqlparse==0.5.5",
+    "typing_extensions==4.15.0",
+]
+
+[dependency-groups]
+dev = [
+    "mock==2.0.0",
+    "flake8==3.6.0",
+]
+
+[tool.uv]
+package = false
