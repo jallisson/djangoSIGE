@@ -9,13 +9,21 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Changed
 
-- **Bumps seguros (Fase 1 do upgrade de dependências):**
+- Bumps de dependências:
   - `dj-database-url` 0.5.0 → 3.1.2 (cinco anos de bumps acumulados).
+  - `python-decouple` 3.1 → 3.8 (API do `Csv()` mantida).
   - `flake8` (dev) 3.6.0 → 7.3.0, com `pyflakes`, `pycodestyle` e
     `mccabe` correspondentes.
   - `asgiref`, `sqlparse`, `pillow` já estavam no patch mais recente
-    compatível — sem mudança efetiva.
-- **Fase 2:** `python-decouple` 3.1 → 3.8. API do `Csv()` mantida.
+    compatível.
+- `requirements.txt` agora é gerado via `uv export` (sincronizado com
+  `uv.lock`).
+- `pyproject.toml` reorganizado em três grupos comentados: stack de
+  NFe (pinada em versões antigas, ver nota abaixo), PDF (geraldo) e
+  runtime geral. Pins explícitos de `future`, `six`, `eight` e `pytz`
+  removidos — continuam disponíveis como deps transitivas.
+- `mock` removido das deps de dev (não havia uso nos testes — Python 3
+  traz `unittest.mock` builtin).
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,

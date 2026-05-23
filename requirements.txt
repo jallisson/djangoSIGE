@@ -14,11 +14,10 @@ future==0.16.0
 geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip
 lxml==4.9.4
 pillow==12.2.0
-pycparser==3.0
+pycparser==3.0 ; implementation_name != 'PyPy'
 pyopenssl==17.5.0
 pysignfe @ https://github.com/thiagopena/PySIGNFe/archive/master.zip
 python-decouple==3.8
-pytz==2026.2
 reportlab==4.5.1
 signxml==2.5.2
 six==1.11.0
