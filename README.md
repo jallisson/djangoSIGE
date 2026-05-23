@@ -6,12 +6,13 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 
 ## Dependências
 
-- [Python](https://www.python.org/downloads/) - Versão 3.10+
-- [django](http://www.djangoproject.com) == 5.2.14
-- [geraldo](https://github.com/thiagopena/geraldo) - Geração de PDF para pedidos de venda/compra
-- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (Opcional) - Necessário para a geração de NF-e, NFC-e, comunicação com SEFAZ, geração do DANFE, etc.
-- [apache2](https://www.apache.org/) (Opcional)
-- [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (Opcional)
+- [Python](https://www.python.org/downloads/) — 3.12 (definido em `.python-version` e `pyproject.toml`)
+- [Django](http://www.djangoproject.com) — 5.2.x (linha LTS, `>=5.2,<5.3`)
+- [PostgreSQL](https://www.postgresql.org/) — 18 (via Docker) ou compatível
+- [uv](https://docs.astral.sh/uv/) (recomendado) — gerencia o ambiente e as dependências a partir de `pyproject.toml` / `uv.lock`
+- [geraldo](https://github.com/thiagopena/geraldo) — geração de PDF (biblioteca abandonada, será substituída; ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142))
+- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — geração de NF-e/NFC-e, comunicação com a SEFAZ, DANFE. Mantém pinadas as versões antigas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` e `signxml==2.5.2`, sem as quais a emissão quebra.
+- [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo ao Docker)
 
 ## Instalação
 
@@ -21,7 +22,7 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install -y python3.10 python3.10-venv python3.10-dev
+sudo apt install -y python3.12 python3.12-venv python3.12-dev
 ```
 
 1. Clone o repositório:
@@ -57,7 +58,7 @@ uv run python manage.py runserver
 ### Opção B — pip + venv (alternativa)
 
 ```bash
-python3.10 -m venv venv
+python3.12 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```

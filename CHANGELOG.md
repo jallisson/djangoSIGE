@@ -35,6 +35,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   e `Dockerfile`). Bump para 3.13 ficou bloqueado pelo conflito entre
   `lxml<5` (exigido por `signxml==2.5.2`, parte do stack pinado de
   NFe) e o fato de `lxml 4.x` não compilar com a API do CPython 3.13.
+  Stack validado em container Docker (rebuild da imagem com
+  `python:3.12-slim`, smoke test em `/login/`, `/` e `/static/*`
+  retornando OK).
+- README atualizado: seção "Dependências" reflete Python 3.12, Django
+  5.2 LTS, uv como gerenciador recomendado, PostgreSQL 18 (Docker) e
+  notas sobre o pin do stack de NFe e o status do `geraldo` (#142).
 - Substituído `locale.format()` (removido no Python 3.12) por
   `locale.format_string()` em 68 ocorrências (apps de vendas, compras,
   estoque, financeiro e testes). Assinatura idêntica, sem mudança de
