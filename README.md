@@ -6,63 +6,121 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 
 ## Dependências
 
-- [Python](https://www.python.org/downloads/) - Versão 3.10+
-- [django](http://www.djangoproject.com) == 5.2.14
-- [geraldo](https://github.com/thiagopena/geraldo) - Geração de PDF para pedidos de venda/compra
-- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (Opcional) - Necessário para a geração de NF-e, NFC-e, comunicação com SEFAZ, geração do DANFE, etc.
-- [apache2](https://www.apache.org/) (Opcional)
-- [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (Opcional)
+- [Python](https://www.python.org/downloads/) — 3.12 (definido em `.python-version` e `pyproject.toml`)
+- [Django](http://www.djangoproject.com) — 5.2.x (linha LTS, `>=5.2,<5.3`)
+- [PostgreSQL](https://www.postgresql.org/) — 18 (via Docker) ou compatível
+- [uv](https://docs.astral.sh/uv/) (recomendado) — gerencia o ambiente e as dependências a partir de `pyproject.toml` / `uv.lock`
+- [geraldo](https://github.com/thiagopena/geraldo) — geração de PDF (biblioteca abandonada, será substituída; ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142))
+- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — geração de NF-e/NFC-e, comunicação com a SEFAZ, DANFE. Mantém pinadas as versões antigas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` e `signxml==2.5.2`, sem as quais a emissão quebra.
+- [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo ao Docker)
 
 ## Instalação
 
-0. Instalar as bibliotecas/pacotes (no Linux):
+0. Instalar as bibliotecas/pacotes do sistema (no Linux):
 
 ```bash
-sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev python3-pip git
+sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install -y python3.10 python3.10-venv python3.10-dev
+sudo apt install -y python3.12 python3.12-venv python3.12-dev
 ```
 
-1. Clone o repositório e crie o ambiente virtual:
+1. Clone o repositório:
 
 ```bash
-git clone https://github.com/jallisson/djangoSIGE.git
+git clone https://github.com/thiagopena/djangoSIGE.git
 cd djangoSIGE
-python3.10 -m venv venv
-source venv/bin/activate
 ```
 
-2. Instale as dependências:
+### Opção A — uv (recomendado)
+
+[uv](https://docs.astral.sh/uv/) cria o ambiente virtual e instala as
+dependências a partir do `pyproject.toml`/`uv.lock` em um único passo,
+fixando a versão do Python definida em `.python-version`.
 
 ```bash
+# Instale o uv (ver https://docs.astral.sh/uv/getting-started/installation/)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Sincronize as dependencias (cria .venv automaticamente)
+uv sync
+```
+
+A partir daqui, prefixe os comandos `manage.py` com `uv run`:
+
+```bash
+uv run python contrib/env_gen.py
+uv run python manage.py migrate
+uv run python manage.py createsuperuser
+uv run python manage.py runserver
+```
+
+### Opção B — pip + venv (alternativa)
+
+```bash
+python3.12 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Edite o conteúdo do arquivo **djangosige/configs/configs.py**
-
-4. Gere um `.env` local:
+Em seguida, com o `venv` ativado:
 
 ```bash
 python contrib/env_gen.py
-```
-
-5. Sincronize a base de dados:
-
-```bash
 python manage.py migrate
-```
-
-6. Crie um usuário (Administrador do sistema):
-
-```bash
 python manage.py createsuperuser
+python manage.py runserver
 ```
 
-7. Inicie o servidor de desenvolvimento (http://localhost:8000 no navegador):
+### Pós-instalação (ambas as opções)
+
+2. Edite o conteúdo do arquivo **djangosige/configs/configs.py**.
+
+3. Acesse `http://localhost:8000` no navegador.
+
+### Docker (opcional)
+
+Há também um `docker-compose.yml` com Postgres 18, Gunicorn e Nginx:
 
 ```bash
-python manage.py runserver
+docker compose up -d
+docker compose exec gunicorn python manage.py migrate
+docker compose exec gunicorn python manage.py createsuperuser
+```
+
+A aplicação fica disponível em `http://localhost:8000`.
+
+#### Comandos úteis
+
+Abrir um shell interativo dentro do container da aplicação (atenção: as
+flags `-it` precisam vir **antes** do nome do container):
+
+```bash
+docker exec -it djangosige-gunicorn-1 bash
+# equivalente via compose:
+docker compose exec gunicorn bash
+```
+
+Acompanhar os logs em tempo real (`-f` = follow, `--tail=N` limita o
+backlog inicial):
+
+```bash
+# todos os servicos
+docker compose logs -f
+
+# apenas o gunicorn (com as ultimas 100 linhas)
+docker compose logs -f --tail=100 gunicorn
+
+# equivalente sem compose
+docker logs -f djangosige-gunicorn-1
+```
+
+Outros atalhos úteis:
+
+```bash
+docker compose ps              # status dos containers
+docker compose restart gunicorn
+docker compose down            # derruba o stack (preserva volumes)
 ```
 
 ## Implementações
@@ -91,6 +149,6 @@ python manage.py runserver
 
 ## Ajuda
 
-Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/jallisson/djangoSIGE/issues) ou via email thiagopena01@gmail.com
+Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/thiagopena/djangoSIGE/issues) ou via email thiagopena01@gmail.com
 
 Como este é um projeto em desenvolvimento, qualquer feedback será bem-vindo.

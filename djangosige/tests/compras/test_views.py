@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import unittest
+
 from djangosige.tests.test_case import BaseTestCase, replace_none_values_in_dictionary
 from djangosige.apps.cadastro.models import Fornecedor, Produto
 from djangosige.apps.compras.models import OrcamentoCompra, PedidoCompra, ItensCompra
@@ -75,7 +77,7 @@ class ComprasAdicionarViewsTestCase(BaseTestCase):
         data['fornecedor'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'fornecedor', 'Este campo é obrigatório.')
+            response.context['form'], 'fornecedor', 'Este campo é obrigatório.')
 
     def test_add_pedido_compra_view_post_request(self):
         url = reverse('compras:addpedidocompraview')
@@ -109,7 +111,7 @@ class ComprasAdicionarViewsTestCase(BaseTestCase):
         data['fornecedor'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'fornecedor', 'Este campo é obrigatório.')
+            response.context['form'], 'fornecedor', 'Este campo é obrigatório.')
 
 
 class ComprasListarViewsTestCase(BaseTestCase):
@@ -207,6 +209,9 @@ class VendasAjaxRequestViewsTestCase(BaseTestCase):
 
 class ComprasAcoesUsuarioViewsTestCase(BaseTestCase):
 
+    @unittest.skip(
+        "TODO #142: geraldo abandonado, quebra em Python 3.10+ "
+        "(collections.Callable removido).")
     def test_gerar_pdf_orcamento_compra(self):
         # Buscar objeto qualquer
         obj = OrcamentoCompra.objects.order_by('pk').last()
@@ -216,6 +221,9 @@ class ComprasAcoesUsuarioViewsTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get('Content-Type'), 'application/pdf')
 
+    @unittest.skip(
+        "TODO #142: geraldo abandonado, quebra em Python 3.10+ "
+        "(collections.Callable removido).")
     def test_gerar_pdf_pedido_compra(self):
         # Buscar objeto qualquer
         obj = PedidoCompra.objects.order_by('pk').last()

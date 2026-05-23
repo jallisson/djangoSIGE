@@ -96,7 +96,7 @@ class CadastroAdicionarViewsTestCase(BaseTestCase):
             pessoa_data['{}_form-nome_razao_social'.format(model_name)] = ''
             response = self.client.post(url, pessoa_data, follow=True)
             self.assertFormError(
-                response, 'form', 'nome_razao_social', 'Este campo é obrigatório.')
+                response.context['form'], 'nome_razao_social', 'Este campo é obrigatório.')
 
     def test_add_produto_post_request(self):
         url = reverse('cadastro:addprodutoview')
@@ -120,7 +120,7 @@ class CadastroAdicionarViewsTestCase(BaseTestCase):
         # Assert form invalido
         produto_data['codigo'] = ''
         response = self.client.post(url, produto_data, follow=True)
-        self.assertFormError(response, 'form', 'codigo',
+        self.assertFormError(response.context['form'], 'codigo',
                              'Este campo é obrigatório.')
 
     def test_add_categoria_post_request(self):
@@ -136,7 +136,7 @@ class CadastroAdicionarViewsTestCase(BaseTestCase):
         data['categoria_desc'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'categoria_desc', 'Este campo é obrigatório.')
+            response.context['form'], 'categoria_desc', 'Este campo é obrigatório.')
 
     def test_add_marca_post_request(self):
         url = reverse('cadastro:addmarcaview')
@@ -150,7 +150,7 @@ class CadastroAdicionarViewsTestCase(BaseTestCase):
         # Assert form invalido
         data['marca_desc'] = ''
         response = self.client.post(url, data, follow=True)
-        self.assertFormError(response, 'form', 'marca_desc',
+        self.assertFormError(response.context['form'], 'marca_desc',
                              'Este campo é obrigatório.')
 
     def test_add_unidade_post_request(self):
@@ -167,7 +167,7 @@ class CadastroAdicionarViewsTestCase(BaseTestCase):
         data['sigla_unidade'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'sigla_unidade', 'Este campo é obrigatório.')
+            response.context['form'], 'sigla_unidade', 'Este campo é obrigatório.')
 
 
 class CadastroListarViewsTestCase(BaseTestCase):
@@ -222,7 +222,7 @@ class CadastroEditarViewsTestCase(BaseTestCase):
                 '{}_form-nome_razao_social'.format(response.context['form'].prefix)] = ''
             response = self.client.post(url, data, follow=True)
             self.assertFormError(
-                response, 'form', 'nome_razao_social', 'Este campo é obrigatório.')
+                response.context['form'], 'nome_razao_social', 'Este campo é obrigatório.')
 
     def test_edit_produto_get_post_request(self):
         # Buscar objeto qualquer
@@ -254,7 +254,7 @@ class CadastroEditarViewsTestCase(BaseTestCase):
         data['categoria_desc'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'categoria_desc', 'Este campo é obrigatório.')
+            response.context['form'], 'categoria_desc', 'Este campo é obrigatório.')
 
     def test_edit_marca_get_post_request(self):
         # Buscar objeto qualquer

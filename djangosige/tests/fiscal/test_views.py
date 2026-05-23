@@ -51,7 +51,7 @@ class FiscalAdicionarViewsTestCase(BaseTestCase):
         data['cfop'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'cfop', 'Este campo é obrigatório.')
+            response.context['form'], 'cfop', 'Este campo é obrigatório.')
 
     def test_add_grupo_fiscal_view_post_request(self):
         url = reverse('fiscal:addgrupofiscalview')
@@ -81,7 +81,7 @@ class FiscalAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_nota_fiscal_saida_view_post_request(self):
         url = reverse('fiscal:addnotafiscalsaidaview')
@@ -118,7 +118,7 @@ class FiscalAdicionarViewsTestCase(BaseTestCase):
         data['versao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'versao', 'Este campo é obrigatório.')
+            response.context['form'], 'versao', 'Este campo é obrigatório.')
 
     def test_gerar_nota_fiscal_saida_por_pedido_venda(self):
         # Buscar objeto qualquer
@@ -215,7 +215,7 @@ class FiscalEditarViewsTestCase(BaseTestCase):
         data['natop'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'natop', 'Este campo é obrigatório.')
+            response.context['form'], 'natop', 'Este campo é obrigatório.')
 
     def test_edit_nota_fiscal_entrada_get_post_request(self):
         # Buscar objeto qualquer
@@ -237,7 +237,7 @@ class FiscalEditarViewsTestCase(BaseTestCase):
         data['natop'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'natop', 'Este campo é obrigatório.')
+            response.context['form'], 'natop', 'Este campo é obrigatório.')
 
 
 class FiscalConfiguracaoNotaFiscalViewTestCase(BaseTestCase):

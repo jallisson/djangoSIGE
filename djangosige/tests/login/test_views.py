@@ -73,7 +73,7 @@ class UserRegistrationFormViewTestCase(BaseTestCase):
         }
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'password', 'Senhas diferentes.')
+            response.context['form'], 'password', 'Senhas diferentes.')
 
     def test_superuser_required(self):
         url = reverse('login:registrarview')

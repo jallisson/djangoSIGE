@@ -45,4 +45,20 @@ djangosige/media/imagens/usuarios/
 *.sqlite3
 env/
 venv/
-venv/
+
+# Volume do postgres no docker-compose (criado como root pelo container).
+database/
+
+# Configuracoes locais de ferramentas de desenvolvimento
+CLAUDE.md
+.claude/
+AGENTS.md
+GEMINI.md
+.aider*
+.cursorrules
+.cursor/
+.claude-code/
+docs/superpowers/
+
+# uv (uv.lock e .python-version sao versionados intencionalmente)
+

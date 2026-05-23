@@ -129,7 +129,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['grupo_form-descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_conta_pagar_view_post_request(self):
         url = reverse('financeiro:addcontapagarview')
@@ -161,7 +161,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_conta_receber_view_post_request(self):
         url = reverse('financeiro:addcontareceberview')
@@ -193,7 +193,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_recebimento_view_post_request(self):
         url = reverse('financeiro:addrecebimentoview')
@@ -225,7 +225,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_add_pagamento_view_post_request(self):
         url = reverse('financeiro:addpagamentoview')
@@ -257,7 +257,7 @@ class FinanceiroAdicionarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
 
 class FinanceiroPlanoContasViewsTestCase(BaseTestCase):
@@ -414,7 +414,7 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data['descricao'] = ''
         response = self.client.post(url, data, follow=True)
         self.assertFormError(
-            response, 'form', 'descricao', 'Este campo é obrigatório.')
+            response.context['form'], 'descricao', 'Este campo é obrigatório.')
 
     def test_edit_conta_receber_get_post_request(self):
         # Buscar objeto qualquer
@@ -445,9 +445,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -479,9 +479,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         novo_valor_entradas = Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
@@ -512,9 +512,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
             data_movimento=nova_data_pagamento).entradas + Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
@@ -560,9 +560,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format(
+        data['valor_total'] = locale.format_string(
             u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format(
+        data['valor_liquido'] = locale.format_string(
             u'%.2f', Decimal(data['valor_liquido']), 1)
         data['movimentar_caixa'] = False
         response = self.client.post(url, data, follow=True)
@@ -587,9 +587,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format(
+        data['valor_total'] = locale.format_string(
             u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format(
+        data['valor_liquido'] = locale.format_string(
             u'%.2f', Decimal(data['valor_liquido']), 1)
         data['movimentar_caixa'] = True
         response = self.client.post(url, data, follow=True)
@@ -616,9 +616,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -650,9 +650,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         novo_valor_saidas = Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
@@ -683,9 +683,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
             data_movimento=nova_data_pagamento).saidas + Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format(u'%.2f', Decimal(
+        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
             data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format(u'%.2f', Decimal(
+        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
             data['valor_liquido']) + Decimal('20.00'), 1)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
@@ -731,9 +731,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format(
+        data['valor_total'] = locale.format_string(
             u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format(
+        data['valor_liquido'] = locale.format_string(
             u'%.2f', Decimal(data['valor_liquido']), 1)
         data['movimentar_caixa'] = False
         response = self.client.post(url, data, follow=True)
@@ -758,9 +758,9 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format(
+        data['valor_total'] = locale.format_string(
             u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format(
+        data['valor_liquido'] = locale.format_string(
             u'%.2f', Decimal(data['valor_liquido']), 1)
         data['movimentar_caixa'] = True
         response = self.client.post(url, data, follow=True)

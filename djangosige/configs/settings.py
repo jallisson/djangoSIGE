@@ -18,6 +18,12 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
+# Django 4.0+ valida o header Origin em requests POST mesmo same-origin.
+# Sob proxy reverso (nginx) e portas nao-default e necessario listar as
+# origens explicitamente. Veja:
+# https://docs.djangoproject.com/en/5.2/ref/settings/#csrf-trusted-origins
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
+
 if not DEFAULT_DATABASE_URL:
     DEFAULT_DATABASE_URL = 'sqlite:///' + os.path.join(APP_ROOT, 'db.sqlite3')
 

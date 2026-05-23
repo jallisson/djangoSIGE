@@ -142,19 +142,19 @@ class ItensVenda(models.Model):
             return round(v_desconto, decimais)
 
     def format_desconto(self):
-        return '{0}'.format(locale.format(u'%.2f', self.get_valor_desconto(), 1))
+        return '{0}'.format(locale.format_string(u'%.2f', self.get_valor_desconto(), 1))
 
     def format_quantidade(self):
-        return locale.format(u'%.2f', self.quantidade, 1)
+        return locale.format_string(u'%.2f', self.quantidade, 1)
 
     def format_valor_unit(self):
-        return locale.format(u'%.2f', self.valor_unit, 1)
+        return locale.format_string(u'%.2f', self.valor_unit, 1)
 
     def format_total(self):
-        return locale.format(u'%.2f', self.subtotal, 1)
+        return locale.format_string(u'%.2f', self.subtotal, 1)
 
     def format_vprod(self):
-        return locale.format(u'%.2f', self.vprod, 1)
+        return locale.format_string(u'%.2f', self.vprod, 1)
 
     def get_total_sem_desconto(self):
         if self.tipo_desconto == '0':
@@ -177,19 +177,19 @@ class ItensVenda(models.Model):
         return sum(filter(None, [self.vicms, self.vicms_st, self.vipi, self.vfcp, self.vicmsufdest, self.vicmsufremet]))
 
     def format_total_impostos(self):
-        return locale.format(u'%.2f', self.get_total_impostos(), 1)
+        return locale.format_string(u'%.2f', self.get_total_impostos(), 1)
 
     def get_total_com_impostos(self):
         total_com_impostos = self.subtotal + self.get_total_impostos()
         return total_com_impostos
 
     def format_total_com_imposto(self):
-        return locale.format(u'%.2f', self.get_total_com_impostos(), 1)
+        return locale.format_string(u'%.2f', self.get_total_com_impostos(), 1)
 
     def format_valor_attr(self, nome_attr):
         valor = getattr(self, nome_attr)
         if valor is not None:
-            return locale.format(u'%.2f', valor, 1)
+            return locale.format_string(u'%.2f', valor, 1)
 
     def get_aliquota_pis(self, format=True):
         try:
@@ -198,12 +198,12 @@ class ItensVenda(models.Model):
 
             if pis_padrao.valiq_pis:
                 if format:
-                    return locale.format(u'%.2f', pis_padrao.valiq_pis, 1)
+                    return locale.format_string(u'%.2f', pis_padrao.valiq_pis, 1)
                 else:
                     return pis_padrao.valiq_pis
             elif pis_padrao.p_pis:
                 if format:
-                    return locale.format(u'%.2f', pis_padrao.p_pis, 1)
+                    return locale.format_string(u'%.2f', pis_padrao.p_pis, 1)
                 else:
                     return pis_padrao.p_pis
 
@@ -217,12 +217,12 @@ class ItensVenda(models.Model):
 
             if cofins_padrao.valiq_cofins:
                 if format:
-                    return locale.format(u'%.2f', cofins_padrao.valiq_cofins, 1)
+                    return locale.format_string(u'%.2f', cofins_padrao.valiq_cofins, 1)
                 else:
                     return cofins_padrao.valiq_cofins
             elif cofins_padrao.p_cofins:
                 if format:
-                    return locale.format(u'%.2f', cofins_padrao.p_cofins, 1)
+                    return locale.format_string(u'%.2f', cofins_padrao.p_cofins, 1)
                 else:
                     return cofins_padrao.p_cofins
 
@@ -321,7 +321,7 @@ class Venda(models.Model):
         return tot
 
     def format_total_produtos(self):
-        return locale.format(u'%.2f', self.get_total_produtos(), 1)
+        return locale.format_string(u'%.2f', self.get_total_produtos(), 1)
 
     @property
     def format_data_emissao(self):
@@ -336,20 +336,20 @@ class Venda(models.Model):
             return round(v_desconto, decimais)
 
     def format_valor_total(self):
-        return locale.format(u'%.2f', self.valor_total, 1)
+        return locale.format_string(u'%.2f', self.valor_total, 1)
 
     def format_frete(self):
-        return locale.format(u'%.2f', self.frete, 1)
+        return locale.format_string(u'%.2f', self.frete, 1)
 
     def format_impostos(self):
-        return locale.format(u'%.2f', self.impostos, 1)
+        return locale.format_string(u'%.2f', self.impostos, 1)
 
     def format_total_sem_imposto(self):
-        return locale.format(u'%.2f', self.get_total_sem_imposto(), 1)
+        return locale.format_string(u'%.2f', self.get_total_sem_imposto(), 1)
 
     def format_desconto(self):
         if self.tipo_desconto == '0':
-            return locale.format(u'%.2f', self.desconto, 1)
+            return locale.format_string(u'%.2f', self.desconto, 1)
         else:
             itens = ItensVenda.objects.filter(venda_id=self.id)
             tot = 0
@@ -357,17 +357,17 @@ class Venda(models.Model):
                 tot += it.get_total_sem_desconto()
 
             v_desconto = tot * (self.desconto / 100)
-            return locale.format(u'%.2f', v_desconto, 1)
+            return locale.format_string(u'%.2f', v_desconto, 1)
 
     def format_seguro(self):
-        return locale.format(u'%.2f', self.seguro, 1)
+        return locale.format_string(u'%.2f', self.seguro, 1)
 
     def format_despesas(self):
-        return locale.format(u'%.2f', self.despesas, 1)
+        return locale.format_string(u'%.2f', self.despesas, 1)
 
     def format_total_sem_desconto(self):
         total_sem_desconto = self.valor_total - self.desconto
-        return locale.format(u'%.2f', total_sem_desconto, 1)
+        return locale.format_string(u'%.2f', total_sem_desconto, 1)
 
     def get_forma_pagamento(self):
         if self.cond_pagamento:

@@ -1,0 +1,35 @@
+[project]
+name = "djangosige"
+version = "1.0.0"
+description = "Sistema Integrado de Gestao Empresarial baseado em Django"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { file = "LICENSE.md" }
+dependencies = [
+    # NFe stack (pinado em versões antigas — ver CHANGELOG): emissão de
+    # NF-e depende de PySIGNFe + cryptography 2.x + pyOpenSSL 17.x.
+    # Não bumpar sem rever PySIGNFe.
+    "cryptography==2.9.2",
+    "pyOpenSSL==17.5.0",
+    "PySIGNFe @ https://github.com/thiagopena/PySIGNFe/archive/master.zip",
+    "signxml==2.5.2",
+    # PDF (geraldo) — abandonado, ver issue #142.
+    "geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip",
+    "reportlab>=4.5",
+    # Demais runtime deps.
+    "asgiref>=3.11",
+    "django>=5.2,<5.3",
+    "dj-database-url>=2",
+    "lxml>=4.9,<5",
+    "pillow>=12",
+    "python-decouple>=3.8",
+    "sqlparse>=0.5",
+]
+
+[dependency-groups]
+dev = [
+    "flake8>=7",
+]
+
+[tool.uv]
+package = false
