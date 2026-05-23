@@ -15,6 +15,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
     `mccabe` correspondentes.
   - `asgiref`, `sqlparse`, `pillow` já estavam no patch mais recente
     compatível — sem mudança efetiva.
+- **Fase 2:** `python-decouple` 3.1 → 3.8. API do `Csv()` mantida.
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,
