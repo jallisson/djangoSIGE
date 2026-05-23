@@ -89,6 +89,39 @@ docker compose exec gunicorn python manage.py createsuperuser
 
 A aplicação fica disponível em `http://localhost:8000`.
 
+#### Comandos úteis
+
+Abrir um shell interativo dentro do container da aplicação (atenção: as
+flags `-it` precisam vir **antes** do nome do container):
+
+```bash
+docker exec -it djangosige-gunicorn-1 bash
+# equivalente via compose:
+docker compose exec gunicorn bash
+```
+
+Acompanhar os logs em tempo real (`-f` = follow, `--tail=N` limita o
+backlog inicial):
+
+```bash
+# todos os servicos
+docker compose logs -f
+
+# apenas o gunicorn (com as ultimas 100 linhas)
+docker compose logs -f --tail=100 gunicorn
+
+# equivalente sem compose
+docker logs -f djangosige-gunicorn-1
+```
+
+Outros atalhos úteis:
+
+```bash
+docker compose ps              # status dos containers
+docker compose restart gunicorn
+docker compose down            # derruba o stack (preserva volumes)
+```
+
 ## Implementações
 
 - Cadastro de produtos, clientes, empresas, fornecedores e transportadoras
