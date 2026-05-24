@@ -9,6 +9,17 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Changed
 
+- **Geração de PDF migrada de `geraldo` para [WeasyPrint](https://weasyprint.org/)
+  (#142).** Reports do `geraldo` (`report_vendas.py`, `report_compras.py`,
+  baseados em `ReportBand`/`SubReport` posicionados em centímetros) foram
+  substituídos por um único template HTML/CSS reaproveitável em
+  `djangosige/apps/base/templates/base/pdf/relatorio_documento.html`. As
+  views `GerarPDFVenda`/`GerarPDFCompra` agora renderizam o template via
+  `render_to_string()` e geram o PDF com `weasyprint.HTML(...).write_pdf()`.
+  Dependências de sistema do WeasyPrint (`libpango-1.0-0`, `libpangoft2-1.0-0`,
+  `libcairo2`, `libgdk-pixbuf-2.0-0`, `libharfbuzz0b`, `libfontconfig1`)
+  adicionadas ao `Dockerfile`. Os 4 testes que estavam marcados como
+  `@unittest.skip` por causa do geraldo foram reabilitados.
 - Bumps de dependências:
   - `dj-database-url` 0.5.0 → 3.1.2 (cinco anos de bumps acumulados).
   - `python-decouple` 3.1 → 3.8 (API do `Csv()` mantida).
@@ -19,7 +30,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - `requirements.txt` agora é gerado via `uv export` (sincronizado com
   `uv.lock`).
 - `pyproject.toml` reorganizado em três grupos comentados: stack de
-  NFe (pinada em versões antigas, ver nota abaixo), PDF (geraldo) e
+  NFe (pinada em versões antigas, ver nota abaixo), PDF (WeasyPrint) e
   runtime geral. Pins explícitos de `future`, `six`, `eight` e `pytz`
   removidos — continuam disponíveis como deps transitivas.
 - `mock` removido das deps de dev (não havia uso nos testes — Python 3
@@ -39,18 +50,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   `python:3.12-slim`, smoke test em `/login/`, `/` e `/static/*`
   retornando OK).
 - README atualizado: seção "Dependências" reflete Python 3.12, Django
-  5.2 LTS, uv como gerenciador recomendado, PostgreSQL 18 (Docker) e
-  notas sobre o pin do stack de NFe e o status do `geraldo` (#142).
+  5.2 LTS, uv como gerenciador recomendado, PostgreSQL 18 (Docker),
+  WeasyPrint como gerador de PDF e nota sobre o pin do stack de NFe.
 - Substituído `locale.format()` (removido no Python 3.12) por
   `locale.format_string()` em 68 ocorrências (apps de vendas, compras,
   estoque, financeiro e testes). Assinatura idêntica, sem mudança de
   comportamento.
-- Os 4 testes de geração de PDF
-  (`test_gerar_pdf_orcamento_*`, `test_gerar_pdf_pedido_*` em
-  `vendas` e `compras`) foram marcados como `@unittest.skip` com
-  referência à issue #142. Falhavam com
-  `AttributeError: module 'collections' has no attribute 'Callable'`
-  (geraldo abandonado, quebrado a partir do Python 3.10).
 - `requirements.txt` passa a ser gerado via `uv export`, sincronizado
   com `uv.lock`.
 - `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,

@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
+from django.template.loader import render_to_string
+from django.utils import timezone
+
 from djangosige.apps.base.custom_views import CustomView, CustomCreateView, CustomListView, CustomUpdateView
 
 from djangosige.apps.compras.forms import OrcamentoCompraForm, PedidoCompraForm, ItensCompraFormSet, PagamentoFormSet
@@ -13,11 +16,11 @@ from djangosige.apps.cadastro.models import MinhaEmpresa
 from djangosige.apps.estoque.models import ProdutoEstocado, EntradaEstoque, ItensMovimento
 from djangosige.apps.login.models import Usuario
 from djangosige.configs.settings import MEDIA_ROOT
-from .report_compras import CompraReport
 
-from geraldo.generators import PDFGenerator
 from datetime import datetime
-import io
+from pathlib import Path
+
+from weasyprint import HTML
 
 
 class AdicionarCompraView(CustomCreateView):
@@ -507,79 +510,46 @@ class ReceberPedidoCompraView(CustomView):
 class GerarPDFCompra(CustomView):
 
     def gerar_pdf(self, title, compra, user_id):
-        resp = HttpResponse(content_type='application/pdf')
-
-        compra_pdf = io.BytesIO()
-        compra_report = CompraReport(queryset=[compra, ])
-        compra_report.title = title
-
-        compra_report.band_page_footer = compra_report.banda_foot
-
+        empresa_info = {}
+        logo_path = None
         try:
             usuario = Usuario.objects.get(pk=user_id)
             m_empresa = MinhaEmpresa.objects.get(m_usuario=usuario)
-            flogo = m_empresa.m_empresa.logo_file
-            logo_path = '{0}{1}'.format(MEDIA_ROOT, flogo.name)
-            if flogo != 'imagens/logo.png':
-                compra_report.topo_pagina.inserir_logo(logo_path)
-
-            compra_report.band_page_footer.inserir_nome_empresa(
-                m_empresa.m_empresa.nome_razao_social)
-            if m_empresa.m_empresa.endereco_padrao:
-                compra_report.band_page_footer.inserir_endereco_empresa(
-                    m_empresa.m_empresa.endereco_padrao.format_endereco_completo)
-            if m_empresa.m_empresa.telefone_padrao:
-                compra_report.band_page_footer.inserir_telefone_empresa(
-                    m_empresa.m_empresa.telefone_padrao.telefone)
-        except:
+            empresa = m_empresa.m_empresa
+            empresa_info['nome'] = empresa.nome_razao_social
+            if empresa.endereco_padrao:
+                empresa_info['endereco'] = empresa.endereco_padrao.format_endereco_completo
+            if empresa.telefone_padrao:
+                empresa_info['telefone'] = empresa.telefone_padrao.telefone
+            flogo = empresa.logo_file
+            if flogo and flogo.name != 'imagens/logo.png':
+                candidato = Path(MEDIA_ROOT) / flogo.name
+                if candidato.exists():
+                    logo_path = candidato.as_uri()
+        except (Usuario.DoesNotExist, MinhaEmpresa.DoesNotExist):
             pass
 
-        compra_report.topo_pagina.inserir_data_emissao(compra.data_emissao)
-        if isinstance(compra, OrcamentoCompra):
-            compra_report.topo_pagina.inserir_data_validade(
-                compra.data_vencimento)
-        elif isinstance(compra, PedidoCompra):
-            compra_report.topo_pagina.inserir_data_entrega(compra.data_entrega)
-        compra_report.band_page_header = compra_report.topo_pagina
+        data_validade = compra.data_vencimento if isinstance(compra, OrcamentoCompra) else None
+        data_entrega = compra.data_entrega if isinstance(compra, PedidoCompra) else None
 
-        if compra.fornecedor.tipo_pessoa == 'PJ':
-            compra_report.dados_fornecedor.inserir_informacoes_pj()
-        elif compra.fornecedor.tipo_pessoa == 'PF':
-            compra_report.dados_fornecedor.inserir_informacoes_pf()
+        context = {
+            'title': title,
+            'documento': compra,
+            'pessoa': compra.fornecedor,
+            'pessoa_label': 'Fornecedor',
+            'itens': ItensCompra.objects.filter(compra_id=compra),
+            'parcelas': Pagamento.objects.filter(compra_id=compra) if compra.cond_pagamento else [],
+            'empresa_info': empresa_info,
+            'logo_path': logo_path,
+            'data_emissao': compra.data_emissao,
+            'data_validade': data_validade,
+            'data_entrega': data_entrega,
+            'hoje': timezone.now(),
+        }
+        html_string = render_to_string('base/pdf/relatorio_documento.html', context)
+        pdf_bytes = HTML(string=html_string, base_url=MEDIA_ROOT).write_pdf()
 
-        if compra.fornecedor.endereco_padrao:
-            compra_report.dados_fornecedor.inserir_informacoes_endereco()
-        if compra.fornecedor.telefone_padrao:
-            compra_report.dados_fornecedor.inserir_informacoes_telefone()
-        if compra.fornecedor.email_padrao:
-            compra_report.dados_fornecedor.inserir_informacoes_email()
-
-        compra_report.band_page_header.child_bands.append(
-            compra_report.dados_fornecedor)
-
-        compra_report.dados_produtos.band_detail.set_band_height(
-            len(ItensCompra.objects.filter(compra_id=compra)))
-        compra_report.banda_produtos.elements.append(
-            compra_report.dados_produtos)
-        compra_report.band_page_header.child_bands.append(
-            compra_report.banda_produtos)
-
-        compra_report.band_page_header.child_bands.append(
-            compra_report.totais_venda)
-
-        if compra.cond_pagamento:
-            compra_report.banda_pagamento.elements.append(
-                compra_report.dados_pagamento)
-            compra_report.band_page_header.child_bands.append(
-                compra_report.banda_pagamento)
-
-        compra_report.band_page_header.child_bands.append(
-            compra_report.observacoes)
-
-        compra_report.generate_by(PDFGenerator, filename=compra_pdf)
-        pdf = compra_pdf.getvalue()
-        resp.write(pdf)
-
+        resp = HttpResponse(pdf_bytes, content_type='application/pdf')
         return resp
 
 

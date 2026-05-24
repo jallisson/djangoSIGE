@@ -60,5 +60,8 @@ GEMINI.md
 .claude-code/
 docs/superpowers/
 
+# Playwright MCP (screenshots e snapshots de sessões interativas)
+.playwright-mcp/
+
 # uv (uv.lock e .python-version sao versionados intencionalmente)
 

@@ -18,6 +18,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxml2-dev libxslt1-dev \
         libjpeg-dev zlib1g-dev \
         libpq-dev libffi-dev libssl-dev \
+        # Dependências de sistema do WeasyPrint (geração de PDF)
+        libpango-1.0-0 libpangoft2-1.0-0 \
+        libcairo2 libgdk-pixbuf-2.0-0 \
+        libharfbuzz0b libfontconfig1 \
         curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 

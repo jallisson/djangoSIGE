@@ -13,9 +13,14 @@ dependencies = [
     "pyOpenSSL==17.5.0",
     "PySIGNFe @ https://github.com/thiagopena/PySIGNFe/archive/master.zip",
     "signxml==2.5.2",
-    # PDF (geraldo) — abandonado, ver issue #142.
-    "geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip",
+    # reportlab é usado transitivamente pelo PySIGNFe (DANFE), mas não
+    # declarado nas deps do PySIGNFe — precisa ficar explícito aqui.
     "reportlab>=4.5",
+    # Geração de PDF dos orçamentos/pedidos (vendas e compras), via
+    # templates HTML/CSS. Substitui o geraldo a partir do #142.
+    "weasyprint>=68.1",
+    # Dados de exemplo (management command `create_data`).
+    "faker>=40.19.1",
     # Demais runtime deps.
     "asgiref>=3.11",
     "django>=5.2,<5.3",
