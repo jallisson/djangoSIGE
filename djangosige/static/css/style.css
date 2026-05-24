@@ -1578,3 +1578,57 @@ section.content {
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
   transition: 0.5s; }
+
+/* ============================================================
+   Issue #109 — Ajustes no menu lateral
+   - .user-info: avatar menor à esquerda + nome/email ao lado,
+     altura compacta no lugar dos 135px fixos antigos.
+   - .legal: rodapé centralizado.
+   - .menu: usa flexbox para preencher o espaço da sidebar —
+     substitui a altura fixa antiga (`height: 450px`) que sobrava
+     ou estourava conforme o tamanho da tela.
+   ============================================================ */
+.sidebar {
+  display: flex;
+  flex-direction: column; }
+
+.sidebar .user-info {
+  height: auto;
+  padding: 12px 15px;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 2; }
+  .sidebar .user-info .dropdown-menu {
+    z-index: 9999; }
+  .sidebar .user-info .image {
+    vertical-align: middle; }
+    .sidebar .user-info .image img {
+      width: 36px !important;
+      height: 36px !important; }
+  .sidebar .user-info .info-container {
+    display: inline-block;
+    vertical-align: middle;
+    position: static;
+    top: 0;
+    padding-right: 25px;
+    max-width: calc(100% - 80px); }
+    .sidebar .user-info .info-container .name {
+      font-size: 13px; }
+    .sidebar .user-info .info-container .email {
+      font-size: 11px; }
+    .sidebar .user-info .info-container .user-helper-dropdown {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%); }
+
+.sidebar .menu {
+  flex: 1 1 auto;
+  height: auto;
+  overflow-y: auto; }
+
+.sidebar .legal {
+  position: static;
+  text-align: center;
+  flex: 0 0 auto; }
