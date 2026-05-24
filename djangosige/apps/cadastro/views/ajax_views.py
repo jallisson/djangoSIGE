@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import View
 from django.http import HttpResponse
 from django.core import serializers
 
+from djangosige.apps.base.custom_views import CustomView
 from djangosige.apps.cadastro.models import Pessoa, Cliente, Fornecedor, Transportadora, Produto
 from djangosige.apps.fiscal.models import ICMS, ICMSSN, IPI, ICMSUFDest
 
 
-class InfoCliente(View):
+class InfoCliente(CustomView):
+    permission_codename = 'view_cliente'
 
     def post(self, request, *args, **kwargs):
         obj_list = []
@@ -34,7 +35,8 @@ class InfoCliente(View):
         return HttpResponse(data, content_type='application/json')
 
 
-class InfoFornecedor(View):
+class InfoFornecedor(CustomView):
+    permission_codename = 'view_fornecedor'
 
     def post(self, request, *args, **kwargs):
         obj_list = []
@@ -60,7 +62,8 @@ class InfoFornecedor(View):
         return HttpResponse(data, content_type='application/json')
 
 
-class InfoEmpresa(View):
+class InfoEmpresa(CustomView):
+    permission_codename = 'view_empresa'
 
     def post(self, request, *args, **kwargs):
         pessoa = Pessoa.objects.get(pk=request.POST['pessoaId'])
@@ -76,7 +79,8 @@ class InfoEmpresa(View):
         return HttpResponse(data, content_type='application/json')
 
 
-class InfoTransportadora(View):
+class InfoTransportadora(CustomView):
+    permission_codename = 'view_transportadora'
 
     def post(self, request, *args, **kwargs):
         veiculos = Transportadora.objects.get(
@@ -87,7 +91,8 @@ class InfoTransportadora(View):
         return HttpResponse(data, content_type='application/json')
 
 
-class InfoProduto(View):
+class InfoProduto(CustomView):
+    permission_codename = 'view_produto'
 
     def post(self, request, *args, **kwargs):
         obj_list = []

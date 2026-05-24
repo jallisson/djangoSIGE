@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import View
 from django.http import HttpResponse
 
 import json
 
+from djangosige.apps.base.custom_views import CustomView
 from djangosige.apps.compras.models import PedidoCompra
 
 
-class InfoCompra(View):
+class InfoCompra(CustomView):
+    permission_codename = 'view_pedidocompra'
 
     def post(self, request, *args, **kwargs):
         compra = PedidoCompra.objects.get(pk=request.POST['compraId'])
