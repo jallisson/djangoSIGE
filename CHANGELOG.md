@@ -74,6 +74,18 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Fixed
 
+- **Segurança: 8 views AJAX `Info*` passavam pelo Django sem checagem
+  de permissão (#143, HIGH).** `InfoCliente`, `InfoFornecedor`,
+  `InfoEmpresa`, `InfoTransportadora`, `InfoProduto`, `InfoVenda`,
+  `InfoCompra` e `InfoCondicaoPagamento` herdavam de
+  `django.views.generic.View` em vez de `CustomView`, bypassando o
+  `CheckPermissionMixin`. Qualquer usuário autenticado conseguia ler
+  dados sensíveis (CPF, CNPJ, RG, endereços, preços, condições de
+  pagamento) só com o id do registro. Cada view agora herda de
+  `CustomView` e exige a permissão `view_<modelo>` correspondente.
+  Regressão coberta por `djangosige/tests/test_security_ajax_views.py`
+  (8 testes). Demais achados da issue (state-changing via GET,
+  bulk-delete sem ownership check) seguem em aberto.
 - **Importação de NF-e v4.0 quebrava com `NOT NULL constraint failed:
   fiscal_notafiscal.dhemi` (#122).** Quando o XML não trazia `<dhEmi>`
   legível, o `pysignfe` devolvia `None` para `nfe.infNFe.ide.dhEmi.valor`

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import reverse_lazy
-from django.views.generic import View
 from django.http import HttpResponse
 from django.core import serializers
 
-from djangosige.apps.base.custom_views import CustomCreateView, CustomListView, CustomUpdateView
+from djangosige.apps.base.custom_views import CustomCreateView, CustomListView, CustomUpdateView, CustomView
 
 from djangosige.apps.vendas.forms import CondicaoPagamentoForm
 from djangosige.apps.vendas.models import CondicaoPagamento
@@ -64,7 +63,8 @@ class EditarCondicaoPagamentoView(CustomUpdateView):
         return context
 
 
-class InfoCondicaoPagamento(View):
+class InfoCondicaoPagamento(CustomView):
+    permission_codename = 'view_condicaopagamento'
 
     def post(self, request, *args, **kwargs):
         pag = CondicaoPagamento.objects.get(pk=request.POST['pagamentoId'])
