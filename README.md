@@ -14,6 +14,18 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 - [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — geração de NF-e/NFC-e, comunicação com a SEFAZ, DANFE. Mantém pinadas as versões antigas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` e `signxml==2.5.2`, sem as quais a emissão quebra.
 - [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo ao Docker)
 
+
+## Screenshots
+
+### Login
+
+![](img/login.png)
+
+### Dashboard
+
+![](img/dashboard.png)
+
+
 ## Instalação
 
 1. Clone o repositório:
