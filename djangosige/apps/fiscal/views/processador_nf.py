@@ -17,6 +17,7 @@ from pysignfe.nfe.manual_700.nfe_400 import autXML as autXML_400
 from pysignfe.nfe.manual_700.nfe_400 import Dup as Dup_400
 
 from ssl import SSLError
+from datetime import datetime
 
 
 class ProcessadorNotaFiscal(object):
@@ -381,7 +382,10 @@ class ProcessadorNotaFiscal(object):
         nota_saida.indpag = str(nfe.infNFe.ide.indPag.valor)
         nota_saida.mod = str(nfe.infNFe.ide.mod.valor)
         nota_saida.serie = str(nfe.infNFe.ide.serie.valor)
-        nota_saida.dhemi = nfe.infNFe.ide.dhEmi.valor
+        # Fallback para datetime.now() quando o XML não traz <dhEmi>
+        # legível (ver issue #122 — NOT NULL constraint failed em
+        # fiscal_notafiscal.dhemi).
+        nota_saida.dhemi = nfe.infNFe.ide.dhEmi.valor or datetime.now()
         nota_saida.dhsaient = nfe.infNFe.ide.dhSaiEnt.valor
         nota_saida.iddest = str(nfe.infNFe.ide.idDest.valor)
         nota_saida.tp_imp = str(nfe.infNFe.ide.tpImp.valor)
@@ -814,7 +818,10 @@ class ProcessadorNotaFiscal(object):
         nota_entrada.indpag = str(nfe.infNFe.ide.indPag.valor)
         nota_entrada.mod = str(nfe.infNFe.ide.mod.valor)
         nota_entrada.serie = str(nfe.infNFe.ide.serie.valor)
-        nota_entrada.dhemi = nfe.infNFe.ide.dhEmi.valor
+        # Fallback para datetime.now() quando o XML não traz <dhEmi>
+        # legível (ver issue #122 — NOT NULL constraint failed em
+        # fiscal_notafiscal.dhemi).
+        nota_entrada.dhemi = nfe.infNFe.ide.dhEmi.valor or datetime.now()
         nota_entrada.dhsaient = nfe.infNFe.ide.dhSaiEnt.valor
         nota_entrada.iddest = str(nfe.infNFe.ide.idDest.valor)
         nota_entrada.tp_imp = str(nfe.infNFe.ide.tpImp.valor)
