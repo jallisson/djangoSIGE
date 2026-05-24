@@ -9,6 +9,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Changed
 
+- **Menu lateral reorganizado (#109).** Bloco `.user-info` compactado
+  (avatar 36px à esquerda + nome/email à direita, no lugar dos 135px
+  fixos com avatar grande); rodapé `.legal` centralizado; `.menu`
+  passa a usar `flex: 1 1 auto` em vez de altura fixa de 450px que
+  sobrava ou estourava conforme a tela. Chevron do dropdown do
+  usuário reposicionado no canto direito da linha (sem sobrepor o
+  nome) e elevado para `z-index: 9999` para abrir acima dos itens
+  do menu. Todas as mudanças vivem num bloco isolado no final de
+  `djangosige/static/css/style.css`; o HTML do `base.html` continua
+  intacto.
 - **Geração de PDF migrada de `geraldo` para [WeasyPrint](https://weasyprint.org/)
   (#142).** Reports do `geraldo` (`report_vendas.py`, `report_compras.py`,
   baseados em `ReportBand`/`SubReport` posicionados em centímetros) foram
@@ -64,6 +74,21 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Fixed
 
+- **Importação de NF-e v4.0 quebrava com `NOT NULL constraint failed:
+  fiscal_notafiscal.dhemi` (#122).** Quando o XML não trazia `<dhEmi>`
+  legível, o `pysignfe` devolvia `None` para `nfe.infNFe.ide.dhEmi.valor`
+  e o `save()` da `NotaFiscalSaida`/`NotaFiscalEntrada` violava o NOT
+  NULL. Em `processador_nf.py`, ambos `importar_xml_cliente` e
+  `importar_xml_fornecedor` agora caem para `datetime.now()` quando o
+  valor do XML for ausente — mesmo fallback que já era usado no caminho
+  de criação manual da nota. Testes de regressão em
+  `djangosige/tests/fiscal/test_processador_nf.py`.
+- Templates de listagem usavam `{% ifequal %}` / `{% endifequal %}`,
+  tags removidas no Django 4.0. As 5 ocorrências
+  (`cliente_list_table.html`, `fornecedor_list_table.html`,
+  `transportadora_list_table.html`, `empresa_list_table.html` e
+  `estoque/consulta/consulta_estoque.html` — 2 vezes) foram substituídas
+  por `{% if A == B %}…{% endif %}`.
 - Login retornava `403 Forbidden (Origin checking failed)` sob proxy
   reverso (`nginx` em `8000:80` → `gunicorn`). Adicionado
   `CSRF_TRUSTED_ORIGINS` no `settings.py` (lido via `decouple`) e a env
