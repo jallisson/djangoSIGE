@@ -19,7 +19,7 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 
 ### Login
 
-![](img/login.png)
+![](img/login1.png)
 
 ### Dashboard
 
