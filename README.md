@@ -85,19 +85,19 @@ sudo apt install -y python3.12 python3.12-venv python3.12-dev
 
 ```bash
 # Linux / macOS
-python3.12 -m venv venv
-source venv/bin/activate
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ```powershell
 # Windows (PowerShell)
-py -3.12 -m venv venv
-venv\Scripts\Activate.ps1
+py -3.12 -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Em seguida, com o `venv` ativado:
+Em seguida, com o `.venv` ativado:
 
 ```bash
 python contrib/env_gen.py
@@ -111,6 +111,57 @@ python manage.py runserver
 2. Edite o conteúdo do arquivo **djangosige/configs/configs.py**.
 
 3. Acesse `http://localhost:8000` no navegador.
+
+### Popular o banco com dados de exemplo (opcional)
+
+O comando `create_data` popula o banco com dados realistas em português
+(locale `pt_BR`, com CPF/CNPJ válidos gerados pelo
+[Faker](https://faker.readthedocs.io/)):
+
+```bash
+# uv
+uv run python manage.py create_data
+
+# pip + venv (com o .venv ativado)
+python manage.py create_data
+
+# Docker
+docker compose exec gunicorn python manage.py create_data
+```
+
+#### O que é populado
+
+| App        | Modelo / tabela            | Default | Observações                                                          |
+|------------|----------------------------|--------:|----------------------------------------------------------------------|
+| auth       | `User`                     |       3 | Usuários comuns (senha `senha123`). Superusers/staff são preservados.|
+| login      | `Usuario`                  |       3 | Perfil 1:1 ligado a cada `User` recém-criado.                        |
+| cadastro   | `Empresa` (+ `PessoaJuridica`) | 2   | CNPJ, nome fantasia, CNAE, regime tributário.                        |
+| cadastro   | `Cliente` (+ `PessoaFisica`/`PessoaJuridica`) | 15 | Mistura PF/PJ aleatória, com `limite_de_credito`.       |
+| cadastro   | `Fornecedor` (+ `PessoaJuridica`) | 8 | Sempre PJ, com ramo de atividade.                                    |
+| cadastro   | `Transportadora` (+ `PessoaJuridica`) | 3 | Sempre PJ.                                                       |
+| cadastro   | `Endereco`, `Telefone`, `Email`, `Banco` | 1 por pessoa | Criados e amarrados como `_padrao` de cada pessoa.       |
+| cadastro   | `Produto`                  |      25 | Código sequencial `PRD00001…`, EAN13, NCM, custo/venda coerentes.    |
+| cadastro   | `Categoria`, `Marca`, `Unidade` | fixo (8/8/6) | Conjunto fixo via `get_or_create` — nunca duplica.           |
+
+Os módulos `vendas`, `compras`, `estoque`, `financeiro` e `fiscal` **não
+são populados** pelo comando (envolvem regras tributárias e workflows
+mais complexos).
+
+#### Flags
+
+- `--clear` — apaga todos os dados de exemplo antes de recriar
+  (preserva superusers e staff manualmente criados).
+- `--seed N` — fixa o seed do Faker para resultados reprodutíveis.
+- `--clientes N`, `--fornecedores N`, `--produtos N`, `--empresas N`,
+  `--transportadoras N`, `--usuarios N` — ajusta cada quantidade
+  individualmente (ver `--help` para os defaults).
+
+Exemplo zerando o banco e gerando um conjunto maior:
+
+```bash
+docker compose exec gunicorn python manage.py create_data \
+    --clear --clientes 50 --produtos 100
+```
 
 ### Docker (opcional)
 

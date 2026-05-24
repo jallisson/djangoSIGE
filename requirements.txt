@@ -10,6 +10,7 @@ defusedxml==0.7.1
 dj-database-url==3.1.2
 django==5.2.14
 eight==0.4.2
+faker==40.19.1
 future==0.16.0
 geraldo @ https://github.com/thiagopena/geraldo/archive/master.zip
 lxml==4.9.4

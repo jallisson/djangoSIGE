@@ -24,6 +24,7 @@ dependencies = [
     "pillow>=12",
     "python-decouple>=3.8",
     "sqlparse>=0.5",
+    "faker>=40.19.1",
 ]
 
 [dependency-groups]

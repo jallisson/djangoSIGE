@@ -136,6 +136,7 @@ dependencies = [
     { name = "cryptography" },
     { name = "dj-database-url" },
     { name = "django" },
+    { name = "faker" },
     { name = "geraldo" },
     { name = "lxml" },
     { name = "pillow" },
@@ -158,6 +159,7 @@ requires-dist = [
     { name = "cryptography", specifier = "==2.9.2" },
     { name = "dj-database-url", specifier = ">=2" },
     { name = "django", specifier = ">=5.2,<5.3" },
+    { name = "faker", specifier = ">=40.19.1" },
     { name = "geraldo", url = "https://github.com/thiagopena/geraldo/archive/master.zip" },
     { name = "lxml", specifier = ">=4.9,<5" },
     { name = "pillow", specifier = ">=12" },
@@ -182,6 +184,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f5/f1/2dbb903ee7bb9c41528f616482075ddaf4ff1ede2ce1eedaa969a6f69e66/eight-0.4.2.tar.gz", hash = "sha256:eebadb79193c9a3ed95a74f59462267f05ca41c23a804f9f0dd80e597c9a9f8e", size = 11172, upload-time = "2017-05-10T16:29:53.429Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/93/ef92a6f172eaf8c35377f8ce96eaf2e59032af70ed1f044b65609c65c6f9/eight-0.4.2-py2.py3-none-any.whl", hash = "sha256:b3ceecbfeb58fe68f726a69ac4225bbff554f5436c274646b75c63b039626c9e", size = 9944, upload-time = "2017-05-10T16:29:55.894Z" },
+]
+
+[[package]]
+name = "faker"
+version = "40.19.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/15/01/28c8ddae8caaf82c929655000963d83e3f01265a9af34e823c2ef2eee8ac/faker-40.19.1.tar.gz", hash = "sha256:76fa71fd3bf320db25e5504eb356f9a76b8a95cd6098524d006f446035b6b89d", size = 1969318, upload-time = "2026-05-22T15:57:37.433Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/b4/40a1ec12ec834604f3848143343baf1c67bc9a1096e401907eaa0d25876a/faker-40.19.1-py3-none-any.whl", hash = "sha256:265259b37c013838baaae34940207288170df385d6c5281413fce56a3504d580", size = 2007643, upload-time = "2026-05-22T15:57:35.867Z" },
 ]
 
 [[package]]
