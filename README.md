@@ -16,15 +16,6 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 
 ## Instalação
 
-0. Instalar as bibliotecas/pacotes do sistema (no Linux):
-
-```bash
-sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install -y python3.12 python3.12-venv python3.12-dev
-```
-
 1. Clone o repositório:
 
 ```bash
@@ -36,13 +27,26 @@ cd djangoSIGE
 
 [uv](https://docs.astral.sh/uv/) cria o ambiente virtual e instala as
 dependências a partir do `pyproject.toml`/`uv.lock` em um único passo,
-fixando a versão do Python definida em `.python-version`.
+fixando a versão do Python definida em `.python-version`. Em **Linux** e
+**Windows** você não precisa instalar nada previamente (nem o Python) —
+o próprio `uv` baixa o interpretador e resolve as dependências a partir
+de wheels pré-compilados.
+
+Instale o `uv` (ver [documentação oficial](https://docs.astral.sh/uv/getting-started/installation/)):
 
 ```bash
-# Instale o uv (ver https://docs.astral.sh/uv/getting-started/installation/)
+# Linux / macOS
 curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-# Sincronize as dependencias (cria .venv automaticamente)
+```powershell
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Sincronize as dependências (cria `.venv` automaticamente):
+
+```bash
 uv sync
 ```
 
@@ -57,9 +61,39 @@ uv run python manage.py runserver
 
 ### Opção B — pip + venv (alternativa)
 
+**Pré-requisitos no Linux** (Debian/Ubuntu) — necessários para compilar
+extensões nativas (`lxml`, `cryptography`):
+
 ```bash
+sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install -y python3.12 python3.12-venv python3.12-dev
+```
+
+**Pré-requisitos no Windows:**
+
+- Instale o [Python 3.12](https://www.python.org/downloads/) (marque
+  *Add Python to PATH* durante o instalador).
+- Instale o [Git para Windows](https://git-scm.com/download/win).
+- Algumas dependências nativas (`lxml`, `cryptography==2.9.2`) podem
+  exigir o [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+  caso o `pip` não encontre um wheel pronto. Se possível, prefira a
+  Opção A (uv), que evita esse passo.
+
+**Criar o ambiente:**
+
+```bash
+# Linux / macOS
 python3.12 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
+```
+
+```powershell
+# Windows (PowerShell)
+py -3.12 -m venv venv
+venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
