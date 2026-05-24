@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import unittest
 
 from djangosige.tests.test_case import BaseTestCase, replace_none_values_in_dictionary
 from djangosige.apps.cadastro.models import Fornecedor, Produto
@@ -209,9 +208,6 @@ class VendasAjaxRequestViewsTestCase(BaseTestCase):
 
 class ComprasAcoesUsuarioViewsTestCase(BaseTestCase):
 
-    @unittest.skip(
-        "TODO #142: geraldo abandonado, quebra em Python 3.10+ "
-        "(collections.Callable removido).")
     def test_gerar_pdf_orcamento_compra(self):
         # Buscar objeto qualquer
         obj = OrcamentoCompra.objects.order_by('pk').last()
@@ -221,9 +217,6 @@ class ComprasAcoesUsuarioViewsTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get('Content-Type'), 'application/pdf')
 
-    @unittest.skip(
-        "TODO #142: geraldo abandonado, quebra em Python 3.10+ "
-        "(collections.Callable removido).")
     def test_gerar_pdf_pedido_compra(self):
         # Buscar objeto qualquer
         obj = PedidoCompra.objects.order_by('pk').last()

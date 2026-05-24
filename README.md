@@ -10,7 +10,7 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 - [Django](http://www.djangoproject.com) — 5.2.x (linha LTS, `>=5.2,<5.3`)
 - [PostgreSQL](https://www.postgresql.org/) — 18 (via Docker) ou compatível
 - [uv](https://docs.astral.sh/uv/) (recomendado) — gerencia o ambiente e as dependências a partir de `pyproject.toml` / `uv.lock`
-- [geraldo](https://github.com/thiagopena/geraldo) — geração de PDF (biblioteca abandonada, será substituída; ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142))
+- [WeasyPrint](https://weasyprint.org/) — geração de PDF a partir de templates HTML/CSS (substitui o `geraldo`, ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142)). Em Linux exige as libs `libpango-1.0-0`, `libcairo2`, `libgdk-pixbuf-2.0-0`, `libharfbuzz0b` e `libfontconfig1` — o `Dockerfile` já as instala.
 - [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — geração de NF-e/NFC-e, comunicação com a SEFAZ, DANFE. Mantém pinadas as versões antigas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` e `signxml==2.5.2`, sem as quais a emissão quebra.
 - [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo ao Docker)
 
@@ -239,7 +239,7 @@ docker compose down            # derruba o stack (preserva volumes)
 ## Créditos
 
 - [AdminBSBMaterialDesign](https://github.com/gurayyarar/AdminBSBMaterialDesign)
-- [geraldo](https://github.com/marinho/geraldo)
+- [WeasyPrint](https://weasyprint.org/)
 - [jQuery-Mask-Plugin](https://igorescobar.github.io/jQuery-Mask-Plugin/)
 - [DataTables](https://datatables.net/)
 - [JQuery multiselect](http://loudev.com/)
