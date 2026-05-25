@@ -36,7 +36,7 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./djangosige/static/:/opt/djangoSIGE/static/
       - ./djangosige/media/:/opt/djangoSIGE/media/
     ports:
@@ -45,6 +45,18 @@ services:
       - sige_net
     depends_on:
       - gunicorn
+
+  pgadmin:
+      image: dpage/pgadmin4
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=jallissonn@hotmail.com
+        - PGADMIN_DEFAULT_PASSWORD=admin
+      ports:
+        - "8089:80"
+      networks:
+        - sige_net
+      depends_on:
+        - postgres
 
 networks:
   sige_net:
