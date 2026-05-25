@@ -177,47 +177,64 @@ docker compose exec gunicorn python manage.py create_data \
 
 ### Docker (opcional)
 
-Há também um `docker-compose.yml` com Postgres 18, Gunicorn e Nginx:
+Há também um `docker-compose.yml` com Postgres 18, Gunicorn e Nginx.
+
+#### Requisitos
+
+- Linux ou WSL2 (Windows 10/2004 ou superior).
+- Docker instalado.
+
+Para utilizar o Docker com o WSL, é necessário que o subsistema esteja na versão **WSL2**. Caso seu sistema esteja na versão **WSL1**, será preciso realizar a atualização do kernel do Linux. Você pode seguir estas [instruções oficiais](https://learn.microsoft.com/pt-br/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package).
+
+Após concluir a instalação do WSL2, instale e configure o Docker seguindo este [guia detalhado](https://crapts.org/2022/05/15/install-docker-in-wsl2-with-ubuntu-22-04-lts/) com Ubuntu 22.04 LTS.
+
+No caso do WSL, é necessário habilitar os metadados executando `sudo -e /etc/wsl.conf` e adicionando:
+
+```ini
+[automount]
+options = "metadata"
+```
+
+Se seu computador possuir menos de 16GB de RAM, ajuste as configurações de memória do WSL executando `vim .wslconfig` na sua pasta de perfil do Windows e adicionando:
+
+```ini
+[wsl2]
+memory=3000MB
+processors=2
+```
+
+O recomendado para rodar a stack completa é pelo menos 6GB de RAM.
+
+#### Primeira execução
 
 ```bash
+git clone https://github.com/jallisson/djangoSIGE.git
+cd djangoSIGE
 docker compose up -d
 docker compose exec gunicorn python manage.py migrate
 docker compose exec gunicorn python manage.py createsuperuser
 ```
 
-A aplicação fica disponível em `http://localhost:8000`.
+Acesse `http://localhost:8000` no navegador.
 
 #### Comandos úteis
 
-Abrir um shell interativo dentro do container da aplicação (atenção: as
-flags `-it` precisam vir **antes** do nome do container):
-
 ```bash
-docker exec -it djangosige-gunicorn-1 bash
-# equivalente via compose:
+# Abrir shell no container
 docker compose exec gunicorn bash
-```
 
-Acompanhar os logs em tempo real (`-f` = follow, `--tail=N` limita o
-backlog inicial):
-
-```bash
-# todos os servicos
+# Acompanhar logs em tempo real
 docker compose logs -f
-
-# apenas o gunicorn (com as ultimas 100 linhas)
 docker compose logs -f --tail=100 gunicorn
 
-# equivalente sem compose
-docker logs -f djangosige-gunicorn-1
-```
+# Status dos containers
+docker compose ps
 
-Outros atalhos úteis:
-
-```bash
-docker compose ps              # status dos containers
+# Reiniciar um serviço
 docker compose restart gunicorn
-docker compose down            # derruba o stack (preserva volumes)
+
+# Derrubar o stack (preserva volumes)
+docker compose down
 ```
 
 ## Implementações
