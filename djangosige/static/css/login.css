@@ -1,0 +1,321 @@
+/* ===========================
+   Login Page — DjangoSIGE
+   =========================== */
+
+body.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: 'Roboto', sans-serif;
+}
+
+body.login-page.dark-mode {
+  background-color: #0f172a;
+  background-image: radial-gradient(#1e293b 1px, transparent 1px);
+}
+
+/* Card */
+.login-wrap {
+  width: 100%;
+  max-width: 480px;
+  padding: 16px;
+  animation: loginSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes loginSlideUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 44px 44px 36px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.dark-mode .login-card {
+  background: #1e293b;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* Ícone topo */
+.login-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  transition: background 0.3s;
+}
+
+.dark-mode .login-icon-wrap {
+  background: #1e3a5f;
+}
+
+.login-icon-wrap i {
+  font-size: 30px;
+  color: #2563eb;
+  transition: color 0.3s;
+}
+
+.dark-mode .login-icon-wrap i {
+  color: #60a5fa;
+}
+
+/* Títulos */
+.login-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+.dark-mode .login-title {
+  color: #f1f5f9;
+}
+
+.login-title span {
+  color: #e76d64;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+.dark-mode .login-subtitle {
+  color: #94a3b8;
+}
+
+/* Mensagem de erro */
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #b91c1c;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dark-mode .login-error {
+  background: #450a0a;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Campos */
+.login-form-group {
+  margin-bottom: 16px;
+}
+
+.login-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.dark-mode .login-label {
+  color: #cbd5e1;
+}
+
+.login-input-wrap {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.15s;
+}
+
+.login-input-wrap:focus-within .login-input-icon {
+  color: #2563eb;
+}
+
+.dark-mode .login-input-wrap:focus-within .login-input-icon {
+  color: #60a5fa;
+}
+
+.login-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px 0 42px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dark-mode .login-input {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.login-input:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.dark-mode .login-input:focus {
+  border-color: #3b82f6;
+  background: #1e293b;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Linha lembrar / esqueceu */
+.login-form-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 22px;
+  margin-top: 6px;
+}
+
+.login-forgot {
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dark-mode .login-forgot {
+  color: #60a5fa;
+}
+
+.login-forgot:hover {
+  text-decoration: underline;
+}
+
+/* Botão entrar */
+.login-btn {
+  width: 100%;
+  height: 50px;
+  background: #e76d64;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  text-transform: uppercase;
+}
+
+.login-btn:hover {
+  background: #d95f56;
+  box-shadow: 0 4px 16px rgba(231, 109, 100, 0.35);
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-btn i {
+  font-size: 18px;
+}
+
+/* Rodapé */
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.login-footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.dark-mode .login-footer a {
+  color: #60a5fa;
+}
+
+/* Toggle tema */
+.login-theme-toggle {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #64748b;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.dark-mode .login-theme-toggle {
+  border-color: #334155;
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+.login-theme-toggle:hover {
+  background: #f1f5f9;
+}
+
+.dark-mode .login-theme-toggle:hover {
+  background: #1e293b;
+}
+
+/* Reset do estilo antigo do AdminBSB */
+body.login-page {
+  background-color: #f0f2f5 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.login-page.dark-mode {
+  background-color: #0f172a !important;
+}
+
+/* Esconde o loader do AdminBSB na página de login */
+body.login-page .page-loader-wrapper {
+  display: none !important;
+}

@@ -1444,35 +1444,6 @@ fieldset[disabled] .form-control {
   background-color: #899dae; }
 
 /* Pagina de Login =========================== */
-.login-page {
-  background-color: #248fbf;
-  padding-left: 0;
-  max-width: 360px;
-  margin: 5% auto;
-  overflow-x: hidden; }
-  .login-page .login-box .msg {
-    color: #555;
-    margin-bottom: 30px;
-    text-align: center; }
-  .login-page .login-box a {
-    font-size: 14px;
-    text-decoration: none;
-    color: #00BCD4; }
-  .login-page .login-box .logo {
-    margin-bottom: 20px; }
-    .login-page .login-box .logo a {
-      font-size: 36px;
-      display: block;
-      width: 100%;
-      text-align: center;
-      color: #fff; }
-    .login-page .login-box .logo small {
-      display: block;
-      width: 100%;
-      text-align: center;
-      color: #fff;
-      margin-top: -5px; }
-
 
 /* Pagina perfil usuario ======================= */
 .perfil-user .foto-perfil>img{

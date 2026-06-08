@@ -22,6 +22,12 @@
     <!-- Jquery 3.0.0 Js -->
     <script src="{% static 'js/jquery/jquery-3.0.0.min.js' %}"></script>
 
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <!-- Login CSS (carregado só na página de login) -->
+    {% block extra_css %}{% endblock %}
+
 
     <title>DjangoSIGE | {%block title%}Bem-vindo{%endblock%}</title>
 </head>

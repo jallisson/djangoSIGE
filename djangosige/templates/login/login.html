@@ -1,78 +1,115 @@
-{%extends 'base/base.html'%}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block side_top_bars %}{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block extra_css %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
 
+    <button class="login-theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+      <i class="ti ti-sun" id="theme-icon"></i>
+    </button>
 
-{%block title%}Login{%endblock%}
-{%block side_top_bars%}{%endblock%}
-
-{%block body_class%}login-page ls-closed{%endblock%}
-
-{%block content%}
-<div class="login-box">
-
-    {% include 'login/logo.html' %}
-
-    <div class="card">
-        <div class="body">
-        	{% if not request.user.is_authenticated %}
-            <form id="login" method="POST">
-            	{% csrf_token %}
-                <div class="msg">Digite seu nome de usuário e a senha para entrar
-
-                {% include 'base/form_error_msg.html' %}
-
-                </div>
-
-                {% for field in form %}
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="material-icons">{{field.label}}</i>
-                    </span>
-                    <div class="form-line">
-                        {{field}}
-                    </div>
-                </div>
-                {% endfor %}
-
-                <div class="row">
-                    <div class="col-xs-8">
-                        <input type="checkbox" name="remember_me" id="remember_me" class="filled-in chk-col-light-blue">
-                        <label for="remember_me">Lembrar</label>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="btn btn-block btn-red" type="submit">ENTRAR</button>
-                    </div>
-                </div>
-
-                <div class="msg" style="margin-top:20px;">
-                    <a href="{% url 'login:esqueceuview' %}">Esqueceu a senha?</a><br/>
-                    <small>*caso seja seu primeiro login, leia a <a href="https://github.com/thiagopena/djangoSIGE" style="font-size:inherit;">documentação</a></small>
-                </div>
-
-            </form>
-            {%endif%}
-
-            {% include 'base/modal.html' %}
-
-        </div>
+    <div class="login-icon-wrap">
+      <i class="ti ti-building-store"></i>
     </div>
-</div>
-{%endblock%}
 
+    <div class="login-title">Django<span>SIGE</span></div>
+    <div class="login-subtitle">Sistema Integrado de Gestão Empresarial</div>
 
-{% block js %}
+    {% if not request.user.is_authenticated %}
+    <form method="POST" autocomplete="off">
+      {% csrf_token %}
 
-    <!-- Mensagem caso sucesso ao solicitar troca de senha -->
-    {% if messages %}
+      {% if form.errors %}
+      <div class="login-error">
+        <i class="ti ti-alert-circle"></i>
+        Usuário ou senha incorretos. Tente novamente.
+      </div>
+      {% endif %}
 
-    {%for message in messages%}
-    {% if 'success' in message.tags %}
+      <div class="login-form-group">
+        <label class="login-label" for="{{ form.username.id_for_label }}">Usuário</label>
+        <div class="login-input-wrap">
+          <i class="ti ti-user login-input-icon"></i>
+          <input
+            type="text"
+            name="{{ form.username.html_name }}"
+            id="{{ form.username.id_for_label }}"
+            placeholder="Seu usuário"
+            class="login-input"
+            {% if form.username.value %}value="{{ form.username.value }}"{% endif %}
+            autofocus
+          required autofocus>
+        </div>
+      </div>
 
-    <script type="text/javascript">
-        $.Admin.messages.msgSucesso("{{message}}");
-    </script>
-    {%endif%}
-    {%endfor%}
+      <div class="login-form-group">
+        <label class="login-label" for="{{ form.password.id_for_label }}">Senha</label>
+        <div class="login-input-wrap">
+          <i class="ti ti-lock login-input-icon"></i>
+          <input
+            type="password"
+            name="{{ form.password.html_name }}"
+            id="{{ form.password.id_for_label }}"
+            placeholder="Sua senha"
+            class="login-input"
+          required>
+        </div>
+      </div>
 
+      <div class="login-form-row">
+        <a href="{% url 'login:esqueceuview' %}" class="login-forgot">Esqueceu a senha?</a>
+      </div>
+
+      <button type="submit" class="login-btn">
+        <i class="ti ti-login"></i>
+        Entrar
+      </button>
+    </form>
     {% endif %}
 
+    <div class="login-footer">
+      Primeiro acesso? Leia a
+      <a href="https://github.com/thiagopena/djangoSIGE" target="_blank">documentação</a>
+    </div>
+
+  </div>
+</div>
+
+{% include 'base/modal.html' %}
+
+<script>
+  function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById('theme-icon');
+    body.classList.toggle('dark-mode');
+    const isDark = body.classList.contains('dark-mode');
+    icon.className = isDark ? 'ti ti-moon' : 'ti ti-sun';
+    localStorage.setItem('sige-theme', isDark ? 'dark' : 'light');
+  }
+
+  (function() {
+    const saved = localStorage.getItem('sige-theme');
+    const icon = document.getElementById('theme-icon');
+    if (saved === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (icon) icon.className = 'ti ti-moon';
+    }
+  })();
+</script>
+{% endblock %}
+
+{% block js %}
+{% if messages %}
+  {% for message in messages %}
+    {% if 'success' in message.tags %}
+    <script>$.Admin.messages.msgSucesso("{{ message }}");</script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
 {% endblock %}
