@@ -1,7 +1,9 @@
 {% extends 'base/base.html' %}
+{% block modal %}{% endblock %}
 {% load static %}
 {% block title %}Login{% endblock %}
 {% block side_top_bars %}{% endblock %}
+{% block has_shell %}false{% endblock %}
 {% block body_class %}login-page{% endblock %}
 {% block extra_css %}
 <link href="{% static 'css/login.css' %}" rel="stylesheet">
@@ -80,8 +82,6 @@
 
   </div>
 </div>
-
-{% include 'base/modal.html' %}
 
 <script>
   function toggleTheme() {

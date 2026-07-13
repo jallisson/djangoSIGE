@@ -21,27 +21,35 @@ body.login-page.dark-mode {
 /* Card */
 .login-wrap {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px !important;
+  width: 520px !important;
   padding: 16px;
   animation: loginSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes loginSlideUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login-card {
   background: #ffffff;
   border-radius: 20px;
   padding: 44px 44px 36px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
   position: relative;
 }
 
 .dark-mode .login-card {
   background: #1e293b;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
 }
 
 /* Ícone topo */

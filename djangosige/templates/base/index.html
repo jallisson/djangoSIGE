@@ -1,314 +1,211 @@
-{%extends 'base/base.html'%}
+{% extends 'base/base.html' %}
 
-{%block title%}Página Inicial{%endblock%}
-{%block content%}
-<section class="content">
-  <div class="container-fluid">
-   <div class="block-header">
-    <h2>INFORMAÇÕES</h2>
-    <small>Informações do sistema para o dia {{data_atual}}, <b>atualize esta página diariamente.</b></small>
-  </div>
-  <div class="row clearfix">
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-      <div class="card inicial-card">
-       <div class="header">
-         <h2><i class="material-icons">&#xE85D;</i>CADASTRO</h2>
-         <div>
-           <small>N° de itens adicionados a base de dados</small>
-         </div>
-       </div>
-       <div class="body">
-         <table class="table table-hover">
-           <tbody>
-            {% if perms.cadastro.view_cliente %}
-            <tr>
-              <td> 
-                <a href="{% url 'cadastro:listaclientesview' %}">
-                  <div style="height:100%;width:100%;">
-                    <b>{{quantidade_cadastro.clientes}}</b> Clientes cadastrados
-                  </div>
-                </a>              
-              </td>
-            </tr> 
-            {% endif %}
-            {% if perms.cadastro.view_fornecedor %}
-            <tr>
-              <td> 
-                <a href="{% url 'cadastro:listafornecedoresview' %}">
-                  <div style="height:100%;width:100%;">
-                    <b>{{quantidade_cadastro.fornecedores}}</b> Fornecedores cadastrados
-                  </div>
-                </a>              
-              </td>
-            </tr> 
-            {% endif %}
-            {% if perms.cadastro.view_produto %}
-            <tr>
-              <td> 
-                <a href="{% url 'cadastro:listaprodutosview' %}">
-                  <div style="height:100%;width:100%;">
-                    <b>{{quantidade_cadastro.produtos}}</b> Produtos cadastrados
-                  </div>
-                </a>              
-              </td>
-            </tr> 
-            {% endif %}
-            {% if perms.cadastro.view_empresa %}
-            <tr>
-              <td> 
-                <a href="{% url 'cadastro:listaempresasview' %}">
-                  <div style="height:100%;width:100%;">
-                    <b>{{quantidade_cadastro.empresas}}</b> Empresas cadastradas
-                  </div>
-                </a>              
-              </td>
-            </tr> 
-            {% endif %}
-            {% if perms.cadastro.view_transportadora %}
-            <tr>
-              <td> 
-                <a href="{% url 'cadastro:listatransportadorasview' %}">
-                  <div style="height:100%;width:100%;">
-                    <b>{{quantidade_cadastro.transportadoras}}</b> Transportadoras cadastradas
-                  </div>
-                </a>              
-              </td>
-            </tr> 
-            {% endif %}
-          </tbody>
-        </table>
-      </div>
+{% block title %}Página Inicial{% endblock %}
 
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-    <div class="card inicial-card">
-     <div class="header">
-      <h2><i class="material-icons">&#xE8DF;</i>AGENDA HOJE ({{data_atual}})</h2>
-    </div>
-    <div class="body">
-      <table class="table table-hover">
-        <tbody>
-          {% if perms.cadastro.view_transportadora %}
-          <tr {% if agenda_hoje.orcamento_venda_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'vendas:listaorcamentovendahojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.orcamento_venda_hoje}}</b> Orçamentos de venda a vencer hoje 
-                </div>
-              </a>              
-            </td>
-          </tr> 
-          {% endif %}
-          {% if perms.compras.view_orcamentocompra %}
-          <tr {% if agenda_hoje.orcamento_compra_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'compras:listaorcamentocomprahojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.orcamento_compra_hoje}}</b> Orçamentos de compra a vencer hoje 
-                </div>
-              </a>              
-            </td>
-          </tr> 
-          {% endif %}
-          {% if perms.vendas.view_pedidovenda %}
-          <tr {% if agenda_hoje.pedido_venda_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'vendas:listapedidovendahojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.pedido_venda_hoje}}</b> Pedidos de venda com entrega hoje 
-                </div>
-              </a>              
-            </td>
-          </tr> 
-          {% endif %}
-          {% if perms.compras.view_pedidocompra %}
-          <tr {% if agenda_hoje.pedido_compra_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'compras:listapedidocomprahojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.pedido_compra_hoje}}</b> Pedidos de compra com entrega hoje 
-                </div>
-              </a>              
-            </td>
-          </tr> 
-          {% endif %}
-          {% if perms.financeiro.view_lancamento %}
-          <tr {% if agenda_hoje.contas_receber_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'financeiro:listacontareceberhojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.contas_receber_hoje}}</b> Contas a receber
-                </div>
-              </a>              
-            </td>
-          </tr> 
-          <tr {% if agenda_hoje.contas_pagar_hoje %}class="hoje"{% endif %}>
-            <td> 
-              <a href="{% url 'financeiro:listacontapagarhojeview' %}">
-                <div style="height:100%;width:100%;">
-                  <b>{{agenda_hoje.contas_pagar_hoje}}</b> Contas a pagar
-                </div>
-              </a>              
-            </td>
-          </tr>
-          {% endif %}
-        </tbody>
-      </table>
+{% block content %}
+<div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Visão geral</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Informações do sistema para {{ data_atual }}. Atualize diariamente.
+        </p>
     </div>
 
-  </div>
+    {% if perms.cadastro.view_transportadora %}
+    <a href="{% url 'cadastro:listatransportadorasview' %}" class="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-white">
+        <i class="ti ti-truck-delivery text-sm text-accent"></i>
+        {{ quantidade_cadastro.transportadoras }} transportadoras
+    </a>
+    {% endif %}
 </div>
 
-<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-  <div class="card inicial-card">
-   <div class="header">
-    <h2><i class="material-icons" style="color:#c2c240;">&#xE85A;</i>ALERTAS ({{data_atual}})</h2>
-  </div>
-  <div class="body">
-    <table class="table table-hover">
-      <tbody>
-        {% if perms.cadastro.view_transportadora %}
-        <tr {% if alertas.produtos_baixo_estoque %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'cadastro:listaprodutosbaixoestoqueview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.produtos_baixo_estoque}}</b> Produtos com baixo estoque
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        {% endif %}
-        {% if perms.vendas.view_orcamentovenda %}
-        <tr {% if alertas.orcamentos_venda_vencidos %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'vendas:listaorcamentovendavencidoview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.orcamentos_venda_vencidos}}</b> Orçamentos de venda vencidos
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        {% endif %}
-        {% if perms.compras.view_orcamentocompra %}
-        <tr {% if alertas.orcamentos_compra_vencidos %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'compras:listaorcamentocompravencidosview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.orcamentos_compra_vencidos}}</b> Orçamentos de compra vencidos
-              </div>
-            </a>              
-          </td>
-        </tr>
-        {% endif %}
-        {% if perms.vendas.view_pedidovenda %}
-        <tr {% if alertas.pedidos_venda_atrasados %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'vendas:listapedidovendaatrasadosview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.pedidos_venda_atrasados}}</b> Pedidos de venda atrasados
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        {% endif %}
-        {% if perms.compras.view_pedidocompra %}
-        <tr {% if alertas.pedidos_compra_atrasados %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'compras:listapedidocompraatrasadosview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.pedidos_compra_atrasados}}</b> Pedidos de compra atrasados
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        {% endif %}
-        {% if perms.financeiro.view_lancamento %}
-        <tr {% if alertas.contas_receber_atrasadas %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'financeiro:listacontareceberatrasadasview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.contas_receber_atrasadas}}</b> Contas a receber atrasadas
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        <tr {% if alertas.contas_pagar_atrasadas %}class="alerta"{% endif %}>
-          <td> 
-            <a href="{% url 'financeiro:listacontapagaratrasadasview' %}">
-              <div style="height:100%;width:100%;">
-                <b>{{alertas.contas_pagar_atrasadas}}</b> Contas a pagar atrasadas
-              </div>
-            </a>              
-          </td>
-        </tr> 
-        {% endif %}
-      </tbody>
-    </table>
-  </div>
-
-</div>
-</div>
-
-</div>
-
-{% if perms.financeiro.acesso_fluxodecaixa %}
-<div class="row clearfix">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="card">
-      <div class="header">
-        <h2>
-          FLUXO DE CAIXA<b style="padding-left:4px;">(DIA {{data_atual}})</b>
-        </h2>
-        <div class="header-btn">
-          <a href="{% url 'financeiro:fluxodecaixaview' %}" class="btn btn-primary"><i class="material-icons">&#xE8A0;</i><span> FLUXO DE CAIXA</span></a>
+<div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+    {% if perms.cadastro.view_cliente %}
+    <a href="{% url 'cadastro:listaclientesview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950">
+            <i class="ti ti-users text-blue-600 dark:text-blue-400"></i>
         </div>
-      </div>
+        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.clientes }}</div>
+        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Clientes</div>
+    </a>
+    {% endif %}
 
-      <div class="body lista">
-        <table class="table table-bordered lista-table">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Saldo inicial</th>
-              <th>Entradas</th>
-              <th>Saídas</th>
-              <th>Lucro/Prejuízo</th>
-              <th>Saldo final</th>
-            </tr>
-          </thead>
+    {% if perms.cadastro.view_fornecedor %}
+    <a href="{% url 'cadastro:listafornecedoresview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-950">
+            <i class="ti ti-building-store text-amber-600 dark:text-amber-400"></i>
+        </div>
+        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.fornecedores }}</div>
+        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Fornecedores</div>
+    </a>
+    {% endif %}
 
-          <tbody>
-            {% if movimento_dia %}
-            <tr>
-              <td>{{movimento_dia.format_data_movimento}}</td>
-              <td>{{movimento_dia.saldo_inicial}}</td>
-              <td>{{movimento_dia.entradas}}</td>
-              <td>{{movimento_dia.saidas}}</td>
-              <td {%if movimento_dia.valor_lucro_prejuizo < 0 %}style="background-color:#f1b1b1;font-weight:bold;"{% else %}style="background-color:#b3e5b3;font-weight:bold;"{% endif %}>{{movimento_dia.valor_lucro_prejuizo}}</td>
-              <td>{{movimento_dia.saldo_final}}</td>
-            </tr>
-            {% else %}
-            <tr>
-              <td>{{data_atual}}</td>
-              <td>{{saldo}}</td>
-              <td>0,00</td>
-              <td>0,00</td>
-              <td style="background-color:#b3e5b3;font-weight:bold;">0,00</td>
-              <td>{{saldo}}</td>
-            </tr>
-            {% endif %}
-          </tbody>
-        </table>
-      </div>
+    {% if perms.cadastro.view_produto %}
+    <a href="{% url 'cadastro:listaprodutosview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-950">
+            <i class="ti ti-box text-violet-600 dark:text-violet-400"></i>
+        </div>
+        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.produtos }}</div>
+        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Produtos</div>
+    </a>
+    {% endif %}
+
+    {% if perms.cadastro.view_empresa %}
+    <a href="{% url 'cadastro:listaempresasview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950">
+            <i class="ti ti-building text-emerald-600 dark:text-emerald-400"></i>
+        </div>
+        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.empresas }}</div>
+        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Empresas</div>
+    </a>
+    {% endif %}
+
+    <div class="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 dark:bg-red-950">
+            <i class="ti ti-alert-triangle text-red-600 dark:text-red-400"></i>
+        </div>
+        <div class="text-2xl font-semibold text-gray-900 dark:text-white">
+            {{ alertas.produtos_baixo_estoque|add:alertas.orcamentos_venda_vencidos|add:alertas.orcamentos_compra_vencidos|add:alertas.pedidos_venda_atrasados|add:alertas.pedidos_compra_atrasados|add:alertas.contas_receber_atrasadas|add:alertas.contas_pagar_atrasadas }}
+        </div>
+        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Alertas</div>
     </div>
-  </div>
 </div>
-{% endif %}
 
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+            <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
+                <i class="ti ti-calendar-event text-gray-400"></i>
+                Agenda hoje
+            </div>
+            <span class="rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-950 dark:text-blue-400">{{ data_atual }}</span>
+        </div>
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            {% if perms.vendas.view_orcamentovenda %}
+            <a href="{% url 'vendas:listaorcamentovendahojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Orç. venda a vencer</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.orcamento_venda_hoje %}bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.orcamento_venda_hoje }}</span>
+            </a>
+            {% endif %}
+            {% if perms.compras.view_orcamentocompra %}
+            <a href="{% url 'compras:listaorcamentocomprahojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Orç. compra a vencer</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.orcamento_compra_hoje %}bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.orcamento_compra_hoje }}</span>
+            </a>
+            {% endif %}
+            {% if perms.vendas.view_pedidovenda %}
+            <a href="{% url 'vendas:listapedidovendahojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Pedidos venda hoje</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.pedido_venda_hoje %}bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.pedido_venda_hoje }}</span>
+            </a>
+            {% endif %}
+            {% if perms.compras.view_pedidocompra %}
+            <a href="{% url 'compras:listapedidocomprahojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Pedidos compra hoje</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.pedido_compra_hoje %}bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.pedido_compra_hoje }}</span>
+            </a>
+            {% endif %}
+            {% if perms.financeiro.view_lancamento %}
+            <a href="{% url 'financeiro:listacontareceberhojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Contas a receber</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.contas_receber_hoje %}bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.contas_receber_hoje }}</span>
+            </a>
+            <a href="{% url 'financeiro:listacontapagarhojeview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Contas a pagar</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if agenda_hoje.contas_pagar_hoje %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ agenda_hoje.contas_pagar_hoje }}</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+            <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
+                <i class="ti ti-alert-circle text-gray-400"></i>
+                Alertas
+            </div>
+        </div>
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            <a href="{% url 'cadastro:listaprodutosbaixoestoqueview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Baixo estoque</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.produtos_baixo_estoque %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.produtos_baixo_estoque }}</span>
+            </a>
+            {% if perms.vendas.view_orcamentovenda %}
+            <a href="{% url 'vendas:listaorcamentovendavencidoview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Orç. venda vencidos</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.orcamentos_venda_vencidos %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.orcamentos_venda_vencidos }}</span>
+            </a>
+            {% endif %}
+            {% if perms.compras.view_orcamentocompra %}
+            <a href="{% url 'compras:listaorcamentocompravencidosview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Orç. compra vencidos</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.orcamentos_compra_vencidos %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.orcamentos_compra_vencidos }}</span>
+            </a>
+            {% endif %}
+            {% if perms.vendas.view_pedidovenda %}
+            <a href="{% url 'vendas:listapedidovendaatrasadosview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Pedidos venda atrasados</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.pedidos_venda_atrasados %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.pedidos_venda_atrasados }}</span>
+            </a>
+            {% endif %}
+            {% if perms.compras.view_pedidocompra %}
+            <a href="{% url 'compras:listapedidocompraatrasadosview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Pedidos compra atrasados</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.pedidos_compra_atrasados %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.pedidos_compra_atrasados }}</span>
+            </a>
+            {% endif %}
+            {% if perms.financeiro.view_lancamento %}
+            <a href="{% url 'financeiro:listacontareceberatrasadasview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">C. receber atrasadas</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.contas_receber_atrasadas %}bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.contas_receber_atrasadas }}</span>
+            </a>
+            <a href="{% url 'financeiro:listacontapagaratrasadasview' %}" class="flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <span class="text-sm text-gray-600 dark:text-gray-400">C. pagar atrasadas</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if alertas.contas_pagar_atrasadas %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% else %}bg-gray-100 text-gray-500 dark:bg-gray-800{% endif %}">{{ alertas.contas_pagar_atrasadas }}</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if perms.financeiro.acesso_fluxodecaixa %}
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+            <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
+                <i class="ti ti-cash text-gray-400"></i>
+                Fluxo de caixa
+            </div>
+            <a href="{% url 'financeiro:fluxodecaixaview' %}" class="text-xs text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400">Ver completo →</a>
+        </div>
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            {% if movimento_dia %}
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Saldo inicial</span>
+                <span class="text-sm font-medium text-gray-900 dark:text-white">{{ movimento_dia.saldo_inicial }}</span>
+            </div>
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Entradas</span>
+                <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">{{ movimento_dia.entradas }}</span>
+            </div>
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Saídas</span>
+                <span class="rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-600 dark:bg-red-950 dark:text-red-400">{{ movimento_dia.saidas }}</span>
+            </div>
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Lucro/Prejuízo</span>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium {% if movimento_dia.valor_lucro_prejuizo >= 0 %}bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400{% else %}bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400{% endif %}">{{ movimento_dia.valor_lucro_prejuizo }}</span>
+            </div>
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Saldo final</span>
+                <span class="text-sm font-semibold {% if movimento_dia.valor_lucro_prejuizo >= 0 %}text-emerald-600 dark:text-emerald-400{% else %}text-red-600 dark:text-red-400{% endif %}">{{ movimento_dia.saldo_final }}</span>
+            </div>
+            {% else %}
+            <div class="flex items-center justify-between px-4 py-2.5">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Saldo atual</span>
+                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ saldo }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
-</section>
-
-
-{%endblock%}
+{% endblock %}

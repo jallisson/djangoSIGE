@@ -1,4 +1,13 @@
-<div class="col-sm-12" style="margin-top:15px;">
+<div class="sige-section-header">
+  <div>
+    <span class="sige-section-kicker">Cliente</span>
+    <h3>Informações gerais</h3>
+  </div>
+  <p>Preencha os dados principais do cliente e mantenha o tipo de pessoa consistente para ativar os campos corretos.</p>
+</div>
+
+<div class="sige-form-grid">
+<div class="col-sm-12 sige-field sige-field-full sige-field--choice" style="margin-top:15px;">
   <div class="form-group">
     <div class="form-line">
       <input type="radio" name="{{form.prefix}}-tipo_pessoa" id="fisica" value="PF" {% if form.tipo_pessoa.value == 'PF' %}checked="checked"{% endif %}/>
@@ -11,7 +20,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-6 sige-field">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.nome_razao_social.label}}</label><strong style="color:red;"> *</strong>
@@ -21,7 +30,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.nome_fantasia.label}}</label>
@@ -31,7 +40,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.cnpj.label}}</label>
@@ -41,7 +50,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_fisica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_fisica_form.cpf.label}}</label>
@@ -51,7 +60,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_fisica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_fisica_form.rg.label}}</label>
@@ -61,7 +70,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_fisica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_fisica_form.nascimento.label}}</label>
@@ -71,7 +80,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.inscricao_estadual.label}}</label>
@@ -81,7 +90,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-6 sige-field">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.inscricao_municipal.label}}</label>
@@ -91,7 +100,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.responsavel.label}}</label>
@@ -101,7 +110,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-6 sige-field">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.indicador_ie.label}}</label>
@@ -111,7 +120,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-6 sige-field">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.id_estrangeiro.label}}</label>
@@ -121,7 +130,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.sit_fiscal.label}}</label>
@@ -131,7 +140,7 @@
   </div>
 </div>
 
-<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+<div class="col-sm-6 sige-field {{pessoa_juridica_form.prefix}}">
   <div class="form-group">
     <div class="form-line">
       <label>{{pessoa_juridica_form.suframa.label}}</label>
@@ -141,7 +150,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-6 sige-field">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.limite_de_credito.label}}</label>
@@ -151,7 +160,7 @@
   </div>
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-12 sige-field sige-field-full">
   <div class="form-group">
     <div class="form-line">
       <label>{{form.informacoes_adicionais.label}}</label>
@@ -159,4 +168,5 @@
       {{form.informacoes_adicionais}}
     </div>
   </div>
+</div>
 </div>

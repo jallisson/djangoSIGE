@@ -3,17 +3,17 @@
 
 {%block title%} {{object.nome_razao_social}} {%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid">
+<section class="content {% if tipo_pessoa == 'cliente' %}sige-client-pilot{% endif %}">
+  <div class="container-fluid {% if tipo_pessoa == 'cliente' %}sige-form-page{% endif %}">
 
     {% include 'base/title_header.html' %}
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="row">
-        <div class="card">
+        <div class="card {% if tipo_pessoa == 'cliente' %}sige-form-card{% endif %}">
 
           <!--Header-->
-          <div class="header">
+          <div class="header {% if tipo_pessoa == 'cliente' %}sige-form-header{% endif %}">
 
             <h2>
               <a href="{{return_url}}"><i class="material-icons">&#xE5C4;</i></a>{{object.nome_razao_social}}
@@ -23,17 +23,17 @@
           </div>
           <!--# Header-->
 
-          <form role="form" action="" method="post" enctype="multipart/form-data">
+          <form role="form" action="" method="post" enctype="multipart/form-data" class="{% if tipo_pessoa == 'cliente' %}sige-form{% endif %}">
             {% csrf_token %}
             <!-- Body-->
-            <div class="body">
+            <div class="body {% if tipo_pessoa == 'cliente' %}sige-form-body{% endif %}">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 
                 {% include 'cadastro/pessoa_tab_list.html' %}
 
-                <div class="tab-content">
+                <div class="tab-content {% if tipo_pessoa == 'cliente' %}sige-form-tabpanes{% endif %}">
                   <!-- Tab informacoes gerais -->
-                  <div role="tabpanel" class="tab-pane active" id="tab_inf_gerais">
+                  <div role="tabpanel" class="tab-pane active {% if tipo_pessoa == 'cliente' %}sige-form-section{% endif %}" id="tab_inf_gerais">
 
                     {% if tipo_pessoa == 'cliente' %}
 
@@ -58,7 +58,7 @@
 
 
                   <!-- Tab endereco -->
-                  <div role="tabpanel" class="tab-pane formset-tab" id="tab_endereco">
+                  <div role="tabpanel" class="tab-pane formset-tab {% if tipo_pessoa == 'cliente' %}sige-form-section{% endif %}" id="tab_endereco">
 
                     {% include 'formset/formset.html' with formset=endereco_form title='Endereço' %}
                     
@@ -66,13 +66,13 @@
                   <!-- #Tab endereco -->
 
                   {% if tipo_pessoa == 'transportadora' %}
-                  <div role="tabpanel" class="tab-pane formset-tab" id="tab_veiculo">
+                  <div role="tabpanel" class="tab-pane formset-tab {% if tipo_pessoa == 'cliente' %}sige-form-section{% endif %}" id="tab_veiculo">
                   {% include 'formset/formset.html' with formset=veiculo_form title='Veículo' %}
                   </div>
                   {% endif %}
 
                   <!-- Tab contato -->
-                  <div role="tabpanel" class="tab-pane formset-tab" id="tab_contato">
+                  <div role="tabpanel" class="tab-pane formset-tab {% if tipo_pessoa == 'cliente' %}sige-form-section sige-form-section--stacked{% endif %}" id="tab_contato">
 
                     {% for formset in formsets %}
                     {% include 'formset/formset_fields.html' %}
@@ -82,7 +82,7 @@
                   <!-- #Tab contato -->
 
                   <!-- Tab banco -->
-                  <div role="tabpanel" class="tab-pane formset-tab" id="tab_banco">
+                  <div role="tabpanel" class="tab-pane formset-tab {% if tipo_pessoa == 'cliente' %}sige-form-section{% endif %}" id="tab_banco">
 
                     {% include 'formset/formset.html' with formset=banco_form title='Dados Bancários' %}
 
@@ -90,7 +90,7 @@
                   <!-- #Tab banco -->
 
                   <!-- Tab documentos adicionais -->
-                  <div role="tabpanel" class="tab-pane formset-tab" id="tab_documento">
+                  <div role="tabpanel" class="tab-pane formset-tab {% if tipo_pessoa == 'cliente' %}sige-form-section{% endif %}" id="tab_documento">
 
                     {% include 'formset/formset.html' with formset=documento_form title='Documentos Adicionais' %}
 
@@ -118,9 +118,10 @@
                   {% endif %}
 
                 </div>
-
               </div>
-              <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+              <div class="{% if tipo_pessoa == 'cliente' %}sige-form-actions{% endif %}">
+                <button class="btn btn-success foot-btn {% if tipo_pessoa == 'cliente' %}sige-button sige-button--primary{% endif %}" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+              </div>
             </div>
             <!--#Body-->
           </form>

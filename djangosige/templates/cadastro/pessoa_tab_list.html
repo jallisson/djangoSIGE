@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-tabs {% if tipo_pessoa == 'cliente' %}sige-form-tabs{% endif %}" role="tablist">
   <li role="presentation" class="active"><a href="#tab_inf_gerais" data-toggle="tab">INFORMAÇÕES GERAIS</a></li>
   {% if tipo_pessoa == 'transportadora' %}
   <li role="presentation"><a href="#tab_veiculo" data-toggle="tab">VEÍCULO</a></li>
