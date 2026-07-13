@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark"
-    x-data="{ sidebarOpen: window.innerWidth >= 1024, darkMode: document.documentElement.classList.contains('dark'), hasShell: {% block has_shell %}true{% endblock %} }">
+    x-data="sigeShell()"
+    x-init="init()">
 
 <head>
     {% load static %}
@@ -16,6 +17,8 @@
             } else {
                 document.documentElement.classList.remove('dark');
             }
+            const sidebarCollapsed = localStorage.getItem('sige-sidebar-collapsed') === 'true';
+            document.documentElement.classList.toggle('sige-sidebar-pref-collapsed', sidebarCollapsed);
         })();
     </script>
 
@@ -166,294 +169,223 @@
 </head>
 
 <body class="{% block body_class %}theme{% endblock %} sige-app">
+    {% block app_body %}
     {% block side_top_bars %}
-    <div x-cloak x-show="sidebarOpen" x-transition.opacity @click="sidebarOpen = false"
-        class="fixed inset-0 z-40 bg-gray-950/50 backdrop-blur-sm lg:hidden sige-shell__overlay"></div>
+    <div class="sige-shell">
+        <div x-cloak x-show="sidebarMobileOpen" x-transition.opacity @click="sidebarMobileOpen = false"
+            class="fixed inset-0 z-40 bg-gray-950/50 backdrop-blur-sm lg:hidden sige-shell__overlay"></div>
 
-    <aside :class="sidebarOpen ? 'sige-shell__sidebar--open' : 'sige-shell__sidebar--closed'"
-        class="fixed left-0 top-0 z-50 flex h-full w-[220px] flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-800 dark:bg-gray-900 sige-shell__sidebar">
-        <div class="flex h-14 items-center gap-2 border-b border-gray-200 px-4 dark:border-gray-800 sige-shell__brand">
-            <span x-show="sidebarOpen" class="text-lg font-semibold text-gray-900 dark:text-white sige-shell__brand-text">
-                Django<span class="text-accent">SIGE</span>
-            </span>
-            <span x-show="!sidebarOpen" class="text-lg font-bold text-accent sige-shell__brand-mark">S</span>
-        </div>
-
-        <div class="border-b border-gray-200 px-3 py-3 dark:border-gray-800 sige-shell__profile">
-            <div class="flex items-center gap-3 sige-shell__profile-summary">
-                {% if user_foto_sidebar %}
-                <a href="{% url 'login:perfilview' %}"
-                    class="block h-10 w-10 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-gray-200 dark:ring-gray-700 sige-shell__avatar-link">
-                    <img src="/media/{{ user_foto_sidebar }}" alt="User" class="h-full w-full object-cover sige-shell__avatar-image">
-                </a>
-                {% else %}
-                <a href="{% url 'login:perfilview' %}"
-                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700 dark:bg-blue-900 dark:text-blue-300 sige-shell__avatar-fallback">
-                    {{ request.user.username|slice:":2"|upper }}
-                </a>
-                {% endif %}
-
-                <div x-show="sidebarOpen" class="min-w-0 sige-shell__profile-meta">
-                    <div class="truncate text-sm font-medium text-gray-900 dark:text-white sige-shell__profile-name">{{ request.user.username }}
-                    </div>
-                    <div class="truncate text-xs text-gray-500 dark:text-gray-400 sige-shell__profile-role">
-                        {% if user_empresa %}{{ user_empresa }}{% elif request.user.is_superuser %}Admin{% endif %}
-                    </div>
-                    {% if request.user.email %}
-                    <div class="truncate text-xs text-gray-400 dark:text-gray-500 sige-shell__profile-email">{{ request.user.email }}</div>
-                    {% endif %}
-                </div>
+        <aside :class="[sidebarMobileOpen ? 'sige-shell__sidebar--mobile-open' : 'sige-shell__sidebar--mobile-closed', sidebarCollapsed ? 'sige-shell__sidebar--collapsed' : 'sige-shell__sidebar--expanded']"
+            class="fixed left-0 top-0 z-50 flex h-full flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-800 dark:bg-gray-900 sige-shell__sidebar">
+            <div class="flex items-center gap-2 border-b border-gray-200 px-4 dark:border-gray-800 sige-shell__brand">
+                <span x-show="!sidebarCollapsed" class="text-lg font-semibold text-gray-900 dark:text-white sige-shell__brand-text">
+                    Django<span class="text-accent">SIGE</span>
+                </span>
+                <span x-show="sidebarCollapsed" class="text-lg font-bold text-accent sige-shell__brand-mark" title="DjangoSIGE">S</span>
             </div>
 
-            <div x-show="sidebarOpen" class="mt-3 grid grid-cols-2 gap-2 text-xs sige-shell__quick-actions">
-                <a href="{% url 'login:perfilview' %}"
-                    class="rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action">
-                    Perfil
-                </a>
-                <a href="{% if user_empresa %}{% url 'cadastro:editarempresaview' user_empresa.id %}{% else %}{% url 'login:selecionarempresaview' %}{% endif %}"
-                    {% if not user_empresa %}
-                    class="popup rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
+            <div class="border-b border-gray-200 px-3 py-3 dark:border-gray-800 sige-shell__profile">
+                <div class="flex items-center gap-3 sige-shell__profile-summary">
+                    {% if user_foto_sidebar %}
+                    <a href="{% url 'login:perfilview' %}" class="block h-10 w-10 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-gray-200 dark:ring-gray-700 sige-shell__avatar-link" title="{{ request.user.username }}">
+                        <img src="/media/{{ user_foto_sidebar }}" alt="User" class="h-full w-full object-cover sige-shell__avatar-image">
+                    </a>
                     {% else %}
-                    class="rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
-                    {% endif %}>
-                    Empresa
+                    <a href="{% url 'login:perfilview' %}" class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700 dark:bg-blue-900 dark:text-blue-300 sige-shell__avatar-fallback" title="{{ request.user.username }}">
+                        {{ request.user.username|slice:":2"|upper }}
+                    </a>
+                    {% endif %}
+
+                    <div x-show="!sidebarCollapsed" class="min-w-0 sige-shell__profile-meta">
+                        <div class="truncate text-sm font-medium text-gray-900 dark:text-white sige-shell__profile-name">{{ request.user.username }}</div>
+                        <div class="truncate text-xs text-gray-500 dark:text-gray-400 sige-shell__profile-role">
+                            {% if user_empresa %}{{ user_empresa }}{% elif request.user.is_superuser %}Admin{% endif %}
+                        </div>
+                        {% if request.user.email %}
+                        <div class="truncate text-xs text-gray-400 dark:text-gray-500 sige-shell__profile-email">{{ request.user.email }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div x-show="!sidebarCollapsed" class="mt-3 grid grid-cols-2 gap-2 text-xs sige-shell__quick-actions">
+                    <a href="{% url 'login:perfilview' %}" class="rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action" title="Perfil">
+                        <i class="ti ti-user-circle sige-shell__quick-action-icon"></i>
+                        <span>Perfil</span>
+                    </a>
+                    <a href="{% if user_empresa %}{% url 'cadastro:editarempresaview' user_empresa.id %}{% else %}{% url 'login:selecionarempresaview' %}{% endif %}"
+                        {% if not user_empresa %}
+                        class="popup rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
+                        {% else %}
+                        class="rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
+                        {% endif %}
+                        title="Empresa">
+                        <i class="ti ti-building sige-shell__quick-action-icon"></i>
+                        <span>Empresa</span>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto px-2 py-3 sige-shell__nav">
+                <a href="{% url 'base:index' %}" class="mb-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link {% if request.resolver_match.url_name == 'index' %}sige-nav-link--active{% endif %}" title="Página Inicial">
+                    <i class="ti ti-home text-base flex-shrink-0 sige-nav-icon"></i>
+                    <span x-show="!sidebarCollapsed" class="truncate sige-nav-label">Página Inicial</span>
                 </a>
-            </div>
-        </div>
 
-        <nav class="flex-1 overflow-y-auto px-2 py-3 sige-shell__nav">
-            <a href="{% url 'base:index' %}"
-                class="mb-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link {% if request.resolver_match.url_name == 'index' %}sige-nav-link--active{% endif %}">
-                <i class="ti ti-home text-base flex-shrink-0 sige-nav-icon"></i>
-                <span x-show="sidebarOpen" class="truncate sige-nav-label">Página Inicial</span>
-            </a>
-
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'cadastro' %}true{% else %}false{% endif %} }"
-                class="mb-1 sige-nav-group">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'cadastro' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-users text-base flex-shrink-0 sige-nav-icon sige-nav-icon--cadastro"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Cadastro</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1 sige-nav-submenu">
-                    <a href="{% url 'cadastro:listaclientesview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaclientesview' or request.resolver_match.url_name == 'adicionarclienteview' or request.resolver_match.url_name == 'editarclienteview' or request.resolver_match.url_name == 'detalheclienteview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-user-circle sige-nav-icon sige-nav-icon--clientes"></i><span>Clientes</span></a>
-                    <a href="{% url 'cadastro:listafornecedoresview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listafornecedoresview' or request.resolver_match.url_name == 'adicionarfornecedorview' or request.resolver_match.url_name == 'editarfornecedorview' or request.resolver_match.url_name == 'detalhefornecedorview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-briefcase sige-nav-icon sige-nav-icon--fornecedores"></i><span>Fornecedores</span></a>
-                    <a href="{% url 'cadastro:listaprodutosview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaprodutosview' or request.resolver_match.url_name == 'adicionarprodutoview' or request.resolver_match.url_name == 'editarprodutoview' or request.resolver_match.url_name == 'detalheprodutoview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-package sige-nav-icon sige-nav-icon--produtos"></i><span>Produtos</span></a>
-                    <a href="{% url 'cadastro:listaempresasview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaempresasview' or request.resolver_match.url_name == 'adicionarempresaview' or request.resolver_match.url_name == 'editarempresaview' or request.resolver_match.url_name == 'detalheempresaview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-building sige-nav-icon sige-nav-icon--empresas"></i><span>Empresas</span></a>
-                    <a href="{% url 'cadastro:listatransportadorasview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listatransportadorasview' or request.resolver_match.url_name == 'adicionartransportadoraview' or request.resolver_match.url_name == 'editartransportadoraview' or request.resolver_match.url_name == 'detalhetransportadoraview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-truck-delivery sige-nav-icon sige-nav-icon--transportadoras"></i><span>Transportadoras</span></a>
-                    <a href="{% url 'cadastro:listacategoriasview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-category sige-nav-icon"></i><span>Categorias</span></a>
-                    <a href="{% url 'cadastro:listaunidadesview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-ruler-2 sige-nav-icon"></i><span>Unidades</span></a>
-                    <a href="{% url 'cadastro:listamarcasview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-badge sige-nav-icon"></i><span>Marcas</span></a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'cadastro' %}true{% else %}false{% endif %} }" class="mb-1 sige-nav-group">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'cadastro' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-users text-base flex-shrink-0 sige-nav-icon sige-nav-icon--cadastro"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Cadastro</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1 sige-nav-submenu">
+                        <a href="{% url 'cadastro:listaclientesview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaclientesview' or request.resolver_match.url_name == 'adicionarclienteview' or request.resolver_match.url_name == 'editarclienteview' or request.resolver_match.url_name == 'detalheclienteview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-user-circle sige-nav-icon sige-nav-icon--clientes"></i><span>Clientes</span></a>
+                        <a href="{% url 'cadastro:listafornecedoresview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listafornecedoresview' or request.resolver_match.url_name == 'adicionarfornecedorview' or request.resolver_match.url_name == 'editarfornecedorview' or request.resolver_match.url_name == 'detalhefornecedorview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-briefcase sige-nav-icon sige-nav-icon--fornecedores"></i><span>Fornecedores</span></a>
+                        <a href="{% url 'cadastro:listaprodutosview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaprodutosview' or request.resolver_match.url_name == 'adicionarprodutoview' or request.resolver_match.url_name == 'editarprodutoview' or request.resolver_match.url_name == 'detalheprodutoview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-package sige-nav-icon sige-nav-icon--produtos"></i><span>Produtos</span></a>
+                        <a href="{% url 'cadastro:listaempresasview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listaempresasview' or request.resolver_match.url_name == 'adicionarempresaview' or request.resolver_match.url_name == 'editarempresaview' or request.resolver_match.url_name == 'detalheempresaview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-building sige-nav-icon sige-nav-icon--empresas"></i><span>Empresas</span></a>
+                        <a href="{% url 'cadastro:listatransportadorasview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink {% if request.resolver_match.url_name == 'listatransportadorasview' or request.resolver_match.url_name == 'adicionartransportadoraview' or request.resolver_match.url_name == 'editartransportadoraview' or request.resolver_match.url_name == 'detalhetransportadoraview' %}sige-nav-sublink--active{% endif %}"><i class="ti ti-truck-delivery sige-nav-icon sige-nav-icon--transportadoras"></i><span>Transportadoras</span></a>
+                        <a href="{% url 'cadastro:listacategoriasview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-category sige-nav-icon"></i><span>Categorias</span></a>
+                        <a href="{% url 'cadastro:listaunidadesview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-ruler-2 sige-nav-icon"></i><span>Unidades</span></a>
+                        <a href="{% url 'cadastro:listamarcasview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink"><i class="ti ti-badge sige-nav-icon"></i><span>Marcas</span></a>
+                    </div>
                 </div>
-            </div>
 
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'vendas' %}true{% else %}false{% endif %} }"
-                class="mb-1">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'vendas' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-shopping-cart text-base flex-shrink-0 sige-nav-icon sige-nav-icon--vendas"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Vendas</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                    <a href="{% url 'vendas:listaorcamentovendaview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos
-                        de venda</a>
-                    <a href="{% url 'vendas:listapedidovendaview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos
-                        de venda</a>
-                    <a href="{% url 'vendas:listacondicaopagamentoview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições
-                        de pagamento</a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'vendas' %}true{% else %}false{% endif %} }" class="mb-1">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'vendas' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-shopping-cart text-base flex-shrink-0 sige-nav-icon sige-nav-icon--vendas"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Vendas</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
+                        <a href="{% url 'vendas:listaorcamentovendaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos de venda</a>
+                        <a href="{% url 'vendas:listapedidovendaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos de venda</a>
+                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições de pagamento</a>
+                    </div>
                 </div>
-            </div>
 
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'compras' %}true{% else %}false{% endif %} }"
-                class="mb-1">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'compras' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-truck text-base flex-shrink-0 sige-nav-icon"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Compras</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                    <a href="{% url 'compras:listaorcamentocompraview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos
-                        de compra</a>
-                    <a href="{% url 'compras:listapedidocompraview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos
-                        de compra</a>
-                    <a href="{% url 'vendas:listacondicaopagamentoview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições
-                        de pagamento</a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'compras' %}true{% else %}false{% endif %} }" class="mb-1">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'compras' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-truck text-base flex-shrink-0 sige-nav-icon sige-nav-icon--compras"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Compras</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
+                        <a href="{% url 'compras:listaorcamentocompraview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos de compra</a>
+                        <a href="{% url 'compras:listapedidocompraview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos de compra</a>
+                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições de pagamento</a>
+                    </div>
                 </div>
-            </div>
 
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'fiscal' %}true{% else %}false{% endif %} }"
-                class="mb-1">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'fiscal' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-receipt text-base flex-shrink-0 sige-nav-icon"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Fiscal</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                    <a href="{% url 'fiscal:listanotafiscalsaidaview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas
-                        fiscais</a>
-                    <a href="{% url 'fiscal:listanotafiscalentradaview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas
-                        de fornecedores</a>
-                    <a href="{% url 'fiscal:configuracaonotafiscal' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Configuração
-                        NF-e</a>
-                    <a href="{% url 'fiscal:listanaturezaoperacaoview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Natureza
-                        da operação</a>
-                    <a href="{% url 'fiscal:listagrupofiscalview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Grupo
-                        fiscal</a>
-                    <a href="{% url 'fiscal:consultarcadastro' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar
-                        cadastro</a>
-                    <a href="{% url 'fiscal:inutilizarnotas' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Inutilizar
-                        notas</a>
-                    <a href="{% url 'fiscal:consultarnota' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar
-                        nota</a>
-                    <a href="{% url 'fiscal:baixarnota' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Baixar
-                        nota</a>
-                    <a href="{% url 'fiscal:manifestacaodestinatario' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Manifestação
-                        do destinatário</a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'fiscal' %}true{% else %}false{% endif %} }" class="mb-1">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'fiscal' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-receipt text-base flex-shrink-0 sige-nav-icon sige-nav-icon--fiscal"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Fiscal</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
+                        <a href="{% url 'fiscal:listanotafiscalsaidaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas fiscais</a>
+                        <a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas de fornecedores</a>
+                        <a href="{% url 'fiscal:configuracaonotafiscal' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Configuração NF-e</a>
+                        <a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Natureza da operação</a>
+                        <a href="{% url 'fiscal:listagrupofiscalview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Grupo fiscal</a>
+                        <a href="{% url 'fiscal:consultarcadastro' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar cadastro</a>
+                        <a href="{% url 'fiscal:inutilizarnotas' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Inutilizar notas</a>
+                        <a href="{% url 'fiscal:consultarnota' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar nota</a>
+                        <a href="{% url 'fiscal:baixarnota' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Baixar nota</a>
+                        <a href="{% url 'fiscal:manifestacaodestinatario' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Manifestação do destinatário</a>
+                    </div>
                 </div>
-            </div>
 
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'financeiro' %}true{% else %}false{% endif %} }"
-                class="mb-1">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'financeiro' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-wallet text-base flex-shrink-0 sige-nav-icon"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Financeiro</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                    <a href="{% url 'financeiro:planocontasview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Plano
-                        de contas</a>
-                    <a href="{% url 'financeiro:fluxodecaixaview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Fluxo
-                        de caixa</a>
-                    <a href="{% url 'financeiro:listalancamentoview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Lançamentos</a>
-                    <a href="{% url 'financeiro:listarecebimentosview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Recebimentos</a>
-                    <a href="{% url 'financeiro:listacontareceberview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Contas
-                        a receber</a>
-                    <a href="{% url 'financeiro:listapagamentosview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pagamentos</a>
-                    <a href="{% url 'financeiro:listacontapagarview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Contas
-                        a pagar</a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'financeiro' %}true{% else %}false{% endif %} }" class="mb-1">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'financeiro' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-wallet text-base flex-shrink-0 sige-nav-icon sige-nav-icon--financeiro"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Financeiro</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
+                        <a href="{% url 'financeiro:planocontasview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Plano de contas</a>
+                        <a href="{% url 'financeiro:fluxodecaixaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Fluxo de caixa</a>
+                        <a href="{% url 'financeiro:listalancamentoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Lançamentos</a>
+                        <a href="{% url 'financeiro:listarecebimentosview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Recebimentos</a>
+                        <a href="{% url 'financeiro:listacontareceberview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Contas a receber</a>
+                        <a href="{% url 'financeiro:listapagamentosview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pagamentos</a>
+                        <a href="{% url 'financeiro:listacontapagarview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Contas a pagar</a>
+                    </div>
                 </div>
-            </div>
 
-            <div x-data="{ open: {% if request.resolver_match.app_name == 'estoque' %}true{% else %}false{% endif %} }"
-                class="mb-1">
-                <button @click="open = !open"
-                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'estoque' %}sige-nav-link--active{% endif %}">
-                    <i class="ti ti-building-warehouse text-base flex-shrink-0 sige-nav-icon"></i>
-                    <span x-show="sidebarOpen" class="flex-1 truncate text-left sige-nav-label">Estoque</span>
-                    <i x-show="sidebarOpen" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
-                </button>
-                <div x-show="open && sidebarOpen" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                    <a href="{% url 'estoque:consultaestoqueview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar
-                        estoque</a>
-                    <a href="{% url 'estoque:listalocalview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Locais
-                        de estoque</a>
-                    <a href="{% url 'estoque:listamovimentoestoqueview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Todas
-                        movimentações</a>
-                    <a href="{% url 'estoque:listaentradasestoqueview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Entradas</a>
-                    <a href="{% url 'estoque:listasaidasestoqueview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Saídas</a>
-                    <a href="{% url 'estoque:listatransferenciasestoqueview' %}"
-                        class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Transferências</a>
+                <div x-data="{ open: {% if request.resolver_match.app_name == 'estoque' %}true{% else %}false{% endif %} }" class="mb-1">
+                    <button @click="open = !open" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors sige-nav-link sige-nav-link--button {% if request.resolver_match.app_name == 'estoque' %}sige-nav-link--active{% endif %}">
+                        <i class="ti ti-building-warehouse text-base flex-shrink-0 sige-nav-icon sige-nav-icon--estoque"></i>
+                        <span x-show="!sidebarCollapsed" class="flex-1 truncate text-left sige-nav-label">Estoque</span>
+                        <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
+                    </button>
+                    <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
+                        <a href="{% url 'estoque:consultaestoqueview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar estoque</a>
+                        <a href="{% url 'estoque:listalocalview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Locais de estoque</a>
+                        <a href="{% url 'estoque:listamovimentoestoqueview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Todas movimentações</a>
+                        <a href="{% url 'estoque:listaentradasestoqueview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Entradas</a>
+                        <a href="{% url 'estoque:listasaidasestoqueview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Saídas</a>
+                        <a href="{% url 'estoque:listatransferenciasestoqueview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Transferências</a>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <div class="border-t border-gray-200 px-3 py-3 dark:border-gray-800 sige-shell__footer">
-            <div x-show="sidebarOpen" class="space-y-2 sige-shell__footer-links">
-                <a href="{% url 'login:usuariosview' %}"
-                    class="flex items-center gap-2 rounded-lg px-2 py-2 text-xs text-gray-500 transition-colors sige-nav-link sige-nav-link--utility">
+            <div class="border-t border-gray-200 px-3 py-3 dark:border-gray-800 sige-shell__footer">
+                <div x-show="!sidebarCollapsed" class="space-y-2 sige-shell__footer-links">
+                    <a href="{% url 'login:usuariosview' %}" class="flex items-center gap-2 rounded-lg px-2 py-2 text-xs text-gray-500 transition-colors sige-nav-link sige-nav-link--utility" title="Usuários">
+                        <i class="ti ti-users-group text-sm sige-nav-icon sige-nav-icon--usuarios"></i>
+                        Usuários
+                    </a>
+                    <a href="https://github.com/thiagopena/djangoSIGE" target="_blank" class="flex items-center gap-2 rounded-lg px-2 py-2 text-xs text-gray-500 transition-colors sige-nav-link sige-nav-link--utility" title="Ajuda">
+                        <i class="ti ti-lifebuoy text-sm sige-nav-icon sige-nav-icon--ajuda"></i>
+                        Ajuda
+                    </a>
+                    <div class="px-2 pt-1 text-xs text-gray-400 dark:text-gray-500 sige-shell__footer-note">© 2026 DjangoSIGE · v{{ versao }}</div>
+                </div>
+                <a x-show="sidebarCollapsed" href="{% url 'login:usuariosview' %}" class="sige-shell__footer-icon-link" title="Usuários">
                     <i class="ti ti-users-group text-sm sige-nav-icon sige-nav-icon--usuarios"></i>
-                    Usuários
                 </a>
-                <a href="https://github.com/thiagopena/djangoSIGE" target="_blank"
-                    class="flex items-center gap-2 rounded-lg px-2 py-2 text-xs text-gray-500 transition-colors sige-nav-link sige-nav-link--utility">
-                    <i class="ti ti-lifebuoy text-sm sige-nav-icon sige-nav-icon--ajuda"></i>
-                    Ajuda
-                </a>
-                <div class="px-2 pt-1 text-xs text-gray-400 dark:text-gray-500 sige-shell__footer-note">© 2026 DjangoSIGE · v{{ versao }}</div>
+                <button type="button" @click="toggleSidebar()" class="sige-shell__collapse-button" :title="sidebarCollapsed ? 'Expandir menu' : 'Recolher menu'">
+                    <i :class="sidebarCollapsed ? 'ti-chevrons-right' : 'ti-chevrons-left'" class="ti"></i>
+                </button>
             </div>
-            <div x-show="!sidebarOpen" class="flex justify-center text-accent sige-shell__footer-mark">
-                <i class="ti ti-circle-letter-s text-lg"></i>
+        </aside>
+
+        <div class="sige-shell-workspace">
+            <nav :class="sidebarCollapsed ? 'sige-shell__topbar--collapsed' : 'sige-shell__topbar--expanded'"
+                class="sticky top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white/90 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-900/90 sige-shell__topbar">
+                <div class="flex items-center gap-2 sige-shell__topbar-left">
+                    <button type="button" @click="toggleSidebar()" class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button">
+                        <i class="ti ti-menu-2 text-lg"></i>
+                    </button>
+                    <div class="hidden rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400 md:block sige-shell__clock">
+                        {% now "l, j/m/Y" %} · {% now "H:i" %}
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 sige-shell__topbar-actions">
+                    <a href="https://github.com/thiagopena/djangoSIGE" target="_blank" class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button" title="Ajuda">
+                        <i class="ti ti-help text-lg"></i>
+                    </a>
+                    <button type="button" @click="$store.theme.toggle(); darkMode = $store.theme.dark" class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button" :title="darkMode ? 'Ativar tema claro' : 'Ativar tema escuro'">
+                        <i :class="darkMode ? 'ti-sun' : 'ti-moon'" class="ti text-lg"></i>
+                    </button>
+                    <a href="{% url 'login:logoutview' %}" class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button" title="Sair">
+                        <i class="ti ti-logout text-lg"></i>
+                    </a>
+                </div>
+            </nav>
+            <div :class="hasShell ? (sidebarCollapsed ? 'sige-shell__content--collapsed' : 'sige-shell__content--expanded') : 'sige-shell__content--plain'"
+                class="min-h-screen transition-all duration-200 sige-shell__content">
+                <main class="p-4 sm:p-6 sige-main">
+                    {% block page_content %}
+                    {% block content %}{% endblock %}
+                    {% endblock %}
+                </main>
             </div>
         </div>
-    </aside>
-
-    <nav :class="sidebarOpen ? 'sige-shell__topbar--open' : 'sige-shell__topbar--closed'"
-        class="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-gray-200 bg-white/90 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-900/90 sige-shell__topbar">
-        <div class="flex items-center gap-2 sige-shell__topbar-left">
-            <button @click="sidebarOpen = !sidebarOpen"
-                class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button">
-                <i class="ti ti-menu-2 text-lg"></i>
-            </button>
-            <div
-                class="hidden rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400 md:block sige-shell__clock">
-                {% now "l, j/m/Y" %} · {% now "H:i" %}
-            </div>
-        </div>
-
-        <div class="flex items-center gap-2 sige-shell__topbar-actions">
-            <a href="https://github.com/thiagopena/djangoSIGE" target="_blank"
-                class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button">
-                <i class="ti ti-help text-lg"></i>
-            </a>
-            <button @click="$store.theme.toggle(); darkMode = $store.theme.dark"
-                class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button">
-                <i :class="darkMode ? 'ti-sun' : 'ti-moon'" class="ti text-lg"></i>
-            </button>
-            <a href="{% url 'login:logoutview' %}"
-                class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sige-shell__icon-button">
-                <i class="ti ti-logout text-lg"></i>
-            </a>
-        </div>
-    </nav>
-    {% endblock %}
-
-    <div :class="hasShell ? (sidebarOpen ? 'sige-shell__content--open' : 'sige-shell__content--closed') : 'sige-shell__content--plain'"
-        class="min-h-screen transition-all duration-200 sige-shell__content">
-        <main class="p-4 sm:p-6 sige-main">
-            {% block content %}{% endblock %}
-        </main>
     </div>
+    {% endblock %}
+    {% endblock %}
 
     {% block modal %}{% include 'base/modal.html' %}{% endblock %}
 
@@ -482,6 +414,40 @@
         })();
 
         document.addEventListener('alpine:init', () => {
+            window.sigeShell = function () {
+                return {
+                    hasShell: {% block has_shell %}true{% endblock %},
+                    darkMode: document.documentElement.classList.contains('dark'),
+                    sidebarCollapsed: document.documentElement.classList.contains('sige-sidebar-pref-collapsed'),
+                    sidebarMobileOpen: false,
+                    init() {
+                        const saved = localStorage.getItem('sige-sidebar-collapsed');
+                        this.sidebarCollapsed = window.innerWidth >= 1024 ? saved === 'true' : true;
+                        this.sidebarMobileOpen = false;
+                        this.syncSidebarPreferenceClass();
+                        window.addEventListener('resize', () => {
+                            if (window.innerWidth < 1024) {
+                                this.sidebarMobileOpen = false;
+                            } else {
+                                this.sidebarCollapsed = localStorage.getItem('sige-sidebar-collapsed') === 'true';
+                                this.syncSidebarPreferenceClass();
+                            }
+                        });
+                    },
+                    toggleSidebar() {
+                        if (window.innerWidth < 1024) {
+                            this.sidebarMobileOpen = !this.sidebarMobileOpen;
+                            return;
+                        }
+                        this.sidebarCollapsed = !this.sidebarCollapsed;
+                        localStorage.setItem('sige-sidebar-collapsed', this.sidebarCollapsed ? 'true' : 'false');
+                        this.syncSidebarPreferenceClass();
+                    },
+                    syncSidebarPreferenceClass() {
+                        document.documentElement.classList.toggle('sige-sidebar-pref-collapsed', this.sidebarCollapsed);
+                    }
+                };
+            };
             Alpine.store('theme', {
                 dark: document.documentElement.classList.contains('dark'),
                 toggle() {

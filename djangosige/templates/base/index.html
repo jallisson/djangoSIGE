@@ -3,76 +3,66 @@
 {% block title %}Página Inicial{% endblock %}
 
 {% block content %}
-<div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+<section class="sige-dashboard">
+<div class="sige-dashboard__hero">
     <div>
-        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Visão geral</h1>
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Informações do sistema para {{ data_atual }}. Atualize diariamente.
-        </p>
+        <span class="sige-dashboard__eyebrow">Dashboard</span>
+        <h1 class="sige-dashboard__title">Visão geral</h1>
+        <p class="sige-dashboard__subtitle">Informações do sistema para {{ data_atual }}.</p>
     </div>
 
     {% if perms.cadastro.view_transportadora %}
-    <a href="{% url 'cadastro:listatransportadorasview' %}" class="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-white">
-        <i class="ti ti-truck-delivery text-sm text-accent"></i>
+    <a href="{% url 'cadastro:listatransportadorasview' %}" class="sige-dashboard__pill">
+        <i class="ti ti-truck-delivery"></i>
         {{ quantidade_cadastro.transportadoras }} transportadoras
     </a>
     {% endif %}
 </div>
 
-<div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+<div class="sige-dashboard__stats">
     {% if perms.cadastro.view_cliente %}
-    <a href="{% url 'cadastro:listaclientesview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950">
-            <i class="ti ti-users text-blue-600 dark:text-blue-400"></i>
-        </div>
-        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.clientes }}</div>
-        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Clientes</div>
+    <a href="{% url 'cadastro:listaclientesview' %}" class="sige-dashboard__stat-card">
+        <div class="sige-dashboard__stat-icon sige-dashboard__stat-icon--clientes"><i class="ti ti-users"></i></div>
+        <div class="sige-dashboard__stat-value">{{ quantidade_cadastro.clientes }}</div>
+        <div class="sige-dashboard__stat-label">Clientes</div>
     </a>
     {% endif %}
 
     {% if perms.cadastro.view_fornecedor %}
-    <a href="{% url 'cadastro:listafornecedoresview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-950">
-            <i class="ti ti-building-store text-amber-600 dark:text-amber-400"></i>
-        </div>
-        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.fornecedores }}</div>
-        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Fornecedores</div>
+    <a href="{% url 'cadastro:listafornecedoresview' %}" class="sige-dashboard__stat-card">
+        <div class="sige-dashboard__stat-icon sige-dashboard__stat-icon--fornecedores"><i class="ti ti-building-store"></i></div>
+        <div class="sige-dashboard__stat-value">{{ quantidade_cadastro.fornecedores }}</div>
+        <div class="sige-dashboard__stat-label">Fornecedores</div>
     </a>
     {% endif %}
 
     {% if perms.cadastro.view_produto %}
-    <a href="{% url 'cadastro:listaprodutosview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-950">
-            <i class="ti ti-box text-violet-600 dark:text-violet-400"></i>
-        </div>
-        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.produtos }}</div>
-        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Produtos</div>
+    <a href="{% url 'cadastro:listaprodutosview' %}" class="sige-dashboard__stat-card">
+        <div class="sige-dashboard__stat-icon sige-dashboard__stat-icon--produtos"><i class="ti ti-box"></i></div>
+        <div class="sige-dashboard__stat-value">{{ quantidade_cadastro.produtos }}</div>
+        <div class="sige-dashboard__stat-label">Produtos</div>
     </a>
     {% endif %}
 
     {% if perms.cadastro.view_empresa %}
-    <a href="{% url 'cadastro:listaempresasview' %}" class="rounded-2xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950">
-            <i class="ti ti-building text-emerald-600 dark:text-emerald-400"></i>
-        </div>
-        <div class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quantidade_cadastro.empresas }}</div>
-        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Empresas</div>
+    <a href="{% url 'cadastro:listaempresasview' %}" class="sige-dashboard__stat-card">
+        <div class="sige-dashboard__stat-icon sige-dashboard__stat-icon--empresas"><i class="ti ti-building"></i></div>
+        <div class="sige-dashboard__stat-value">{{ quantidade_cadastro.empresas }}</div>
+        <div class="sige-dashboard__stat-label">Empresas</div>
     </a>
     {% endif %}
 
-    <div class="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 dark:bg-red-950">
-            <i class="ti ti-alert-triangle text-red-600 dark:text-red-400"></i>
-        </div>
-        <div class="text-2xl font-semibold text-gray-900 dark:text-white">
+    <div class="sige-dashboard__stat-card">
+        <div class="sige-dashboard__stat-icon sige-dashboard__stat-icon--alertas"><i class="ti ti-alert-triangle"></i></div>
+        <div class="sige-dashboard__stat-value">
             {{ alertas.produtos_baixo_estoque|add:alertas.orcamentos_venda_vencidos|add:alertas.orcamentos_compra_vencidos|add:alertas.pedidos_venda_atrasados|add:alertas.pedidos_compra_atrasados|add:alertas.contas_receber_atrasadas|add:alertas.contas_pagar_atrasadas }}
         </div>
-        <div class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">Alertas</div>
+        <div class="sige-dashboard__stat-label">Alertas</div>
     </div>
 </div>
 
-<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+<div class="sige-dashboard__panels">
+    <div class="sige-dashboard__panel">
         <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
             <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
                 <i class="ti ti-calendar-event text-gray-400"></i>
@@ -118,7 +108,7 @@
         </div>
     </div>
 
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div class="sige-dashboard__panel">
         <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
             <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
                 <i class="ti ti-alert-circle text-gray-400"></i>
@@ -168,7 +158,7 @@
     </div>
 
     {% if perms.financeiro.acesso_fluxodecaixa %}
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div class="sige-dashboard__panel">
         <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
             <div class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
                 <i class="ti ti-cash text-gray-400"></i>
@@ -208,4 +198,5 @@
     </div>
     {% endif %}
 </div>
+</section>
 {% endblock %}

@@ -2258,3 +2258,547 @@ a {
     margin-right: 0 !important;
   }
 }
+
+/* ==========================================================
+   DjangoSIGE Modern UI - Shell Stage 1
+   ========================================================== */
+
+:root {
+  --sige-sidebar-width: 232px;
+  --sige-sidebar-collapsed-width: 68px;
+  --sige-topbar-height: 52px;
+  --sige-bg: #08111f;
+  --sige-sidebar-bg: #07111f;
+  --sige-topbar-bg: rgba(10, 18, 34, 0.94);
+  --sige-surface: #111c30;
+  --sige-surface-raised: #17233a;
+  --sige-border: #293750;
+  --sige-text: #edf2ff;
+  --sige-muted: #8ea0bb;
+  --sige-primary: #7c5cff;
+  --sige-primary-hover: #8d72ff;
+  --sige-input-bg: #17233a;
+  --sige-focus-ring: rgba(124, 92, 255, 0.18);
+}
+
+.sige-shell__sidebar {
+  width: var(--sige-sidebar-width);
+  background: var(--sige-sidebar-bg) !important;
+  border-right: 1px solid rgba(83, 102, 135, 0.24) !important;
+  box-shadow: 18px 0 42px rgba(1, 6, 16, 0.28);
+}
+
+.sige-shell__sidebar--expanded {
+  width: var(--sige-sidebar-width);
+}
+
+.sige-shell__sidebar--collapsed {
+  width: var(--sige-sidebar-collapsed-width);
+}
+
+.sige-shell__sidebar--mobile-closed {
+  transform: translateX(-100%);
+}
+
+.sige-shell__sidebar--mobile-open {
+  transform: translateX(0);
+}
+
+.sige-shell__brand {
+  min-height: var(--sige-topbar-height);
+  justify-content: flex-start;
+}
+
+.sige-shell__brand,
+.sige-shell__profile,
+.sige-shell__footer {
+  border-color: rgba(82, 101, 132, 0.26) !important;
+}
+
+.sige-shell__profile {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+
+.sige-shell__profile-summary {
+  align-items: center;
+}
+
+.sige-shell__avatar-link,
+.sige-shell__avatar-fallback {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 14px !important;
+}
+
+.sige-shell__quick-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  border-radius: 10px !important;
+}
+
+.sige-shell__quick-action-icon {
+  font-size: 15px;
+}
+
+.sige-nav-link {
+  min-height: 42px;
+  margin-bottom: 8px;
+  padding: 11px 12px !important;
+  border-radius: 9px !important;
+  color: #d7e2f1 !important;
+}
+
+.sige-nav-link:hover,
+.sige-nav-sublink:hover {
+  background: rgba(124, 92, 255, 0.08) !important;
+}
+
+.sige-nav-link--active {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.34), rgba(124, 92, 255, 0.14)) !important;
+  border: 1px solid rgba(124, 92, 255, 0.28) !important;
+  color: #fff !important;
+}
+
+.sige-nav-link--active .sige-nav-icon,
+.sige-nav-link--active .sige-nav-label {
+  color: #fff !important;
+}
+
+.sige-nav-icon {
+  width: 20px;
+  min-width: 20px;
+  font-size: 20px !important;
+  line-height: 1;
+  text-align: center;
+  color: #d5deeb;
+}
+
+.sige-nav-icon--cadastro { color: #b69bff; }
+.sige-nav-icon--vendas { color: #ffab5c; }
+.sige-nav-icon--compras { color: #59d49d; }
+.sige-nav-icon--fiscal { color: #ffd257; }
+.sige-nav-icon--financeiro { color: #62c4ff; }
+.sige-nav-icon--estoque { color: #db8bff; }
+.sige-nav-icon--usuarios { color: #8cc7ff; }
+.sige-nav-icon--ajuda { color: #b3c0d3; }
+
+.sige-nav-submenu {
+  padding-left: 10px !important;
+}
+
+.sige-nav-sublink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  gap: 10px;
+  padding-left: 16px !important;
+  border-radius: 9px !important;
+  color: #8fa1bc !important;
+}
+
+.sige-nav-sublink::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #62758f;
+  flex: 0 0 auto;
+}
+
+.sige-nav-sublink .sige-nav-icon {
+  display: none !important;
+}
+
+.sige-nav-sublink--active {
+  background: rgba(124, 92, 255, 0.1) !important;
+  color: #f7f8ff !important;
+  box-shadow: inset 0 0 0 1px rgba(124, 92, 255, 0.18);
+}
+
+.sige-nav-sublink--active::before {
+  background: var(--sige-primary);
+}
+
+.sige-shell__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sige-shell__footer-links .sige-nav-link {
+  min-height: 38px;
+}
+
+.sige-shell__footer-icon-link,
+.sige-shell__collapse-button {
+  width: 100%;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(82, 101, 132, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  color: #dbe5f4;
+  text-decoration: none !important;
+}
+
+.sige-shell__collapse-button {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.sige-shell__topbar {
+  height: var(--sige-topbar-height);
+  background: var(--sige-topbar-bg) !important;
+  border-bottom: 1px solid rgba(82, 101, 132, 0.22) !important;
+  backdrop-filter: blur(14px);
+}
+
+.sige-shell__icon-button {
+  width: 36px;
+  height: 36px;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  appearance: none;
+  box-shadow: none !important;
+  color: #c4d0df !important;
+}
+
+.sige-shell__icon-button:hover {
+  background: rgba(124, 92, 255, 0.12) !important;
+  color: #fff !important;
+}
+
+.sige-shell__clock {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(82, 101, 132, 0.24) !important;
+  color: #91a2bc !important;
+}
+
+.sige-main {
+  max-width: none;
+  padding: 22px;
+}
+
+.sige-sidebar-pref-collapsed .sige-shell__content,
+.sige-sidebar-pref-collapsed .sige-shell__topbar {
+  margin-left: var(--sige-sidebar-collapsed-width);
+}
+
+html:not(.sige-sidebar-pref-collapsed) .sige-shell__content,
+html:not(.sige-sidebar-pref-collapsed) .sige-shell__topbar {
+  margin-left: var(--sige-sidebar-width);
+}
+
+.sige-shell__content--expanded,
+.sige-shell__topbar--expanded {
+  margin-left: var(--sige-sidebar-width);
+}
+
+.sige-shell__content--collapsed,
+.sige-shell__topbar--collapsed {
+  margin-left: var(--sige-sidebar-collapsed-width);
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__brand,
+.sige-shell__sidebar--collapsed .sige-shell__profile,
+.sige-shell__sidebar--collapsed .sige-shell__footer {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__profile-summary,
+.sige-shell__sidebar--collapsed .sige-nav-link,
+.sige-shell__sidebar--collapsed .sige-nav-link--utility {
+  justify-content: center;
+}
+
+.sige-shell__sidebar--collapsed .sige-nav-link {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.sige-shell__sidebar--collapsed .sige-nav-label,
+.sige-shell__sidebar--collapsed .sige-nav-caret,
+.sige-shell__sidebar--collapsed .sige-shell__footer-note,
+.sige-shell__sidebar--collapsed .sige-shell__quick-actions,
+.sige-shell__sidebar--collapsed .sige-shell__profile-meta {
+  display: none !important;
+}
+
+@media (max-width: 1023px) {
+  .sige-shell__sidebar {
+    width: var(--sige-sidebar-width);
+  }
+
+  .sige-shell__content,
+  .sige-shell__topbar,
+  .sige-shell__content--expanded,
+  .sige-shell__content--collapsed,
+  .sige-shell__topbar--expanded,
+  .sige-shell__topbar--collapsed,
+  .sige-sidebar-pref-collapsed .sige-shell__content,
+  .sige-sidebar-pref-collapsed .sige-shell__topbar,
+  html:not(.sige-sidebar-pref-collapsed) .sige-shell__content,
+  html:not(.sige-sidebar-pref-collapsed) .sige-shell__topbar {
+    margin-left: 0;
+  }
+}
+
+/* ==========================================================
+   DjangoSIGE Modern UI - Shell Fixes
+   ========================================================== */
+
+body.login-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+body.login-page .sige-app,
+body.login-page .sige-shell,
+body.login-page .sige-shell-workspace,
+body.login-page .sige-shell__content,
+body.login-page .sige-main {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+}
+
+body.login-page .login-wrap {
+  margin: 0 auto;
+}
+
+.sige-shell {
+  background: var(--sige-bg);
+}
+
+.sige-shell-workspace {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(124, 92, 255, 0.12), transparent 32%),
+    linear-gradient(180deg, #091221 0%, #0b1526 100%);
+}
+
+.sige-shell__sidebar--mobile-closed,
+.sige-shell__sidebar--mobile-open {
+  transform: translateX(0);
+}
+
+.sige-shell__topbar,
+.sige-shell__content {
+  transition: margin-left 0.2s ease;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__quick-action span,
+.sige-shell__sidebar--collapsed .sige-shell__profile-role,
+.sige-shell__sidebar--collapsed .sige-shell__profile-email,
+.sige-shell__sidebar--collapsed .sige-shell__profile-name {
+  display: none !important;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__profile {
+  align-items: center;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__footer-icon-link,
+.sige-shell__sidebar--collapsed .sige-shell__collapse-button {
+  min-height: 40px;
+}
+
+.sige-shell__sidebar .sige-nav-icon--clientes,
+.sige-shell__sidebar .sige-nav-icon--fornecedores,
+.sige-shell__sidebar .sige-nav-icon--produtos,
+.sige-shell__sidebar .sige-nav-icon--empresas,
+.sige-shell__sidebar .sige-nav-icon--transportadoras {
+  color: #62758f !important;
+}
+
+.sige-shell__sidebar .sige-nav-link[title="Página Inicial"] .sige-nav-icon,
+.sige-nav-icon--home {
+  color: #d5deeb !important;
+}
+
+.sige-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sige-dashboard__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sige-dashboard__eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #9d88ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sige-dashboard__title {
+  margin: 0;
+  color: #f4f7ff;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.sige-dashboard__subtitle {
+  margin: 6px 0 0;
+  color: #91a2bc;
+  font-size: 14px;
+}
+
+.sige-dashboard__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid var(--sige-border);
+  border-radius: 999px;
+  background: rgba(23, 35, 58, 0.9);
+  color: #dbe5f4 !important;
+  text-decoration: none !important;
+}
+
+.sige-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sige-dashboard__stat-card,
+.sige-dashboard__panel {
+  border: 1px solid var(--sige-border);
+  border-radius: 16px;
+  background: var(--sige-surface);
+  box-shadow: 0 10px 24px rgba(3, 10, 22, 0.14);
+}
+
+.sige-dashboard__stat-card {
+  display: block;
+  padding: 18px;
+  text-decoration: none !important;
+}
+
+.sige-dashboard__stat-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+.sige-dashboard__stat-icon i {
+  font-size: 24px;
+}
+
+.sige-dashboard__stat-icon--clientes { background: rgba(96, 165, 250, 0.14); color: #78b7ff; }
+.sige-dashboard__stat-icon--fornecedores { background: rgba(251, 191, 36, 0.14); color: #ffcf5f; }
+.sige-dashboard__stat-icon--produtos { background: rgba(167, 139, 250, 0.14); color: #c1adff; }
+.sige-dashboard__stat-icon--empresas { background: rgba(52, 211, 153, 0.14); color: #69e0b1; }
+.sige-dashboard__stat-icon--alertas { background: rgba(248, 113, 113, 0.14); color: #ff8d8d; }
+
+.sige-dashboard__stat-value {
+  color: #f4f7ff;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.sige-dashboard__stat-label {
+  margin-top: 8px;
+  color: #91a2bc;
+  font-size: 13px;
+}
+
+.sige-dashboard__panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sige-dashboard__panel {
+  overflow: hidden;
+}
+
+.sige-dashboard__panel .border-b {
+  border-bottom-color: rgba(82, 101, 132, 0.2) !important;
+}
+
+.sige-dashboard__panel .divide-y > * + * {
+  border-top: 1px solid rgba(82, 101, 132, 0.14);
+}
+
+.sige-dashboard__panel .text-gray-900,
+.sige-dashboard__panel .dark\:text-white {
+  color: #edf2ff !important;
+}
+
+.sige-dashboard__panel .text-gray-600,
+.sige-dashboard__panel .text-gray-500,
+.sige-dashboard__panel .dark\:text-gray-400 {
+  color: #91a2bc !important;
+}
+
+.sige-dashboard__panel .hover\:bg-gray-50:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+@media (min-width: 1024px) {
+  .sige-shell__sidebar--mobile-closed,
+  .sige-shell__sidebar--mobile-open {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1023px) {
+  body.login-page {
+    overflow: auto;
+  }
+
+  .sige-shell__sidebar--mobile-closed {
+    transform: translateX(-100%);
+  }
+
+  .sige-shell__sidebar--mobile-open {
+    transform: translateX(0);
+  }
+
+  .sige-dashboard__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sige-dashboard__panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .sige-dashboard__hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sige-dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+}
