@@ -2526,25 +2526,67 @@ a {
   --sige-sidebar-width: 232px;
   --sige-sidebar-collapsed-width: 68px;
   --sige-topbar-height: 52px;
-  --sige-bg: #08111f;
-  --sige-sidebar-bg: #07111f;
-  --sige-topbar-bg: rgba(10, 18, 34, 0.94);
-  --sige-surface: #111c30;
-  --sige-surface-raised: #17233a;
-  --sige-border: #293750;
-  --sige-text: #edf2ff;
-  --sige-muted: #8ea0bb;
+  --sige-bg: #f4f7fb;
+  --sige-sidebar-bg: #ffffff;
+  --sige-topbar-bg: rgba(255, 255, 255, 0.94);
+  --sige-surface: #ffffff;
+  --sige-surface-raised: #f8fafc;
+  --sige-border: #dbe3ec;
+  --sige-text: #0f172a;
+  --sige-muted: #64748b;
   --sige-primary: #7c5cff;
   --sige-primary-hover: #8d72ff;
-  --sige-input-bg: #17233a;
+  --sige-input-bg: #ffffff;
   --sige-focus-ring: rgba(124, 92, 255, 0.18);
+  --sige-sidebar-border: rgba(148, 163, 184, 0.22);
+  --sige-sidebar-shadow: 18px 0 42px rgba(15, 23, 42, 0.12);
+  --sige-brand-text: #0f172a;
+  --sige-brand-compact: #7c5cff;
+  --sige-shell-divider: rgba(148, 163, 184, 0.24);
+  --sige-sidebar-panel-hover: rgba(124, 92, 255, 0.08);
+  --sige-sidebar-text: #334155;
+  --sige-sidebar-text-strong: #0f172a;
+  --sige-sidebar-text-soft: #64748b;
+  --sige-sidebar-icon: #64748b;
+  --sige-sidebar-button-bg: rgba(255, 255, 255, 0.82);
+  --sige-sidebar-button-text: #334155;
+  --sige-topbar-border: rgba(148, 163, 184, 0.24);
+  --sige-topbar-icon: #64748b;
+  --sige-clock-bg: rgba(248, 250, 252, 0.96);
+}
+
+html.dark {
+  --sige-bg: #07111f;
+  --sige-sidebar-bg: #07111f;
+  --sige-topbar-bg: rgba(11, 20, 36, 0.94);
+  --sige-surface: #111c30;
+  --sige-surface-raised: #17233a;
+  --sige-border: #2b3a53;
+  --sige-text: #f8fafc;
+  --sige-muted: #9fb0c8;
+  --sige-input-bg: #101a2d;
+  --sige-sidebar-border: rgba(83, 102, 135, 0.24);
+  --sige-sidebar-shadow: 18px 0 42px rgba(1, 6, 16, 0.28);
+  --sige-brand-text: #ffffff;
+  --sige-brand-compact: #7c5cff;
+  --sige-shell-divider: rgba(82, 101, 132, 0.26);
+  --sige-sidebar-panel-hover: rgba(124, 92, 255, 0.08);
+  --sige-sidebar-text: #d7e2f1;
+  --sige-sidebar-text-strong: #f5f8ff;
+  --sige-sidebar-text-soft: #8ea0bb;
+  --sige-sidebar-icon: #d5deeb;
+  --sige-sidebar-button-bg: rgba(255, 255, 255, 0.03);
+  --sige-sidebar-button-text: #dbe5f4;
+  --sige-topbar-border: rgba(82, 101, 132, 0.22);
+  --sige-topbar-icon: #c4d0df;
+  --sige-clock-bg: rgba(255, 255, 255, 0.03);
 }
 
 .sige-shell__sidebar {
   width: var(--sige-sidebar-width);
   background: var(--sige-sidebar-bg) !important;
-  border-right: 1px solid rgba(83, 102, 135, 0.24) !important;
-  box-shadow: 18px 0 42px rgba(1, 6, 16, 0.28);
+  border-right: 1px solid var(--sige-sidebar-border) !important;
+  box-shadow: var(--sige-sidebar-shadow);
 }
 
 .sige-shell__sidebar--expanded {
@@ -2570,28 +2612,37 @@ a {
   padding-left: 20px !important;
   padding-right: 20px !important;
   gap: 0 !important;
+  color: var(--sige-brand-text);
 }
 
-.sige-shell__brand-text,
-.sige-shell__brand-mark {
-  font-size: 24px !important;
+.sige-shell__brand-full,
+.sige-shell__brand-compact {
   line-height: 1;
   font-weight: 700 !important;
 }
 
-.sige-shell__brand-text {
-  color: #ffffff !important;
+.sige-shell__brand-full {
+  display: inline;
+  font-size: 24px !important;
+  color: var(--sige-brand-text) !important;
 }
 
-.sige-shell__brand .text-accent,
-.sige-shell__brand-mark {
-  color: var(--sige-primary) !important;
+.sige-shell__brand-compact {
+  display: none;
+  font-size: 16px !important;
+  letter-spacing: 0.03em;
+  color: var(--sige-brand-compact) !important;
+  white-space: nowrap;
 }
 
 .sige-shell__brand,
 .sige-shell__profile,
 .sige-shell__footer {
-  border-color: rgba(82, 101, 132, 0.26) !important;
+  border-color: var(--sige-shell-divider) !important;
+}
+
+.sige-shell__brand .text-accent {
+  color: var(--sige-primary) !important;
 }
 
 .sige-shell__profile {
@@ -2599,17 +2650,24 @@ a {
 }
 
 .sige-shell__profile-summary {
+  display: flex;
   align-items: center;
-  gap: 16px !important;
+  gap: 18px !important;
 }
 
 .sige-shell__avatar-link,
 .sige-shell__avatar-fallback {
-  width: 72px !important;
-  height: 72px !important;
-  min-width: 72px !important;
-  border-radius: 18px !important;
-  flex: 0 0 72px;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  border-radius: 14px !important;
+  flex: 0 0 auto;
+}
+
+.sige-shell__profile-meta {
+  min-width: 0;
+  padding-left: 4px;
+  flex: 1 1 auto;
 }
 
 .sige-shell__quick-action {
@@ -2629,20 +2687,20 @@ a {
 }
 
 .sige-shell__profile-name {
-  color: #f5f8ff !important;
+  color: var(--sige-sidebar-text-strong) !important;
   font-size: 17px !important;
   font-weight: 700 !important;
   line-height: 1.2;
 }
 
 .sige-shell__profile-role {
-  color: #dbe4f5 !important;
+  color: var(--sige-sidebar-text) !important;
   font-size: 14px !important;
   line-height: 1.35;
 }
 
 .sige-shell__profile-email {
-  color: #8ea0bb !important;
+  color: var(--sige-sidebar-text-soft) !important;
   font-size: 13px !important;
   line-height: 1.35;
 }
@@ -2657,7 +2715,7 @@ a {
   margin-bottom: 8px;
   padding: 11px 14px !important;
   border-radius: 9px !important;
-  color: #d7e2f1 !important;
+  color: var(--sige-sidebar-text) !important;
   gap: 12px !important;
   font-size: 16px !important;
   font-weight: 600;
@@ -2665,7 +2723,7 @@ a {
 
 .sige-nav-link:hover,
 .sige-nav-sublink:hover {
-  background: rgba(124, 92, 255, 0.08) !important;
+  background: var(--sige-sidebar-panel-hover) !important;
 }
 
 .sige-nav-link--active {
@@ -2685,7 +2743,7 @@ a {
   font-size: 21px !important;
   line-height: 1;
   text-align: center;
-  color: #d5deeb;
+  color: var(--sige-sidebar-icon);
 }
 
 .sige-nav-icon--cadastro { color: #b69bff; }
@@ -2709,7 +2767,7 @@ a {
   gap: 12px;
   padding: 8px 12px 8px 18px !important;
   border-radius: 9px !important;
-  color: #8fa1bc !important;
+  color: var(--sige-sidebar-text-soft) !important;
   font-size: 14px !important;
   font-weight: 500;
   line-height: 1.4;
@@ -2757,9 +2815,9 @@ a {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  border: 1px solid rgba(82, 101, 132, 0.3);
-  background: rgba(255, 255, 255, 0.03);
-  color: #dbe5f4;
+  border: 1px solid var(--sige-shell-divider);
+  background: var(--sige-sidebar-button-bg);
+  color: var(--sige-sidebar-button-text);
   text-decoration: none !important;
 }
 
@@ -2771,7 +2829,7 @@ a {
 .sige-shell__topbar {
   height: 64px;
   background: var(--sige-topbar-bg) !important;
-  border-bottom: 1px solid rgba(82, 101, 132, 0.22) !important;
+  border-bottom: 1px solid var(--sige-topbar-border) !important;
   backdrop-filter: blur(14px);
   padding-left: 16px !important;
   padding-right: 16px !important;
@@ -2785,7 +2843,7 @@ a {
   background: transparent !important;
   appearance: none;
   box-shadow: none !important;
-  color: #c4d0df !important;
+  color: var(--sige-topbar-icon) !important;
 }
 
 .sige-shell__icon-button .ti {
@@ -2794,13 +2852,13 @@ a {
 
 .sige-shell__icon-button:hover {
   background: rgba(124, 92, 255, 0.12) !important;
-  color: #fff !important;
+  color: var(--sige-primary) !important;
 }
 
 .sige-shell__clock {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(82, 101, 132, 0.24) !important;
-  color: #91a2bc !important;
+  background: var(--sige-clock-bg);
+  border-color: var(--sige-shell-divider) !important;
+  color: var(--sige-muted) !important;
   min-height: 40px;
   padding: 0 14px !important;
   font-size: 13px !important;
@@ -2836,6 +2894,21 @@ html:not(.sige-sidebar-pref-collapsed) .sige-shell__topbar {
 .sige-shell__sidebar--collapsed .sige-shell__footer {
   padding-left: 12px !important;
   padding-right: 12px !important;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__brand,
+.sige-sidebar-pref-collapsed .sige-shell__brand {
+  justify-content: center;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__brand-full,
+.sige-sidebar-pref-collapsed .sige-shell__brand-full {
+  display: none;
+}
+
+.sige-shell__sidebar--collapsed .sige-shell__brand-compact,
+.sige-sidebar-pref-collapsed .sige-shell__brand-compact {
+  display: inline;
 }
 
 .sige-shell__sidebar--collapsed .sige-shell__profile-summary,
@@ -2910,7 +2983,7 @@ body.login-page .login-wrap {
   min-height: 100vh;
   background:
     radial-gradient(circle at top right, rgba(124, 92, 255, 0.12), transparent 32%),
-    linear-gradient(180deg, #091221 0%, #0b1526 100%);
+    linear-gradient(180deg, var(--sige-bg) 0%, var(--sige-bg) 100%);
 }
 
 .sige-shell__sidebar--mobile-closed,

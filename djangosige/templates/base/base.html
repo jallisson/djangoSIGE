@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark"
+<html lang="pt-BR"
     x-data="sigeShell()"
     x-init="init()">
 
@@ -178,10 +178,10 @@
         <aside :class="[sidebarMobileOpen ? 'sige-shell__sidebar--mobile-open' : 'sige-shell__sidebar--mobile-closed', sidebarCollapsed ? 'sige-shell__sidebar--collapsed' : 'sige-shell__sidebar--expanded']"
             class="fixed left-0 top-0 z-50 flex h-full flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-800 dark:bg-gray-900 sige-shell__sidebar">
             <div class="flex items-center gap-2 border-b border-gray-200 px-4 dark:border-gray-800 sige-shell__brand">
-                <span x-show="!sidebarCollapsed" class="text-lg font-semibold text-gray-900 dark:text-white sige-shell__brand-text">
+                <span class="text-lg font-semibold text-gray-900 dark:text-white sige-shell__brand-full">
                     Django<span class="text-accent">SIGE</span>
                 </span>
-                <span x-show="sidebarCollapsed" class="text-lg font-bold text-accent sige-shell__brand-mark" title="DjangoSIGE">S</span>
+                <span class="text-lg font-bold text-accent sige-shell__brand-compact" title="DjangoSIGE">SIGE</span>
             </div>
 
             <div class="border-b border-gray-200 px-3 py-3 dark:border-gray-800 sige-shell__profile">
@@ -410,6 +410,8 @@
             const theme = localStorage.getItem('sige-theme');
             if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
             }
         })();
 
