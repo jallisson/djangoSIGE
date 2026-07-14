@@ -1,13 +1,13 @@
 <!-- Body-->
-<div class="body">
+<div class="body sige-form-body">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs sige-form-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#tab_grupo" data-toggle="tab">GRUPO</a></li>
       <li role="presentation"><a href="#tab_subgrupos" data-toggle="tab">SUBGRUPOS</a></li>
     </ul>
-    <div class="tab-content">
+    <div class="tab-content sige-form-tabpanes">
       <!-- Tab grupo -->
-      <div role="tabpanel" class="tab-pane active" id="tab_grupo">
+      <div role="tabpanel" class="tab-pane active sige-form-section" id="tab_grupo">
 
         {% for field in form %}
         <div class="col-sm-6">
@@ -24,7 +24,7 @@
       <!-- #Tab grupo -->
 
       <!-- Tab grupo -->
-        <div role="tabpanel" class="tab-pane formset-tab" id="tab_subgrupos">
+        <div role="tabpanel" class="tab-pane formset-tab sige-form-section" id="tab_subgrupos">
           <div class="row">
             <h4 style="border-bottom: 1px solid #afabab;">Subgrupos<i class="material-icons" style="font-size: 17px;padding-left:7px;" title="Subgrupos são especificações dos grupos criados, a adição de subgrupos é opcional.">&#xE887;</i></h4>
           </div>
@@ -37,6 +37,8 @@
       
   </div>
 
-  <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  <div class="sige-form-actions">
+    <button class="btn btn-success foot-btn sige-button sige-button--primary" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  </div>
 </div>
 <!--#Body-->

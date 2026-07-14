@@ -1,8 +1,8 @@
 <!-- Body-->
-<div class="body">
+<div class="body sige-form-body">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs sige-form-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#tab_dados_nfe" data-toggle="tab">DADOS NF-E</a></li>
       {% if saida %}
       <li role="presentation"><a href="#tab_venda" data-toggle="tab">VENDA</a></li>
@@ -20,10 +20,10 @@
       <li role="presentation"><a href="#tab_inf_ad" data-toggle="tab">INFORMAÇÕES ADICIONAIS</a></li>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content sige-form-tabpanes">
 
       <!-- Tab dados -->
-      <div role="tabpanel" class="tab-pane active" id="tab_dados_nfe">
+      <div role="tabpanel" class="tab-pane active sige-form-section" id="tab_dados_nfe">
 
         <div class="col-sm-3">
           <div class="form-group">
@@ -225,7 +225,7 @@
 
 
       <!-- Tab EMIT/DEST -->
-      <div role="tabpanel" class="tab-pane" id="tab_emit_dest">
+      <div role="tabpanel" class="tab-pane sige-form-section" id="tab_emit_dest">
 
         <div class="col-sm-12">
 
@@ -538,7 +538,7 @@
 
       {% if saida %}
       <!-- Tab VENDA -->
-      <div role="tabpanel" class="tab-pane" id="tab_venda">
+      <div role="tabpanel" class="tab-pane sige-form-section" id="tab_venda">
 
         <div class="col-sm-12">
 
@@ -652,7 +652,7 @@
       <!-- #Tab VENDA -->
 
       <!-- Tab COBRANÇA -->
-      <div role="tabpanel" class="tab-pane" id="tab_cobr">
+      <div role="tabpanel" class="tab-pane sige-form-section" id="tab_cobr">
 
         <div class="col-sm-6">
           <div class="form-group">
@@ -769,7 +769,7 @@
       
       {% elif entrada %}
       <!-- Tab COMPRA -->
-      <div role="tabpanel" class="tab-pane" id="tab_compra">
+      <div role="tabpanel" class="tab-pane sige-form-section" id="tab_compra">
 
         <div class="col-sm-12">
 
@@ -892,7 +892,7 @@
       {% endif %}
 
       <!-- Tab INFORMAÇÕES ADICIONAIS -->
-      <div role="tabpanel" class="tab-pane" id="tab_inf_ad">
+      <div role="tabpanel" class="tab-pane sige-form-section" id="tab_inf_ad">
 
         <div class="col-sm-6">
           <div class="form-group">
@@ -919,7 +919,7 @@
 
       {% if saida %}
       <!-- Tab AUT -->
-      <div role="tabpanel" class="tab-pane formset-tab" id="tab_aut">
+      <div role="tabpanel" class="tab-pane formset-tab sige-form-section" id="tab_aut">
 
         {% include 'formset/formset_fields_sem_padrao.html' with formset=aut_form title='Autorização download' %}
 
@@ -929,7 +929,7 @@
 
       {% if edit_nfe and saida %}
       <!-- Tab VALIDAÇÃO -->
-      <div role="tabpanel" class="tab-pane formset-tab active" id="validacao">
+      <div role="tabpanel" class="tab-pane formset-tab active sige-form-section" id="validacao">
 
         <div class="col-sm-12 lista">
 
@@ -961,7 +961,7 @@
       <!-- #Tab VALIDAÇÃO -->
 
       <!-- Tab SEFAZ -->
-      <div role="tabpanel" class="tab-pane formset-tab active" id="sefaz">
+      <div role="tabpanel" class="tab-pane formset-tab active sige-form-section" id="sefaz">
 
         <div class="col-sm-12 lista">
 
@@ -1001,7 +1001,9 @@
   </div>
 
   {% if object.status_nfe != '1' and object.status_nfe != '2' and object.status_nfe != '8' or not object%}
-  <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  <div class="sige-form-actions">
+    <button class="btn btn-success foot-btn sige-button sige-button--primary" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  </div>
   {% endif %}
 </div>
 <!--#Body-->

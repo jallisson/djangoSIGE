@@ -2,6 +2,7 @@
 
 from django.urls import reverse_lazy
 from django.db.models import F
+from django.http import JsonResponse
 
 from djangosige.apps.base.custom_views import CustomCreateView, CustomListView, CustomUpdateView
 from djangosige.apps.cadastro.forms import ProdutoForm, CategoriaForm, UnidadeForm, MarcaForm
@@ -204,6 +205,12 @@ class AdicionarCategoriaView(AdicionarOutrosBaseView):
     success_url = reverse_lazy('cadastro:addcategoriaview')
     permission_codename = 'add_categoria'
 
+    def post(self, request, *args, **kwargs):
+        response = super(AdicionarCategoriaView, self).post(request, *args, **kwargs)
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' and hasattr(self, 'object') and self.object:
+            return JsonResponse({'success': True, 'id': self.object.pk, 'label': str(self.object)})
+        return response
+
 
 class CategoriasListView(CustomListView):
     model = Categoria
@@ -218,6 +225,12 @@ class EditarCategoriaView(EditarOutrosBaseView):
     model = Categoria
     success_url = reverse_lazy('cadastro:listacategoriasview')
     permission_codename = 'change_categoria'
+
+    def post(self, request, *args, **kwargs):
+        response = super(EditarCategoriaView, self).post(request, *args, **kwargs)
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' and hasattr(self, 'object') and self.object:
+            return JsonResponse({'success': True, 'id': self.object.pk, 'label': str(self.object)})
+        return response
 
 
 class AdicionarUnidadeView(AdicionarOutrosBaseView):

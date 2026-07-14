@@ -3,17 +3,17 @@
 
 {%block title%} {{form.cfop.value}} {%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid">
+<section class="content sige-modern-form">
+  <div class="container-fluid sige-form-page">
 
     {% include 'base/title_header.html' %}
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="row">
-        <div class="card">
+        <div class="card sige-form-card">
 
           <!--Header-->
-          <div class="header">
+          <div class="header sige-form-header">
 
             <h2>
               <a href="{{return_url}}"><i class="material-icons">&#xE5C4;</i></a>{{form.cfop.value}}
@@ -26,8 +26,8 @@
           <form role="form" action="" method="post">
             {% csrf_token %}
             <!-- Body-->
-            <div class="body">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="body sige-form-body">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sige-form-grid sige-form-grid--legacy">
                
                 {% for field in form %}
                 <div class="col-sm-6">
@@ -42,7 +42,9 @@
                 {% endfor %}
                 
               </div>
-              <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+              <div class="sige-form-actions">
+                <button class="btn btn-success foot-btn sige-button sige-button--primary" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+              </div>
             </div>
             <!--#Body-->
           </form>

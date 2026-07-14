@@ -1,11 +1,11 @@
-<div class="formset-box {% if tipo_pessoa == 'cliente' %}sige-formset-box sige-formset-box--compact{% endif %}">
+<div class="formset-box sige-formset-box sige-formset-box--compact">
 
 	{% for form in formset %}
-	<div id="{{formset.prefix}}-{{forloop.counter0}}" class="formset {% if tipo_pessoa == 'cliente' %}sige-formset sige-form-section sige-form-section--compact{% endif %}" style="border:none;margin-bottom:0px;padding-bottom:0px;">
+	<div id="{{formset.prefix}}-{{forloop.counter0}}" class="formset sige-formset sige-form-section sige-form-section--compact" style="border:none;margin-bottom:0px;padding-bottom:0px;">
 
-	  <div class="{% if tipo_pessoa == 'cliente' %}sige-form-grid{% endif %}">
+	  <div class="sige-form-grid sige-form-grid--legacy">
 	  {% for field in form.visible_fields %}
-	  <div class="col-sm-5 {% if tipo_pessoa == 'cliente' %}sige-field{% endif %}" style="float:left;">
+	  <div class="col-sm-5 sige-field" style="float:left;">
 	    <div class="form-group">
 	      <div class="form-line">
 	        <label>{% if field.label %}{{field.label}}<span class="formset-padrao"> (padrão)<i class="material-icons" title="As entradas padrão serão utilizadas no preenchimento de notas fiscais, pedidos de venda/compra, etc.">&#xE887;</i></span>{%else%}&nbsp;{%endif%}</label>
@@ -20,8 +20,8 @@
 
 	  {{ form.id }}
 
-	  <div class="col-sm-12 {% if tipo_pessoa == 'cliente' %}sige-form-actions sige-form-actions--inline{% endif %}">
-	    <a class="btn btn-xs add-formset {% if tipo_pessoa == 'cliente' %}sige-button sige-button--ghost{% endif %}">Adicionar novo</a>
+	  <div class="col-sm-12 sige-form-actions sige-form-actions--inline">
+	    <a class="btn btn-xs add-formset sige-button sige-button--ghost">Adicionar novo</a>
 	  </div>
 	</div>
 

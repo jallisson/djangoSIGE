@@ -2,18 +2,18 @@
 
 {%block title%}{{title_complete|title}}{%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid">
+<section class="content sige-modern-form">
+  <div class="container-fluid sige-form-page">
 
     {% include 'base/title_header.html' %}
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="row">
-        <div class="card">
+        <div class="card sige-form-card">
           {% include 'base/msg_error.html' %}
           <b>{% include 'base/msg_sucesso.html' %}</b>
           <!--Header-->
-          <div class="header" style="overflow:visible;">
+          <div class="header sige-form-header" style="overflow:visible;">
 
             <h2>
               <a href="{{return_url}}"><i class="material-icons">&#xE5C4;</i></a> {{title_complete}}

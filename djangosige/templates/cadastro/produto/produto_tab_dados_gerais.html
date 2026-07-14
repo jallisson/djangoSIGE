@@ -1,3 +1,4 @@
+<div class="sige-form-grid sige-form-grid--legacy">
 <div class="col-sm-6">
   <div class="form-group">
     <div class="form-line">
@@ -36,7 +37,7 @@
       <div class="form-line">
         {{form.categoria}}
       </div>
-      <a class="input-group-addon popup" style="color: green;" title="Adicionar categoria" href="{% url 'cadastro:addcategoriaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+      <a class="input-group-addon sige-ajax-modal-trigger" style="color: green;" title="Adicionar categoria" href="{% url 'cadastro:addcategoriaview' %}" data-sige-modal-url="{% url 'cadastro:addcategoriaview' %}" data-sige-modal-target="#sige-category-modal" data-sige-select-target="#id_categoria"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>
@@ -92,7 +93,7 @@
     <div class="form-group">
       
         <label>Margem de lucro (aprox.)</label>
-        <span id="margem-lucro" style="display:block;font-size: x-large;padding-left: 10px;color: yellowgreen;">0%</span>
+      <span id="margem-lucro" style="display:block;font-size: x-large;padding-left: 10px;color: yellowgreen;">0%</span>
       
     </div>
   </div>
@@ -106,4 +107,5 @@
       {{form.inf_adicionais}}
     </div>
   </div>
+</div>
 </div>

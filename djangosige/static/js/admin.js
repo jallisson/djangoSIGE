@@ -620,8 +620,128 @@ $.Admin.pessoaForm = {
     },
 }
 
+$.Admin.modalform = {
+    init: function() {
+        var _this = this;
+
+        $('body').on('click', '.sige-ajax-modal-trigger', function(event){
+            var $trigger = $(this);
+            var url = $trigger.data('sige-modal-url') || $trigger.attr('href') || $trigger.attr('data-href') || $trigger.attr('href');
+            var modalSelector = $trigger.data('sige-modal-target') || '#sige-category-modal';
+            var $modal = $(modalSelector);
+
+            if (!url || !$modal.length || $(event.target).is('input, label')) {
+                return;
+            }
+
+            event.preventDefault();
+            $modal.data('sigeSelectTarget', $trigger.data('sige-select-target') || '');
+            $modal.data('sigeReloadOnSuccess', $trigger.data('sige-reload-on-success') ? true : false);
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'html',
+                success: function(response) {
+                    _this.renderModalContent($modal, response);
+                    $modal.modal('show');
+                }
+            });
+        });
+
+        $('body').on('submit', '.sige-modal #popupform', function(event){
+            event.preventDefault();
+            var $form = $(this);
+            var $modal = $form.closest('.sige-modal');
+
+            $.ajax({
+                type: $form.attr('method') || 'POST',
+                url: $form.attr('action') || window.location.href,
+                data: $form.serialize(),
+                success: function(response) {
+                    if (response && typeof response === 'object' && response.success) {
+                        _this.handleSuccess($modal, response);
+                        return;
+                    }
+
+                    var $container = _this.extractPopupContainer(response);
+                    if ($container.length) {
+                        _this.renderModalContent($modal, response);
+                        return;
+                    }
+
+                    $modal.modal('hide');
+                    if ($modal.data('sigeReloadOnSuccess')) {
+                        window.location.reload(true);
+                    }
+                }
+            });
+        });
+
+        $('body').on('hidden.bs.modal', '.sige-modal', function(){
+            $(this).find('.sige-modal__content').empty();
+        });
+
+        $('body').on('click', '.sige-popup-close, .sige-popup-cancel', function(event){
+            var $modal = $(this).closest('.sige-modal');
+            if ($modal.length) {
+                event.preventDefault();
+                $modal.modal('hide');
+                return;
+            }
+
+            if (window.opener) {
+                event.preventDefault();
+                window.close();
+            }
+        });
+    },
+
+    extractPopupContainer: function(response) {
+        if (typeof response !== 'string') {
+            return $();
+        }
+
+        var $nodes = $($.parseHTML(response, document, true));
+        var $container = $nodes.filter('#popupform-container').first();
+
+        if (!$container.length) {
+            $container = $nodes.find('#popupform-container').first();
+        }
+
+        return $container;
+    },
+
+    renderModalContent: function($modal, response) {
+        var $container = this.extractPopupContainer(response);
+        $modal.find('.sige-modal__content').html($container.length ? $container.prop('outerHTML') : response);
+    },
+
+    handleSuccess: function($modal, response) {
+        var selectTarget = $modal.data('sigeSelectTarget');
+        var shouldReload = $modal.data('sigeReloadOnSuccess');
+
+        if (selectTarget) {
+            var $select = $(selectTarget);
+            if ($select.length) {
+                if (!$select.find('option[value="' + response.id + '"]').length) {
+                    $select.append($('<option></option>').val(response.id).text(response.label));
+                }
+                $select.val(String(response.id)).trigger('change');
+            }
+        }
+
+        $modal.modal('hide');
+
+        if (shouldReload) {
+            window.location.reload(true);
+        }
+    }
+}
+
 $.Admin.popupwindow = {
     init: function() {
+        var _this = this;
 
         //Adicionar a base de dados, redirecionamento
         $('a.popup-add').on('click', function(){
@@ -636,7 +756,22 @@ $.Admin.popupwindow = {
                 type: "POST",
                 url: "",
                 data: $(this).serialize(),
-                success: function() {
+                success: function(response) {
+                    if (response && typeof response === 'object' && response.success) {
+                        window.opener.location.reload(true);
+                        window.close();
+                        return;
+                    }
+
+                    var $container = $.Admin.modalform.extractPopupContainer(response);
+                    if ($container.length) {
+                        document.open();
+                        document.write(response);
+                        document.close();
+                        _this.init();
+                        return;
+                    }
+
                     window.opener.location.reload(true);
                     window.close();
                }
@@ -3271,6 +3406,7 @@ $(function () {
     $.Admin.navbar.init();
     $.Admin.table.init();
     $.Admin.formset.init();
+    $.Admin.modalform.init();
     $.Admin.validation.init();
     $.Admin.dinamicMenu.init();
 
