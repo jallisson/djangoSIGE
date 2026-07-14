@@ -2290,12 +2290,24 @@ a {
   width: 100%;
   min-height: 46px;
   padding: 10px 14px;
-  border: 1px solid var(--sige-border) !important;
+  border: 1px solid var(--sige-input-border) !important;
   border-radius: 10px !important;
   background: var(--sige-input-bg) !important;
-  color: var(--sige-text) !important;
+  color: var(--sige-input-text) !important;
   box-shadow: none !important;
   outline: 0;
+}
+
+.sige-modern-form input.form-control:hover,
+.sige-modern-form select.form-control:hover,
+.sige-modern-form textarea.form-control:hover,
+.sige-modern-form span.form-control:hover,
+.sige-modern-form .form-line > input:not([type="checkbox"]):not([type="radio"]):hover,
+.sige-modern-form .form-line > select:hover,
+.sige-modern-form .form-line > textarea:hover {
+  background: var(--sige-input-bg-hover) !important;
+  color: var(--sige-input-text) !important;
+  border-color: var(--sige-input-border) !important;
 }
 
 .sige-modern-form textarea.form-control,
@@ -2317,24 +2329,39 @@ a {
 .sige-modern-form input.form-control:focus,
 .sige-modern-form select.form-control:focus,
 .sige-modern-form textarea.form-control:focus,
+.sige-modern-form input.form-control:focus-visible,
+.sige-modern-form select.form-control:focus-visible,
+.sige-modern-form textarea.form-control:focus-visible,
 .sige-modern-form .form-line > input:not([type="checkbox"]):not([type="radio"]):focus,
+.sige-modern-form .form-line > input:not([type="checkbox"]):not([type="radio"]):focus-visible,
 .sige-modern-form .form-line > select:focus,
-.sige-modern-form .form-line > textarea:focus {
-  border-color: rgba(124, 92, 255, 0.55) !important;
+.sige-modern-form .form-line > select:focus-visible,
+.sige-modern-form .form-line > textarea:focus,
+.sige-modern-form .form-line > textarea:focus-visible {
+  border-color: var(--sige-input-focus-border) !important;
   box-shadow: 0 0 0 4px var(--sige-focus-ring) !important;
-  background: #1a2740 !important;
+  background: var(--sige-input-bg-focus) !important;
+  color: var(--sige-input-text) !important;
 }
 
-.sige-modern-form input[readonly],
-.sige-modern-form select[readonly],
-.sige-modern-form textarea[readonly],
+.sige-modern-form input.form-control[readonly],
+.sige-modern-form select.form-control[readonly],
+.sige-modern-form textarea.form-control[readonly],
+.sige-modern-form .form-line > input:not([type="checkbox"]):not([type="radio"])[readonly],
+.sige-modern-form .form-line > select[readonly],
+.sige-modern-form .form-line > textarea[readonly],
 .sige-modern-form .input_no_edit,
-.sige-modern-form input:disabled,
-.sige-modern-form select:disabled,
-.sige-modern-form textarea:disabled {
-  opacity: 0.72;
+.sige-modern-form input.form-control:disabled,
+.sige-modern-form select.form-control:disabled,
+.sige-modern-form textarea.form-control:disabled,
+.sige-modern-form .form-line > input:not([type="checkbox"]):not([type="radio"]):disabled,
+.sige-modern-form .form-line > select:disabled,
+.sige-modern-form .form-line > textarea:disabled {
+  opacity: 1;
   cursor: not-allowed;
-  background: #121d31 !important;
+  background: var(--sige-input-bg-disabled) !important;
+  color: var(--sige-input-text-disabled) !important;
+  border-color: var(--sige-input-border) !important;
 }
 
 .sige-modern-form span.form-control,
@@ -2342,6 +2369,9 @@ a {
 .sige-modern-form .display-fornecedor-field {
   display: flex;
   align-items: center;
+  background: var(--sige-input-bg-disabled) !important;
+  color: var(--sige-input-text-disabled) !important;
+  border-color: var(--sige-input-border) !important;
 }
 
 .sige-modern-form .input-group {
@@ -2537,6 +2567,13 @@ a {
   --sige-primary: #7c5cff;
   --sige-primary-hover: #8d72ff;
   --sige-input-bg: #ffffff;
+  --sige-input-bg-hover: #f8fafc;
+  --sige-input-bg-focus: #ffffff;
+  --sige-input-bg-disabled: #eef2f7;
+  --sige-input-text: #0f172a;
+  --sige-input-text-disabled: #64748b;
+  --sige-input-border: #cfd9e6;
+  --sige-input-focus-border: #6d5efc;
   --sige-focus-ring: rgba(124, 92, 255, 0.18);
   --sige-sidebar-border: rgba(148, 163, 184, 0.22);
   --sige-sidebar-shadow: 18px 0 42px rgba(15, 23, 42, 0.12);
@@ -2565,6 +2602,13 @@ html.dark {
   --sige-text: #f8fafc;
   --sige-muted: #9fb0c8;
   --sige-input-bg: #101a2d;
+  --sige-input-bg-hover: #142039;
+  --sige-input-bg-focus: #101a2d;
+  --sige-input-bg-disabled: #566173;
+  --sige-input-text: #f8fafc;
+  --sige-input-text-disabled: #cbd5e1;
+  --sige-input-border: #35445e;
+  --sige-input-focus-border: #7c66ff;
   --sige-sidebar-border: rgba(83, 102, 135, 0.24);
   --sige-sidebar-shadow: 18px 0 42px rgba(1, 6, 16, 0.28);
   --sige-brand-text: #ffffff;
@@ -2665,9 +2709,15 @@ html.dark {
 }
 
 .sige-shell__profile-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   min-width: 0;
   padding-left: 4px;
   flex: 1 1 auto;
+  gap: 3px;
+  line-height: normal;
 }
 
 .sige-shell__quick-action {
@@ -2690,19 +2740,22 @@ html.dark {
   color: var(--sige-sidebar-text-strong) !important;
   font-size: 17px !important;
   font-weight: 700 !important;
+  margin: 0;
   line-height: 1.2;
 }
 
 .sige-shell__profile-role {
   color: var(--sige-sidebar-text) !important;
   font-size: 14px !important;
-  line-height: 1.35;
+  margin: 0;
+  line-height: 1.25;
 }
 
 .sige-shell__profile-email {
   color: var(--sige-sidebar-text-soft) !important;
   font-size: 13px !important;
-  line-height: 1.35;
+  margin: 0;
+  line-height: 1.25;
 }
 
 .sige-shell__quick-actions {
@@ -2764,13 +2817,16 @@ html.dark {
   display: flex;
   align-items: center;
   min-height: 36px;
+  height: auto;
   gap: 12px;
   padding: 8px 12px 8px 18px !important;
   border-radius: 9px !important;
   color: var(--sige-sidebar-text-soft) !important;
   font-size: 14px !important;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.3;
+  white-space: normal;
+  overflow: visible;
 }
 
 .sige-nav-sublink::before {
@@ -2784,6 +2840,11 @@ html.dark {
 
 .sige-nav-sublink .sige-nav-icon {
   display: none !important;
+}
+
+.sige-nav-sublink > span {
+  display: block;
+  line-height: 1.3;
 }
 
 .sige-nav-sublink--active {
