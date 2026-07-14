@@ -11,12 +11,40 @@
 
     <script>
         (function () {
-            const theme = localStorage.getItem('sige-theme');
-            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
+            window.getSigeTheme = function () {
+                const saved = localStorage.getItem('sige-theme');
+
+                if (saved === 'light' || saved === 'dark') {
+                    return saved;
+                }
+
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+
+            window.applySigeTheme = function (theme) {
+                const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
+                const isDark = resolvedTheme === 'dark';
+
+                document.documentElement.classList.toggle('dark', isDark);
+                document.documentElement.dataset.theme = resolvedTheme;
+                localStorage.setItem('sige-theme', resolvedTheme);
+
+                if (document.body) {
+                    document.body.classList.toggle('dark-mode', isDark);
+                } else {
+                    document.addEventListener('DOMContentLoaded', function syncBodyTheme() {
+                        document.body.classList.toggle('dark-mode', isDark);
+                    }, { once: true });
+                }
+            };
+
+            window.toggleSigeTheme = function () {
+                const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                window.applySigeTheme(nextTheme);
+                return document.documentElement.classList.contains('dark');
+            };
+
+            window.applySigeTheme(window.getSigeTheme());
             const sidebarCollapsed = localStorage.getItem('sige-sidebar-collapsed') === 'true';
             document.documentElement.classList.toggle('sige-sidebar-pref-collapsed', sidebarCollapsed);
         })();
@@ -118,21 +146,21 @@
             color: rgb(243 244 246) !important;
         }
 
-        .dark input,
-        .dark select,
-        .dark textarea {
+        .dark body:not(.login-page) input,
+        .dark body:not(.login-page) select,
+        .dark body:not(.login-page) textarea {
             background-color: rgb(17 24 39) !important;
             color: rgb(243 244 246) !important;
             border-color: rgb(55 65 81) !important;
         }
 
-        .dark .form-control {
+        .dark body:not(.login-page) .form-control {
             background-color: rgb(17 24 39) !important;
             color: rgb(243 244 246) !important;
             border-color: rgb(55 65 81) !important;
         }
 
-        .dark label {
+        .dark body:not(.login-page) label {
             color: rgb(156 163 175) !important;
         }
 
@@ -196,13 +224,13 @@
                     </a>
                     {% endif %}
 
-                    <div x-show="!sidebarCollapsed" class="min-w-0 sige-shell__profile-meta">
-                        <div class="truncate text-sm font-medium text-gray-900 dark:text-white sige-shell__profile-name">{{ request.user.username }}</div>
-                        <div class="truncate text-xs text-gray-500 dark:text-gray-400 sige-shell__profile-role">
+                    <div x-show="!sidebarCollapsed" class="sige-shell__profile-meta">
+                        <div class="sige-shell__profile-name">{{ request.user.username }}</div>
+                        <div class="sige-shell__profile-role">
                             {% if user_empresa %}{{ user_empresa }}{% elif request.user.is_superuser %}Admin{% endif %}
                         </div>
                         {% if request.user.email %}
-                        <div class="truncate text-xs text-gray-400 dark:text-gray-500 sige-shell__profile-email">{{ request.user.email }}</div>
+                        <div class="sige-shell__profile-email">{{ request.user.email }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -258,7 +286,7 @@
                     <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
                         <a href="{% url 'vendas:listaorcamentovendaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos de venda</a>
                         <a href="{% url 'vendas:listapedidovendaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos de venda</a>
-                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições de pagamento</a>
+                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="sige-nav-sublink"><span>Condições de pagamento</span></a>
                     </div>
                 </div>
 
@@ -269,9 +297,9 @@
                         <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
                     </button>
                     <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                        <a href="{% url 'compras:listaorcamentocompraview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Orçamentos de compra</a>
-                        <a href="{% url 'compras:listapedidocompraview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Pedidos de compra</a>
-                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Condições de pagamento</a>
+                        <a href="{% url 'compras:listaorcamentocompraview' %}" class="sige-nav-sublink"><span>Orçamentos de compra</span></a>
+                        <a href="{% url 'compras:listapedidocompraview' %}" class="sige-nav-sublink"><span>Pedidos de compra</span></a>
+                        <a href="{% url 'vendas:listacondicaopagamentoview' %}" class="sige-nav-sublink"><span>Condições de pagamento</span></a>
                     </div>
                 </div>
 
@@ -282,16 +310,16 @@
                         <i x-show="!sidebarCollapsed" :class="open ? 'ti-chevron-up' : 'ti-chevron-down'" class="ti text-xs sige-nav-caret"></i>
                     </button>
                     <div x-show="open && !sidebarCollapsed" x-transition.origin.top.left class="space-y-1 pl-8 pt-1">
-                        <a href="{% url 'fiscal:listanotafiscalsaidaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas fiscais</a>
-                        <a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Notas de fornecedores</a>
-                        <a href="{% url 'fiscal:configuracaonotafiscal' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Configuração NF-e</a>
-                        <a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Natureza da operação</a>
-                        <a href="{% url 'fiscal:listagrupofiscalview' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Grupo fiscal</a>
-                        <a href="{% url 'fiscal:consultarcadastro' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar cadastro</a>
-                        <a href="{% url 'fiscal:inutilizarnotas' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Inutilizar notas</a>
-                        <a href="{% url 'fiscal:consultarnota' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Consultar nota</a>
-                        <a href="{% url 'fiscal:baixarnota' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Baixar nota</a>
-                        <a href="{% url 'fiscal:manifestacaodestinatario' %}" class="block rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors sige-nav-sublink">Manifestação do destinatário</a>
+                        <a href="{% url 'fiscal:listanotafiscalsaidaview' %}" class="sige-nav-sublink"><span>Notas fiscais</span></a>
+                        <a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="sige-nav-sublink"><span>Notas de fornecedores</span></a>
+                        <a href="{% url 'fiscal:configuracaonotafiscal' %}" class="sige-nav-sublink"><span>Configuração NF-e</span></a>
+                        <a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="sige-nav-sublink"><span>Natureza da operação</span></a>
+                        <a href="{% url 'fiscal:listagrupofiscalview' %}" class="sige-nav-sublink"><span>Grupo fiscal</span></a>
+                        <a href="{% url 'fiscal:consultarcadastro' %}" class="sige-nav-sublink"><span>Consultar cadastro</span></a>
+                        <a href="{% url 'fiscal:inutilizarnotas' %}" class="sige-nav-sublink"><span>Inutilizar notas</span></a>
+                        <a href="{% url 'fiscal:consultarnota' %}" class="sige-nav-sublink"><span>Consultar nota</span></a>
+                        <a href="{% url 'fiscal:baixarnota' %}" class="sige-nav-sublink"><span>Baixar nota</span></a>
+                        <a href="{% url 'fiscal:manifestacaodestinatario' %}" class="sige-nav-sublink"><span>Manifestação do destinatário</span></a>
                     </div>
                 </div>
 
@@ -406,15 +434,6 @@
     {% block js %}{% endblock %}
 
     <script>
-        (function () {
-            const theme = localStorage.getItem('sige-theme');
-            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        })();
-
         document.addEventListener('alpine:init', () => {
             window.sigeShell = function () {
                 return {
@@ -453,9 +472,9 @@
             Alpine.store('theme', {
                 dark: document.documentElement.classList.contains('dark'),
                 toggle() {
-                    this.dark = !this.dark;
-                    document.documentElement.classList.toggle('dark', this.dark);
-                    localStorage.setItem('sige-theme', this.dark ? 'dark' : 'light');
+                    window.toggleSigeTheme();
+                    this.dark = document.documentElement.classList.contains('dark');
+                    return this.dark;
                 }
             });
         });

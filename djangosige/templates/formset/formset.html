@@ -3,13 +3,13 @@
   {% for form in formset %}
   <div id="{{formset.prefix}}-{{forloop.counter0}}" class="formset sige-formset sige-form-section">
 
-    <div class="col-sm-12 formset-header sige-section-header sige-section-header--inline">
-    <h4 class="formset-title">{{title}}<span class="formset-padrao"> (padrão)<i class="material-icons" title="As entradas padrão serão utilizadas no preenchimento de notas fiscais, pedidos de venda/compra, etc.">&#xE887;</i></span><a class="remove-formset"></a></h4>
+    <div class="formset-header sige-section-header sige-section-header--inline sige-formset-box__header">
+      <h4 class="formset-title">{{title}}<span class="formset-padrao"> (padrão)<i class="material-icons" title="As entradas padrão serão utilizadas no preenchimento de notas fiscais, pedidos de venda/compra, etc.">&#xE887;</i></span><a class="remove-formset"></a></h4>
     </div>
 
     <div class="sige-form-grid sige-form-grid--legacy">
     {% for field in form.visible_fields %}
-    <div class="col-sm-6 sige-field">
+    <div class="sige-field">
       <div class="form-group">
         <div class="form-line">
           <label>{{field.label}}</label>
@@ -23,7 +23,7 @@
 
     {{ form.id }}
 
-    <div class="col-sm-12 sige-form-actions sige-form-actions--inline">
+    <div class="sige-form-actions sige-form-actions--inline sige-formset-box__actions">
       <a class="btn btn-xs add-formset sige-button sige-button--ghost">Adicionar novo</a>
     </div>
   </div>

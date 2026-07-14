@@ -5,7 +5,7 @@
 
 	  <div class="sige-form-grid sige-form-grid--legacy">
 	  {% for field in form.visible_fields %}
-	  <div class="col-sm-5 sige-field" style="float:left;">
+	  <div class="sige-field">
 	    <div class="form-group">
 	      <div class="form-line">
 	        <label>{% if field.label %}{{field.label}}<span class="formset-padrao"> (padrão)<i class="material-icons" title="As entradas padrão serão utilizadas no preenchimento de notas fiscais, pedidos de venda/compra, etc.">&#xE887;</i></span>{%else%}&nbsp;{%endif%}</label>
@@ -16,11 +16,13 @@
 	  </div>
 	  {% endfor %}
 	  </div>
-	  <a class="remove-formset" style="float:left;"></a>
+	  <div class="sige-formset-box__header sige-formset-box__header--compact">
+	    <a class="remove-formset"></a>
+	  </div>
 
 	  {{ form.id }}
 
-	  <div class="col-sm-12 sige-form-actions sige-form-actions--inline">
+	  <div class="sige-form-actions sige-form-actions--inline sige-formset-box__actions">
 	    <a class="btn btn-xs add-formset sige-button sige-button--ghost">Adicionar novo</a>
 	  </div>
 	</div>
