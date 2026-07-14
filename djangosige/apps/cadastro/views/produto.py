@@ -239,6 +239,12 @@ class AdicionarUnidadeView(AdicionarOutrosBaseView):
     success_url = reverse_lazy('cadastro:addunidadeview')
     permission_codename = 'add_unidade'
 
+    def post(self, request, *args, **kwargs):
+        response = super(AdicionarUnidadeView, self).post(request, *args, **kwargs)
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' and hasattr(self, 'object') and self.object:
+            return JsonResponse({'success': True, 'id': self.object.pk, 'label': str(self.object)})
+        return response
+
 
 class UnidadesListView(CustomListView):
     model = Unidade
@@ -253,6 +259,12 @@ class EditarUnidadeView(EditarOutrosBaseView):
     model = Unidade
     success_url = reverse_lazy('cadastro:listaunidadesview')
     permission_codename = 'change_unidade'
+
+    def post(self, request, *args, **kwargs):
+        response = super(EditarUnidadeView, self).post(request, *args, **kwargs)
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' and hasattr(self, 'object') and self.object:
+            return JsonResponse({'success': True, 'id': self.object.pk, 'label': str(self.object)})
+        return response
 
 
 class AdicionarMarcaView(AdicionarOutrosBaseView):

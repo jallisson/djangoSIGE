@@ -240,12 +240,11 @@
                         <i class="ti ti-user-circle sige-shell__quick-action-icon"></i>
                         <span>Perfil</span>
                     </a>
-                    <a href="{% if user_empresa %}{% url 'cadastro:editarempresaview' user_empresa.id %}{% else %}{% url 'login:selecionarempresaview' %}{% endif %}"
-                        {% if not user_empresa %}
-                        class="popup rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
-                        {% else %}
-                        class="rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
-                        {% endif %}
+                    <a href="{% url 'login:selecionarempresaview' %}"
+                        class="sige-ajax-modal-trigger rounded-lg border border-gray-200 px-2 py-2 text-center text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-white sige-shell__quick-action"
+                        data-sige-modal-url="{% url 'login:selecionarempresaview' %}"
+                        data-sige-modal-target="#sige-company-modal"
+                        data-sige-reload-on-success="true"
                         title="Empresa">
                         <i class="ti ti-building sige-shell__quick-action-icon"></i>
                         <span>Empresa</span>
@@ -416,6 +415,12 @@
     {% endblock %}
 
     {% block modal %}{% include 'base/modal.html' %}{% endblock %}
+
+    <div class="modal fade sige-modal" id="sige-company-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered sige-modal__dialog" role="document">
+            <div class="modal-content sige-modal__content"></div>
+        </div>
+    </div>
 
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>

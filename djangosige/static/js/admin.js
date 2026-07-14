@@ -693,7 +693,11 @@ $.Admin.modalform = {
             if (window.opener) {
                 event.preventDefault();
                 window.close();
+                return;
             }
+
+            event.preventDefault();
+            window.history.back();
         });
     },
 
@@ -733,6 +737,16 @@ $.Admin.modalform = {
 
         $modal.modal('hide');
 
+        if (response && response.redirect_url) {
+            window.location.href = response.redirect_url;
+            return;
+        }
+
+        if (response && response.reload) {
+            window.location.reload(true);
+            return;
+        }
+
         if (shouldReload) {
             window.location.reload(true);
         }
@@ -742,15 +756,23 @@ $.Admin.modalform = {
 $.Admin.popupwindow = {
     init: function() {
         var _this = this;
+        var hasPopupOpener = !!window.opener;
 
         //Adicionar a base de dados, redirecionamento
         $('a.popup-add').on('click', function(){
+            if (!hasPopupOpener) {
+                return true;
+            }
             window.opener.location = $(this).prop('href');
             window.close();
         });
 
         //Fecha popup quando form submit
         $('#popupform').submit(function(ev) {
+            if (!hasPopupOpener) {
+                return true;
+            }
+
             ev.preventDefault();
             $.ajax({
                 type: "POST",

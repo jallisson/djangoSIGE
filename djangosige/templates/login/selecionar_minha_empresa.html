@@ -1,42 +1,44 @@
 {%extends 'base/base.html'%}
 
 {%block title%}Selecionar empresa{%endblock%}
-
-{%block side_top_bars%}{%endblock%}
 {% block has_shell %}false{% endblock %}
 
-{%block content%}
-	
-	<div class="card">
-		<div class="header">
-			<h2>Selecione uma empresa</h2>
-		</div>
-		<div class="body">
-			<form id="popupform" role="form" action="" method="post">
-			{% csrf_token %}
-				{% for field in form %}
-				<div class="form-group">
-					<label>{{field.label}}</label>
-					{% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
-					<div class="input-group">
-						<div class="form-line">
-			      			{{field}}
-			      		</div>
-			      		<a class="input-group-addon popup-add" style="color: green;" href="{% url 'cadastro:addempresaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
-		      		</div>
-		      	</div>
-		    	{% endfor %}
-		    	<button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
-	    	</form>
-    	</div>
-   	</div>
-	
+{% block app_body %}
+<div id="popupform-container" class="sige-modern-form sige-popup-form" data-popup-title="Selecionar empresa">
+    <div class="sige-form-card sige-modal__panel">
+        <div class="header sige-form-header">
+            <h2><span>Selecionar empresa</span><button type="button" class="close sige-modal__close sige-popup-close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button></h2>
+        </div>
+        <form id="popupform" role="form" action="{% url 'login:selecionarempresaview' %}" method="post" class="sige-form">
+            {% csrf_token %}
+            <div class="body sige-form-body">
+                <div class="sige-form-grid sige-form-grid--legacy">
+                    {% for field in form %}
+                    <div class="sige-field sige-field--full">
+                        <div class="form-group">
+                            <label>{{field.label}}{% if field.field.required %}<strong style="color:red;"> *</strong>{% endif %}</label>
+                            {% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
+                            <div class="input-group">
+                                <div class="form-line">
+                                    {{field}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="sige-form-actions">
+                    <button type="button" class="btn sige-button sige-button--ghost sige-popup-cancel" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-success foot-btn sige-button sige-button--primary" type="submit"><i class="material-icons">&#xE148;</i><span> SELECIONAR</span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {%endblock%}
 
 {% block js %}
 <script>
-
-	$.Admin.popupwindow.init();
-
+    $.Admin.popupwindow.init();
 </script>
 {% endblock %}

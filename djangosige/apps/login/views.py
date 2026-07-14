@@ -19,6 +19,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template import loader
+from django.http import JsonResponse
 
 from djangosige.apps.base.views_mixins import SuperUserRequiredMixin
 
@@ -305,6 +306,9 @@ class SelecionarMinhaEmpresaView(FormView):
     template_name = "login/selecionar_minha_empresa.html"
     success_url = reverse_lazy('login:selecionarempresaview')
 
+    def is_ajax(self):
+        return self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
     def get_form(self, form_class):
         try:
             usuario = Usuario.objects.get(user=self.request.user)
@@ -343,6 +347,8 @@ class SelecionarMinhaEmpresaView(FormView):
         return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
+        if self.is_ajax():
+            return JsonResponse({'success': True, 'reload': True})
         return redirect(self.success_url)
 
 
